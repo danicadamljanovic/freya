@@ -1,0 +1,31 @@
+prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#> 
+prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+prefix owl:   <http://www.w3.org/2002/07/owl#> 
+SELECT DISTINCT ?p ?dd ?rr {  
+{
+optional {?p rdfs:domain ?dd . }
+?p rdfs:range ?rr .
+filter (!bound(?dd)).
+FILTER (!regex(str(?p), "http://www.w3.org/2000/01/rdf-schema*")) .
+FILTER (!regex(str(?p), "http://www.w3.org/1999/02/22-rdf-syntax-ns*")) .
+FILTER (!regex(str(?p), "http://www.w3.org/2002/07/owl*")) 
+} 
+UNION
+{
+?p rdfs:domain ?dd . 
+optional{
+?p rdfs:range ?rr .}
+filter (!bound(?rr)).
+FILTER (!regex(str(?p), "http://www.w3.org/2000/01/rdf-schema*")) .
+FILTER (!regex(str(?p), "http://www.w3.org/1999/02/22-rdf-syntax-ns*")) .
+FILTER (!regex(str(?p), "http://www.w3.org/2002/07/owl*"))
+}
+UNION
+{
+?p rdfs:domain ?dd . 
+?p rdfs:range ?rr . 
+FILTER (!regex(str(?p), "http://www.w3.org/2002/07/owl*")) . 
+FILTER (!regex(str(?p), "http://www.w3.org/2000/01/rdf-schema*")) . 
+FILTER (!regex(str(?p), "http://www.w3.org/1999/02/22-rdf-syntax-ns*")) . 
+}
+}

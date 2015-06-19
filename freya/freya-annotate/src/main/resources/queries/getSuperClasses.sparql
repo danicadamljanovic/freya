@@ -1,0 +1,12 @@
+prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#> 
+prefix rdf:        <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+prefix owl:   <http://www.w3.org/2002/07/owl#>
+SELECT DISTINCT ?x ?y 
+where {?x rdfs:subClassOf ?y . 
+FILTER (!regex(str(?y), "http://www.w3.org/2002/07/owl*")) . 
+FILTER (!regex(str(?y), "http://www.w3.org/2000/01/rdf-schema*")) . 
+FILTER (!regex(str(?y), "http://www.w3.org/1999/02/22-rdf-syntax-ns*")) . 
+FILTER (!regex(str(?x), "http://www.w3.org/2002/07/owl*")) . 
+FILTER (!regex(str(?x), "http://www.w3.org/2000/01/rdf-schema*")) . 
+FILTER (!regex(str(?x), "http://www.w3.org/1999/02/22-rdf-syntax-ns*")) . 
+}

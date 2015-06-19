@@ -1,0 +1,8 @@
+prefix rdfs:       <http://www.w3.org/2000/01/rdf-schema#>  
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+Select distinct ?x ?z 
+where {
+{?x rdfs:label ?z . }
+UNION
+{?x dc:title ?z}
+}

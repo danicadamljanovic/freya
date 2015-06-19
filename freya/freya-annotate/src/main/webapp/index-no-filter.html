@@ -1,0 +1,93 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <!-- CSS Files -->
+    <link type="text/css" href="css/base.css" rel="stylesheet" />
+
+   <script language="javascript" type="text/javascript" src="js/main.js"></script>
+
+<!--[if IE]><script language="javascript" type="text/javascript" src="js/excanvas.js"></script><![endif]-->
+
+<!-- JIT Library File -->
+<script language="javascript" type="text/javascript" src="js/jit.js"></script>
+
+<!-- Example File -->
+
+<script language="javascript" type="text/javascript" src="js/rgraph-example3.js"></script>
+<script language="javascript" type="text/javascript" src="js/gen_validatorv31.js"></script>
+ 
+   
+     <head>
+
+   <style type="text/css">
+     body {scrollbar-3dlight-color:black;
+                scrollbar-arrow-color:gray;
+                scrollbar-track-color:gray;
+                scrollbar-darkshadow-color:silver;
+                scrollbar-face-color:black;
+                scrollbar-highlight-color:gray;
+                scrollbar-shadow-color:}
+  </style>
+
+  </head>
+   <title>Freya demo</title></head>
+
+<body bgcolor="#FFFFFF">
+ <div id="container">
+ 
+<div id="query">
+
+<form action="javascript:askNoFilter();" name="myform" id="myform" method="post">
+<!-- 
+<div class="username">Username:<input type="text" name="username"/></div>
+-->
+<h1>FREyA (no filter mode)<h1/>
+<!-- <h2>What do you want to know?</h2>-->
+<h4>Explore geography of the United States (This demo is working with <a href="http://userweb.cs.utexas.edu/users/ml/nldata/geoquery.html">Mooney GeoQuery dataset</a>.)</h4>
+<p>If you would like to know more about FREyA or to try it with a different repository contact <a href="mailto:danica.damljanovic@gmail.com">us</a>.
+
+</p>
+<strong>Query:</strong> <input type="text" name="query" size="100">
+<input type="submit" name="button" value="Submit" />
+
+<div id="zone" name="zone">
+</div>
+<table id="fixedHeader" cellpadding="0" cellspacing="0">
+</table>
+
+<div class="tableContainer">
+<table  id="interpretationsTable" class="refinementTable"> 
+<tbody></tbody>
+ </table>
+ </div>
+</form>
+</div>
+
+<div id="resultContainer">
+<div id="center-container"  >
+    <div id="infovis"></div>  
+    <div id="log"></div>
+</div>  
+<div id="right-container">
+
+</div>
+</div>
+<div id="resultsAsTableContainer" class="resultsAsTableContainer">
+<table  id="resultsTable" class="resultsTable"> 
+<tbody></tbody>
+ </table>
+
+</div>
+</div>
+<script language="JavaScript" type="text/javascript">
+ var frmvalidator = new Validator("myform");
+ //frmvalidator.addValidation("username","req","Please enter your username");
+ frmvalidator.addValidation("query","req","Please enter your query");
+</script>
+
+
+</body>
+</html>

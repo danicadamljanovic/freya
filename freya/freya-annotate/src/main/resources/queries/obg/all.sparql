@@ -1,0 +1,15 @@
+SELECT DISTINCT ?E ?T ?L ?P
+WHERE {
+  ?E <http://www.openrdf.org/schema/sesame#directType> ?T.
+  OPTIONAL {
+    ?P <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property>.
+    ?E ?P ?L.
+    FILTER isLiteral(?L).
+    FILTER (!regex(str(?P), "^http://www\\.w3\\.org/*") ||
+      regex(str(?P), "^http://www.w3.org/2000/01/rdf-schema#label$")) . 
+  }
+  FILTER (!regex(str(?E), "^http://www\\.w3\\.org/*")) . 
+  FILTER (!regex(str(?T), "^http://www\\.w3\\.org/*") ||
+    regex(str(?T), "^http://www\\.w3\\.org/2002/07/owl#Class$") ||
+    regex(str(?T), "^http://www\\.w3\\.org/1999/02/22-rdf-syntax-ns#Property$")) . 
+}

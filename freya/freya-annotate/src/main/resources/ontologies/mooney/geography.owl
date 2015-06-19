@@ -1,0 +1,4497 @@
+<?xml version="1.0"?>
+<rdf:RDF xml:base      = "http://www.mooney.net/geo"
+         xmlns         = "http://www.mooney.net/geo#"
+         xmlns:rdf     = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs    = "http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:owl     = "http://www.w3.org/2002/07/owl#"
+>
+
+  <owl:Ontology rdf:about="">
+    <owl:versionInfo>mooney_geo_v0.1.owl, based on Mooney Queries</owl:versionInfo>
+    <rdfs:label>Mooney Geography Data as an Ontology, OWL Lite</rdfs:label>
+    <rdfs:comment>not yet</rdfs:comment>
+  </owl:Ontology>
+
+
+<!-- ===================================================================
+     Classes
+==================================================================== -->
+
+  <owl:Class rdf:ID="City">
+  </owl:Class>
+
+  <owl:Class rdf:ID="Capital">
+    <rdfs:subClassOf rdf:resource="#City"/>
+  </owl:Class>
+
+  <owl:Class rdf:ID="State">
+  </owl:Class>
+
+  <owl:Class rdf:ID="HiPoint">
+  </owl:Class>
+  
+  <owl:Class rdf:ID="LoPoint">
+  </owl:Class>
+  
+  <owl:Class rdf:ID="Mountain">
+  </owl:Class>
+
+  <owl:Class rdf:ID="Lake">
+  </owl:Class>
+
+  <owl:Class rdf:ID="River">
+  </owl:Class>
+
+  <owl:Class rdf:ID="Road">
+  </owl:Class>
+
+
+<!-- ===================================================================
+     Datatype Properties
+==================================================================== -->
+
+  <owl:DatatypeProperty rdf:ID="cityPopulation">
+    <rdfs:domain rdf:resource="#City"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="statePopulation">
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="statePopDensity">
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="abbreviation">
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#string"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="stateArea">
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="lakeArea">
+    <rdfs:domain rdf:resource="#Lake"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="height">
+    <rdfs:domain rdf:resource="#Mountain"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+   </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="hiElevation">
+    <rdfs:domain rdf:resource="#HiPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="loElevation">
+    <rdfs:domain rdf:resource="#LoPoint"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="length">
+    <rdfs:domain rdf:resource="#River"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+  <owl:DatatypeProperty rdf:ID="number">
+    <rdfs:domain rdf:resource="#Road"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+  </owl:DatatypeProperty>
+
+
+<!-- ===================================================================
+     Object Properties
+==================================================================== -->
+
+  <owl:ObjectProperty rdf:ID="borders">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty" />
+    <rdfs:domain rdf:resource="#State" />
+    <rdfs:range rdf:resource="#State" />
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isCityOf">
+    <rdfs:domain rdf:resource="#City"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasCity">
+    <owl:inverseOf rdf:resource="#isCityOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#City"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isCapitalOf">
+    <rdfs:domain rdf:resource="#Capital"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasCapital">
+    <owl:inverseOf rdf:resource="#isCapitalOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#Capital"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isMountainOf">
+    <rdfs:domain rdf:resource="#Mountain"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasMountain">
+    <owl:inverseOf rdf:resource="#isMountainOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#Mountain"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isHighestPointOf">
+    <rdfs:domain rdf:resource="#HiPoint"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasHighPoint">
+    <owl:inverseOf rdf:resource="#isHighestPointOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#HiPoint"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isLowestPointOf">
+    <rdfs:domain rdf:resource="#LoPoint"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasLowPoint">
+    <owl:inverseOf rdf:resource="#isLowestPointOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#LoPoint"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="isLakeOf">
+    <rdfs:domain rdf:resource="#Lake"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasLake">
+    <owl:inverseOf rdf:resource="#isLakeOf"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#Lake"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="runsThrough">
+    <rdfs:domain rdf:resource="#River"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasRiver">
+    <owl:inverseOf rdf:resource="#runsThrough"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#River"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="passesThrough">
+    <rdfs:domain rdf:resource="#Road"/>
+    <rdfs:range rdf:resource="#State"/>
+  </owl:ObjectProperty>
+
+  <owl:ObjectProperty rdf:ID="hasRoad">
+    <owl:inverseOf rdf:resource="#passesThrough"/>
+    <rdfs:domain rdf:resource="#State"/>
+    <rdfs:range rdf:resource="#Road"/>
+  </owl:ObjectProperty>
+
+
+<!-- ===================================================================
+     Templates for Instances
+========================================================================
+
+<State rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <abbreviation>abbreviation</abbreviation>
+  <statePopulation>population</statePopulation>
+  <stateArea>area</stateArea>
+  <borders rdf:resource="#state" />...
+</State>
+  
+<City rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <isCityOf rdf:resource="#state" />
+  <cityPopulation>population</cityPopulation>
+</City>
+
+<Capital rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <isCapitalOf rdf:resource="#state" />
+  <isCityOf rdf:resource="#state" />
+  <cityPopulation>population</cityPopulation>
+</Capital>
+  
+<River rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <length>length</length>
+  <runsThrough rdf:resource="#state" />...
+</River>
+
+<HiPoint rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <isHighestPointOf rdf:resource="#state" />
+  <hiElevation>elevation</hiElevation>
+</HiPoint>
+
+<LoPoint rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <isLowestPointOf rdf:resource="#state" />
+  <loElevation>elevation</loElevation>
+</LoPoint>
+
+<Mountain rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <isMountainOf rdf:resource="#state" />
+  <height>heigtn</height>
+</Mountain>
+
+<Road rdf:ID="number">
+  <rdfs:label xml:lang="en">number</rdfs:label>
+  <number>90</number>
+  <passesThrough rdf:resource="#state" />...
+</Road>
+
+<Lake rdf:ID="name">
+  <rdfs:label xml:lang="en">name</rdfs:label>
+  <lakeArea>area</lakeArea>
+  <isLakeOf rdf:resource="#state" />...
+</Lake>
+
+
+========================================================================
+     Real Instances
+==================================================================== -->
+
+
+<!-- States ======================================================== -->
+
+<State rdf:ID="alabama">
+  <rdfs:label xml:lang="en">alabama</rdfs:label>
+  <abbreviation>al</abbreviation>
+  <statePopulation>51700</statePopulation>
+  <stateArea>3894000</stateArea>
+  <statePopDensity>0.013276836</statePopDensity>
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#georgia" />
+  <borders rdf:resource="#florida" />
+  <borders rdf:resource="#mississippi" />
+</State>
+<State rdf:ID="alaska">
+  <rdfs:label xml:lang="en">alaska</rdfs:label>
+  <abbreviation>ak</abbreviation>
+  <statePopulation>591000</statePopulation>
+  <stateArea>401800</stateArea>
+  <statePopDensity>1.470881</statePopDensity>
+</State>
+<State rdf:ID="arizona">
+  <rdfs:label xml:lang="en">arizona</rdfs:label>
+  <abbreviation>az</abbreviation>
+  <statePopulation>114000</statePopulation>
+  <stateArea>2718000</stateArea>
+  <statePopDensity>0.041942604</statePopDensity>
+  <borders rdf:resource="#utah" />
+  <borders rdf:resource="#colorado" />
+  <borders rdf:resource="#newMexico" />
+  <borders rdf:resource="#california" />
+  <borders rdf:resource="#nevada" />
+</State>
+<State rdf:ID="arkansas">
+  <rdfs:label xml:lang="en">arkansas</rdfs:label>
+  <abbreviation>ar</abbreviation>
+  <statePopulation>53200</statePopulation>
+  <stateArea>2286000</stateArea>
+  <statePopDensity>0.023272092</statePopDensity>
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#mississippi" />
+  <borders rdf:resource="#louisiana" />
+  <borders rdf:resource="#texas" />
+  <borders rdf:resource="#oklahoma" />
+</State>
+<State rdf:ID="california">
+  <rdfs:label xml:lang="en">california</rdfs:label>
+  <abbreviation>ca</abbreviation>
+  <statePopulation>158000</statePopulation>
+  <stateArea>23670000</stateArea>
+  <statePopDensity>0.0066751163</statePopDensity>
+  <borders rdf:resource="#oregon" />
+  <borders rdf:resource="#nevada" />
+  <borders rdf:resource="#arizona" />
+</State>
+<State rdf:ID="colorado">
+  <rdfs:label xml:lang="en">colorado</rdfs:label>
+  <abbreviation>co</abbreviation>
+  <statePopulation>104000</statePopulation>
+  <stateArea>2889000</stateArea>
+  <statePopDensity>0.035998616</statePopDensity>
+  <borders rdf:resource="#nebraska" />
+  <borders rdf:resource="#kansas" />
+  <borders rdf:resource="#oklahoma" />
+  <borders rdf:resource="#newMexico" />
+  <borders rdf:resource="#arizona" />
+  <borders rdf:resource="#utah" />
+  <borders rdf:resource="#wyoming" />
+</State>
+<State rdf:ID="connecticut">
+  <rdfs:label xml:lang="en">connecticut</rdfs:label>
+  <abbreviation>ct</abbreviation>
+  <statePopulation>5020</statePopulation>
+  <stateArea>3107000</stateArea>
+  <statePopDensity>0.0016157065</statePopDensity>
+  <borders rdf:resource="#massachusetts" />
+  <borders rdf:resource="#rhodeIsland" />
+  <borders rdf:resource="#newYork" />
+</State>
+<State rdf:ID="delaware">
+  <rdfs:label xml:lang="en">delaware</rdfs:label>
+  <abbreviation>de</abbreviation>
+  <statePopulation>2044</statePopulation>
+  <stateArea>594000</stateArea>
+  <statePopDensity>0.0034410774</statePopDensity>
+  <borders rdf:resource="#pennsylvania" />
+  <borders rdf:resource="#newJersey" />
+  <borders rdf:resource="#maryland" />
+</State>
+<State rdf:ID="districtOfColumbia">
+  <rdfs:label xml:lang="en">district of columbia</rdfs:label>
+  <abbreviation>dc</abbreviation>
+  <statePopulation>1100</statePopulation>
+  <stateArea>638000</stateArea>
+  <statePopDensity>0.0017241379</statePopDensity>
+  <borders rdf:resource="#maryland" />
+  <borders rdf:resource="#virginia" />
+</State>
+<State rdf:ID="florida">
+  <rdfs:label xml:lang="en">florida</rdfs:label>
+  <abbreviation>fl</abbreviation>
+  <statePopulation>68664</statePopulation>
+  <stateArea>9746000</stateArea>
+  <statePopDensity>0.007045352</statePopDensity>
+  <borders rdf:resource="#georgia" />
+  <borders rdf:resource="#alabama" />
+</State>
+<State rdf:ID="georgia">
+  <rdfs:label xml:lang="en">georgia</rdfs:label>
+  <abbreviation>ga</abbreviation>
+  <statePopulation>58900</statePopulation>
+  <stateArea>5463000</stateArea>
+  <statePopDensity>0.010781622</statePopDensity>
+  <borders rdf:resource="#northCarolina" />
+  <borders rdf:resource="#southCarolina" />
+  <borders rdf:resource="#florida" />
+  <borders rdf:resource="#alabama" />
+  <borders rdf:resource="#tennessee" />
+</State>
+<State rdf:ID="hawaii">
+  <rdfs:label xml:lang="en">hawaii</rdfs:label>
+  <abbreviation>hi</abbreviation>
+  <statePopulation>6471</statePopulation>
+  <stateArea>964000</stateArea>
+  <statePopDensity>0.0067126555</statePopDensity>
+</State>
+<State rdf:ID="idaho">
+  <rdfs:label xml:lang="en">idaho</rdfs:label>
+  <abbreviation>id</abbreviation>
+  <statePopulation>83000</statePopulation>
+  <stateArea>944000</stateArea>
+  <statePopDensity>0.08792373</statePopDensity>
+  <borders rdf:resource="#montana" />
+  <borders rdf:resource="#wyoming" />
+  <borders rdf:resource="#utah" />
+  <borders rdf:resource="#nevada" />
+  <borders rdf:resource="#oregon" />
+  <borders rdf:resource="#washington" />
+</State>
+<State rdf:ID="illinois">
+  <rdfs:label xml:lang="en">illinois</rdfs:label>
+  <abbreviation>il</abbreviation>
+  <statePopulation>56300</statePopulation>
+  <stateArea>11400000</stateArea>
+  <statePopDensity>0.0049385964</statePopDensity>
+  <borders rdf:resource="#wisconsin" />
+  <borders rdf:resource="#indiana" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#iowa" />
+</State>
+<State rdf:ID="indiana">
+  <rdfs:label xml:lang="en">indiana</rdfs:label>
+  <abbreviation>in</abbreviation>
+  <statePopulation>36200</statePopulation>
+  <stateArea>5490000</stateArea>
+  <statePopDensity>0.006593807</statePopDensity>
+  <borders rdf:resource="#michigan" />
+  <borders rdf:resource="#ohio" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#illinois" />
+</State>
+<State rdf:ID="iowa">
+  <rdfs:label xml:lang="en">iowa</rdfs:label>
+  <abbreviation>ia</abbreviation>
+  <statePopulation>56300</statePopulation>
+  <stateArea>2913000</stateArea>
+  <statePopDensity>0.019327154</statePopDensity>
+  <borders rdf:resource="#minnesota" />
+  <borders rdf:resource="#wisconsin" />
+  <borders rdf:resource="#illinois" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#nebraska" />
+  <borders rdf:resource="#southDakota" />
+</State>
+<State rdf:ID="kansas">
+  <rdfs:label xml:lang="en">kansas</rdfs:label>
+  <abbreviation>ks</abbreviation>
+  <statePopulation>82300</statePopulation>
+  <stateArea>2364000</stateArea>
+  <statePopDensity>0.034813873</statePopDensity>
+  <borders rdf:resource="#nebraska" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#oklahoma" />
+  <borders rdf:resource="#colorado" />
+</State>
+<State rdf:ID="kentucky">
+  <rdfs:label xml:lang="en">kentucky</rdfs:label>
+  <abbreviation>ky</abbreviation>
+  <statePopulation>82300</statePopulation>
+  <stateArea>2364000</stateArea>
+  <statePopDensity>0.034813873</statePopDensity>
+  <borders rdf:resource="#indiana" />
+  <borders rdf:resource="#ohio" />
+  <borders rdf:resource="#westVirginia" />
+  <borders rdf:resource="#virginia" />
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#illinois" />
+</State>
+<State rdf:ID="louisiana">
+  <rdfs:label xml:lang="en">louisiana</rdfs:label>
+  <abbreviation>la</abbreviation>
+  <statePopulation>47700</statePopulation>
+  <stateArea>4206000</stateArea>
+  <statePopDensity>0.011340941</statePopDensity>
+  <borders rdf:resource="#arkansas" />
+  <borders rdf:resource="#mississippi" />
+  <borders rdf:resource="#texas" />
+</State>
+<State rdf:ID="maine">
+  <rdfs:label xml:lang="en">maine</rdfs:label>
+  <abbreviation>me</abbreviation>
+  <statePopulation>33265</statePopulation>
+  <stateArea>1125000</stateArea>
+  <statePopDensity>0.029568888</statePopDensity>
+  <borders rdf:resource="#newHampshire" />
+</State>
+<State rdf:ID="maryland">
+  <rdfs:label xml:lang="en">maryland</rdfs:label>
+  <abbreviation>md</abbreviation>
+  <statePopulation>10460</statePopulation>
+  <stateArea>4217000</stateArea>
+  <statePopDensity>0.0024804363</statePopDensity>
+  <borders rdf:resource="#pennsylvania" />
+  <borders rdf:resource="#delaware" />
+  <borders rdf:resource="#virginia" />
+  <borders rdf:resource="#districtOfColumbia" />
+  <borders rdf:resource="#westVirginia" />
+</State>
+<State rdf:ID="massachusetts">
+  <rdfs:label xml:lang="en">massachusetts</rdfs:label>
+  <abbreviation>ma</abbreviation>
+  <statePopulation>8284</statePopulation>
+  <stateArea>5737000</stateArea>
+  <statePopDensity>0.0014439602</statePopDensity>
+  <borders rdf:resource="#newHampshire" />
+  <borders rdf:resource="#rhodeIsland" />
+  <borders rdf:resource="#connecticut" />
+  <borders rdf:resource="#newYork" />
+  <borders rdf:resource="#vermont" />
+</State>
+<State rdf:ID="michigan">
+  <rdfs:label xml:lang="en">michigan</rdfs:label>
+  <abbreviation>mi</abbreviation>
+  <statePopulation>58500</statePopulation>
+  <stateArea>9262000</stateArea>
+  <statePopDensity>0.0063161305</statePopDensity>
+  <borders rdf:resource="#ohio" />
+  <borders rdf:resource="#indiana" />
+  <borders rdf:resource="#wisconsin" />
+</State>
+<State rdf:ID="minnesota">
+  <rdfs:label xml:lang="en">minnesota</rdfs:label>
+  <abbreviation>mn</abbreviation>
+  <statePopulation>84400</statePopulation>
+  <stateArea>4076000</stateArea>
+  <statePopDensity>0.020706575</statePopDensity>
+  <borders rdf:resource="#wisconsin" />
+  <borders rdf:resource="#iowa" />
+  <borders rdf:resource="#southDakota" />
+  <borders rdf:resource="#northDakota" />
+</State>
+<State rdf:ID="mississippi">
+  <rdfs:label xml:lang="en">mississippi</rdfs:label>
+  <abbreviation>ms</abbreviation>
+  <statePopulation>47700</statePopulation>
+  <stateArea>2520000</stateArea>
+  <statePopDensity>0.01892857</statePopDensity>
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#alabama" />
+  <borders rdf:resource="#louisiana" />
+  <borders rdf:resource="#arkansas" />
+</State>
+<State rdf:ID="missouri">
+  <rdfs:label xml:lang="en">missouri</rdfs:label>
+  <abbreviation>mo</abbreviation>
+  <statePopulation>69700</statePopulation>
+  <stateArea>4916000</stateArea>
+  <statePopDensity>0.014178194</statePopDensity>
+  <borders rdf:resource="#iowa" />
+  <borders rdf:resource="#illinois" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#arkansas" />
+  <borders rdf:resource="#oklahoma" />
+  <borders rdf:resource="#kansas" />
+  <borders rdf:resource="#nebraska" />
+</State>
+<State rdf:ID="montana">
+  <rdfs:label xml:lang="en">montana</rdfs:label>
+  <abbreviation>mt</abbreviation>
+  <statePopulation>147000</statePopulation>
+  <stateArea>786700</stateArea>
+  <statePopDensity>0.1868565</statePopDensity>
+  <borders rdf:resource="#northDakota" />
+  <borders rdf:resource="#southDakota" />
+  <borders rdf:resource="#wyoming" />
+  <borders rdf:resource="#idaho" />
+</State>
+<State rdf:ID="nebraska">
+  <rdfs:label xml:lang="en">nebraska</rdfs:label>
+  <abbreviation>ne</abbreviation>
+  <statePopulation>77300</statePopulation>
+  <stateArea>1569000</stateArea>
+  <statePopDensity>0.04926705</statePopDensity>
+  <borders rdf:resource="#southDakota" />
+  <borders rdf:resource="#iowa" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#kansas" />
+  <borders rdf:resource="#colorado" />
+  <borders rdf:resource="#wyoming" />
+</State>
+<State rdf:ID="nevada">
+  <rdfs:label xml:lang="en">nevada</rdfs:label>
+  <abbreviation>nv</abbreviation>
+  <statePopulation>110500</statePopulation>
+  <stateArea>800500</stateArea>
+  <statePopDensity>0.13803872</statePopDensity>
+  <borders rdf:resource="#idaho" />
+  <borders rdf:resource="#utah" />
+  <borders rdf:resource="#arizona" />
+  <borders rdf:resource="#california" />
+  <borders rdf:resource="#oregon" />
+</State>
+<State rdf:ID="newHampshire">
+  <rdfs:label xml:lang="en">new hampshire</rdfs:label>
+  <abbreviation>nh</abbreviation>
+  <statePopulation>9279</statePopulation>
+  <stateArea>920600</stateArea>
+  <statePopDensity>0.010079296</statePopDensity>
+  <borders rdf:resource="#maine" />
+  <borders rdf:resource="#massachusetts" />
+  <borders rdf:resource="#vermont" />
+</State>
+<State rdf:ID="newJersey">
+  <rdfs:label xml:lang="en">new jersey</rdfs:label>
+  <abbreviation>nj</abbreviation>
+  <statePopulation>7787</statePopulation>
+  <stateArea>7365000</stateArea>
+  <statePopDensity>0.001057298</statePopDensity>
+  <borders rdf:resource="#newYork" />
+  <borders rdf:resource="#delaware" />
+  <borders rdf:resource="#pennsylvania" />
+</State>
+<State rdf:ID="newMexico">
+  <rdfs:label xml:lang="en">new mexico</rdfs:label>
+  <abbreviation>nm</abbreviation>
+  <statePopulation>121600</statePopulation>
+  <stateArea>1303000</stateArea>
+  <statePopDensity>0.093323104</statePopDensity>
+  <borders rdf:resource="#colorado" />
+  <borders rdf:resource="#oklahoma" />
+  <borders rdf:resource="#texas" />
+  <borders rdf:resource="#arizona" />
+  <borders rdf:resource="#utah" />
+</State>
+<State rdf:ID="newYork">
+  <rdfs:label xml:lang="en">new york</rdfs:label>
+  <abbreviation>ny</abbreviation>
+  <statePopulation>49100</statePopulation>
+  <stateArea>17558000</stateArea>
+  <statePopDensity>0.002796446</statePopDensity>
+  <borders rdf:resource="#vermont" />
+  <borders rdf:resource="#massachusetts" />
+  <borders rdf:resource="#connecticut" />
+  <borders rdf:resource="#newJersey" />
+  <borders rdf:resource="#pennsylvania" />
+</State>
+<State rdf:ID="northCarolina">
+  <rdfs:label xml:lang="en">north carolina</rdfs:label>
+  <abbreviation>nc</abbreviation>
+  <statePopulation>52670</statePopulation>
+  <stateArea>5882000</stateArea>
+  <statePopDensity>0.008954437</statePopDensity>
+  <borders rdf:resource="#virginia" />
+  <borders rdf:resource="#southCarolina" />
+  <borders rdf:resource="#georgia" />
+  <borders rdf:resource="#tennessee" />
+</State>
+<State rdf:ID="northDakota">
+  <rdfs:label xml:lang="en">north dakota</rdfs:label>
+  <abbreviation>nd</abbreviation>
+  <statePopulation>70700</statePopulation>
+  <stateArea>652700</stateArea>
+  <statePopDensity>0.10831929</statePopDensity>
+  <borders rdf:resource="#minnesota" />
+  <borders rdf:resource="#southDakota" />
+  <borders rdf:resource="#montana" />
+</State>
+<State rdf:ID="ohio">
+  <rdfs:label xml:lang="en">ohio</rdfs:label>
+  <abbreviation>oh</abbreviation>
+  <statePopulation>41300</statePopulation>
+  <stateArea>10800000</stateArea>
+  <statePopDensity>0.003824074</statePopDensity>
+  <borders rdf:resource="#michigan" />
+  <borders rdf:resource="#pennsylvania" />
+  <borders rdf:resource="#westVirginia" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#indiana" />
+</State>
+<State rdf:ID="oklahoma">
+  <rdfs:label xml:lang="en">oklahoma</rdfs:label>
+  <abbreviation>ok</abbreviation>
+  <statePopulation>69950</statePopulation>
+  <stateArea>3025000</stateArea>
+  <statePopDensity>0.023123967</statePopDensity>
+  <borders rdf:resource="#kansas" />
+  <borders rdf:resource="#missouri" />
+  <borders rdf:resource="#arkansas" />
+  <borders rdf:resource="#texas" />
+  <borders rdf:resource="#newMexico" />
+  <borders rdf:resource="#colorado" />
+</State>
+<State rdf:ID="oregon">
+  <rdfs:label xml:lang="en">oregon</rdfs:label>
+  <abbreviation>or</abbreviation>
+  <statePopulation>97073</statePopulation>
+  <stateArea>2633000</stateArea>
+  <statePopDensity>0.03686783</statePopDensity>
+  <borders rdf:resource="#washington" />
+  <borders rdf:resource="#idaho" />
+  <borders rdf:resource="#nevada" />
+  <borders rdf:resource="#california" />
+</State>
+<State rdf:ID="pennsylvania">
+  <rdfs:label xml:lang="en">pennsylvania</rdfs:label>
+  <abbreviation>pa</abbreviation>
+  <statePopulation>45308</statePopulation>
+  <stateArea>11863000</stateArea>
+  <statePopDensity>0.00381927</statePopDensity>
+  <borders rdf:resource="#newYork" />
+  <borders rdf:resource="#newJersey" />
+  <borders rdf:resource="#delaware" />
+  <borders rdf:resource="#maryland" />
+  <borders rdf:resource="#westVirginia" />
+  <borders rdf:resource="#ohio" />
+</State>
+<State rdf:ID="rhodeIsland">
+  <rdfs:label xml:lang="en">rhode island</rdfs:label>
+  <abbreviation>ri</abbreviation>
+  <statePopulation>1212</statePopulation>
+  <stateArea>947200</stateArea>
+  <statePopDensity>0.0012795608</statePopDensity>
+  <borders rdf:resource="#massachusetts" />
+  <borders rdf:resource="#connecticut" />
+</State>
+<State rdf:ID="southCarolina">
+  <rdfs:label xml:lang="en">south carolina</rdfs:label>
+  <abbreviation>sc</abbreviation>
+  <statePopulation>31113</statePopulation>
+  <stateArea>3121800</stateArea>
+  <statePopDensity>0.009966366</statePopDensity>
+  <borders rdf:resource="#northCarolina" />
+  <borders rdf:resource="#georgia" />
+</State>
+<State rdf:ID="southDakota">
+  <rdfs:label xml:lang="en">south dakota</rdfs:label>
+  <abbreviation>sd</abbreviation>
+  <statePopulation>77116</statePopulation>
+  <stateArea>690767</stateArea>
+  <statePopDensity>0.111638226</statePopDensity>
+  <borders rdf:resource="#northDakota" />
+  <borders rdf:resource="#minnesota" />
+  <borders rdf:resource="#iowa" />
+  <borders rdf:resource="#nebraska" />
+  <borders rdf:resource="#wyoming" />
+  <borders rdf:resource="#montana" />
+</State>
+<State rdf:ID="tennessee">
+  <rdfs:label xml:lang="en">tennessee</rdfs:label>
+  <abbreviation>tn</abbreviation>
+  <statePopulation>42140</statePopulation>
+  <stateArea>4591000</stateArea>
+  <statePopDensity>0.009178828</statePopDensity>
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#virginia" />
+  <borders rdf:resource="#northCarolina" />
+  <borders rdf:resource="#georgia" />
+  <borders rdf:resource="#alabama" />
+  <borders rdf:resource="#mississippi" />
+  <borders rdf:resource="#arkansas" />
+  <borders rdf:resource="#missouri" />
+</State>
+<State rdf:ID="texas">
+  <rdfs:label xml:lang="en">texas</rdfs:label>
+  <abbreviation>tx</abbreviation>
+  <statePopulation>266807</statePopulation>
+  <stateArea>14229000</stateArea>
+  <statePopDensity>0.018750932</statePopDensity>
+  <borders rdf:resource="#oklahoma" />
+  <borders rdf:resource="#arkansas" />
+  <borders rdf:resource="#louisiana" />
+  <borders rdf:resource="#newMexico" />
+</State>
+<State rdf:ID="utah">
+  <rdfs:label xml:lang="en">utah</rdfs:label>
+  <abbreviation>ut</abbreviation>
+  <statePopulation>84900</statePopulation>
+  <stateArea>1461000</stateArea>
+  <statePopDensity>0.05811088</statePopDensity>
+  <borders rdf:resource="#wyoming" />
+  <borders rdf:resource="#colorado" />
+  <borders rdf:resource="#newMexico" />
+  <borders rdf:resource="#arizona" />
+  <borders rdf:resource="#nevada" />
+  <borders rdf:resource="#idaho" />
+</State>
+<State rdf:ID="vermont">
+  <rdfs:label xml:lang="en">vermont</rdfs:label>
+  <abbreviation>vt</abbreviation>
+  <statePopulation>9614</statePopulation>
+  <stateArea>511500</stateArea>
+  <statePopDensity>0.018795699</statePopDensity>
+  <borders rdf:resource="#newHampshire" />
+  <borders rdf:resource="#massachusetts" />
+  <borders rdf:resource="#newYork" />
+</State>
+<State rdf:ID="virginia">
+  <rdfs:label xml:lang="en">virginia</rdfs:label>
+  <abbreviation>va</abbreviation>
+  <statePopulation>40760</statePopulation>
+  <stateArea>5346800</stateArea>
+  <statePopDensity>0.007623251</statePopDensity>
+  <borders rdf:resource="#maryland" />
+  <borders rdf:resource="#districtOfColumbia" />
+  <borders rdf:resource="#northCarolina" />
+  <borders rdf:resource="#tennessee" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#westVirginia" />
+</State>
+<State rdf:ID="washington">
+  <rdfs:label xml:lang="en">washington</rdfs:label>
+  <abbreviation>wa</abbreviation>
+  <statePopulation>68139</statePopulation>
+  <stateArea>4113200</stateArea>
+  <statePopDensity>0.016565934</statePopDensity>
+  <borders rdf:resource="#idaho" />
+  <borders rdf:resource="#oregon" />
+</State>
+<State rdf:ID="westVirginia">
+  <rdfs:label xml:lang="en">west virginia</rdfs:label>
+  <abbreviation>wv</abbreviation>
+  <statePopulation>24200</statePopulation>
+  <stateArea>1950000</stateArea>
+  <statePopDensity>0.012410256</statePopDensity>
+  <borders rdf:resource="#pennsylvania" />
+  <borders rdf:resource="#maryland" />
+  <borders rdf:resource="#virginia" />
+  <borders rdf:resource="#kentucky" />
+  <borders rdf:resource="#ohio" />
+</State>
+<State rdf:ID="wisconsin">
+  <rdfs:label xml:lang="en">wisconsin</rdfs:label>
+  <abbreviation>wi</abbreviation>
+  <statePopulation>56153</statePopulation>
+  <stateArea>4700000</stateArea>
+  <statePopDensity>0.0119474465</statePopDensity>
+  <borders rdf:resource="#michigan" />
+  <borders rdf:resource="#illinois" />
+  <borders rdf:resource="#iowa" />
+  <borders rdf:resource="#minnesota" />
+</State>
+<State rdf:ID="wyoming">
+  <rdfs:label xml:lang="en">wyoming</rdfs:label>
+  <abbreviation>wy</abbreviation>
+  <statePopulation>97809</statePopulation>
+  <stateArea>469557</stateArea>
+  <statePopDensity>0.20830059</statePopDensity>
+  <borders rdf:resource="#montana" />
+  <borders rdf:resource="#southDakota" />
+  <borders rdf:resource="#nebraska" />
+  <borders rdf:resource="#colorado" />
+  <borders rdf:resource="#utah" />
+  <borders rdf:resource="#idaho" />
+</State>
+
+
+<!-- Cities and Capitals =========================================== -->
+  
+<City rdf:ID="birminghamAl">
+  <rdfs:label xml:lang="en">birmingham</rdfs:label>
+  <isCityOf rdf:resource="#alabama" />
+  <cityPopulation>284413</cityPopulation>
+</City>
+<City rdf:ID="mobileAl">
+  <rdfs:label xml:lang="en">mobile</rdfs:label>
+  <isCityOf rdf:resource="#alabama" />
+  <cityPopulation>200452</cityPopulation>
+</City>
+<Capital rdf:ID="montgomeryAl">
+  <rdfs:label xml:lang="en">montgomery</rdfs:label>
+  <isCapitalOf rdf:resource="#alabama" />
+  <isCityOf rdf:resource="#alabama" />
+  <cityPopulation>177857</cityPopulation>
+</Capital>
+<City rdf:ID="huntsvilleAl">
+  <rdfs:label xml:lang="en">huntsville</rdfs:label>
+  <isCityOf rdf:resource="#alabama" />
+  <cityPopulation>142513</cityPopulation>
+</City>
+<City rdf:ID="tuscaloosaAl">
+  <rdfs:label xml:lang="en">tuscaloosa</rdfs:label>
+  <isCityOf rdf:resource="#alabama" />
+  <cityPopulation>75143</cityPopulation>
+</City>
+<City rdf:ID="anchorageAk">
+  <rdfs:label xml:lang="en">anchorage</rdfs:label>
+  <isCityOf rdf:resource="#alaska" />
+  <cityPopulation>174431</cityPopulation>
+</City>
+<Capital rdf:ID="juneauAk">
+  <rdfs:label xml:lang="en">juneau</rdfs:label>
+  <isCapitalOf rdf:resource="#alaska" />
+  <isCityOf rdf:resource="#alaska" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="phoenixAz">
+  <rdfs:label xml:lang="en">phoenix</rdfs:label>
+  <isCapitalOf rdf:resource="#arizona" />
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>789704</cityPopulation>
+</Capital>
+<City rdf:ID="tucsonAz">
+  <rdfs:label xml:lang="en">tucson</rdfs:label>
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>330537</cityPopulation>
+</City>
+<City rdf:ID="mesaAz">
+  <rdfs:label xml:lang="en">mesa</rdfs:label>
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>152453</cityPopulation>
+</City>
+<City rdf:ID="tempeAz">
+  <rdfs:label xml:lang="en">tempe</rdfs:label>
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>106919</cityPopulation>
+</City>
+<City rdf:ID="glendaleAz">
+  <rdfs:label xml:lang="en">glendale</rdfs:label>
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>96988</cityPopulation>
+</City>
+<City rdf:ID="scottsdaleAz">
+  <rdfs:label xml:lang="en">scottsdale</rdfs:label>
+  <isCityOf rdf:resource="#arizona" />
+  <cityPopulation>88622</cityPopulation>
+</City>
+<Capital rdf:ID="littleRockAr">
+  <rdfs:label xml:lang="en">little rock</rdfs:label>
+  <isCapitalOf rdf:resource="#arkansas" />
+  <isCityOf rdf:resource="#arkansas" />
+  <cityPopulation>158915</cityPopulation>
+</Capital>
+<City rdf:ID="fortSmithAr">
+  <rdfs:label xml:lang="en">fort smith</rdfs:label>
+  <isCityOf rdf:resource="#arkansas" />
+  <cityPopulation>71384</cityPopulation>
+</City>
+<City rdf:ID="northLittleRockAr">
+  <rdfs:label xml:lang="en">north little rock</rdfs:label>
+  <isCityOf rdf:resource="#arkansas" />
+  <cityPopulation>64388</cityPopulation>
+</City>
+<City rdf:ID="losAngelesCa">
+  <rdfs:label xml:lang="en">los angeles</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>2966850</cityPopulation>
+</City>
+<City rdf:ID="sanDiegoCa">
+  <rdfs:label xml:lang="en">san diego</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>875538</cityPopulation>
+</City>
+<City rdf:ID="sanFranciscoCa">
+  <rdfs:label xml:lang="en">san francisco</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>678974</cityPopulation>
+</City>
+<City rdf:ID="sanJoseCa">
+  <rdfs:label xml:lang="en">san jose</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>629442</cityPopulation>
+</City>
+<City rdf:ID="longBeachCa">
+  <rdfs:label xml:lang="en">long beach</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>361334</cityPopulation>
+</City>
+<City rdf:ID="oaklandCa">
+  <rdfs:label xml:lang="en">oakland</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>339337</cityPopulation>
+</City>
+<Capital rdf:ID="sacramentoCa">
+  <rdfs:label xml:lang="en">sacramento</rdfs:label>
+  <isCapitalOf rdf:resource="#california" />
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>275741</cityPopulation>
+</Capital>
+<City rdf:ID="anaheimCa">
+  <rdfs:label xml:lang="en">anaheim</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>219311</cityPopulation>
+</City>
+<City rdf:ID="fresnoCa">
+  <rdfs:label xml:lang="en">fresno</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>218202</cityPopulation>
+</City>
+<City rdf:ID="santaAnaCa">
+  <rdfs:label xml:lang="en">santa ana</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>203713</cityPopulation>
+</City>
+<City rdf:ID="riversideCa">
+  <rdfs:label xml:lang="en">riverside</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>170876</cityPopulation>
+</City>
+<City rdf:ID="huntingtonBeachCa">
+  <rdfs:label xml:lang="en">huntington beach</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>170505</cityPopulation>
+</City>
+<City rdf:ID="stocktonCa">
+  <rdfs:label xml:lang="en">stockton</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>149779</cityPopulation>
+</City>
+<City rdf:ID="glendaleCa">
+  <rdfs:label xml:lang="en">glendale</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>139060</cityPopulation>
+</City>
+<City rdf:ID="fremontCa">
+  <rdfs:label xml:lang="en">fremont</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>131945</cityPopulation>
+</City>
+<City rdf:ID="torranceCa">
+  <rdfs:label xml:lang="en">torrance</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>131497</cityPopulation>
+</City>
+<City rdf:ID="gardenGroveCa">
+  <rdfs:label xml:lang="en">garden grove</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>123351</cityPopulation>
+</City>
+<City rdf:ID="sanBernardinoCa">
+  <rdfs:label xml:lang="en">san bernardino</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>118794</cityPopulation>
+</City>
+<City rdf:ID="pasadenaCa">
+  <rdfs:label xml:lang="en">pasadena</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>118072</cityPopulation>
+</City>
+<City rdf:ID="eastLosAngelesCa">
+  <rdfs:label xml:lang="en">east los angeles</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>110017</cityPopulation>
+</City>
+<City rdf:ID="oxnardCa">
+  <rdfs:label xml:lang="en">oxnard</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>108195</cityPopulation>
+</City>
+<City rdf:ID="modestoCa">
+  <rdfs:label xml:lang="en">modesto</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>106963</cityPopulation>
+</City>
+<City rdf:ID="sunnyvaleCa">
+  <rdfs:label xml:lang="en">sunnyvale</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>106618</cityPopulation>
+</City>
+<City rdf:ID="bakersfieldCa">
+  <rdfs:label xml:lang="en">bakersfield</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>105611</cityPopulation>
+</City>
+<City rdf:ID="concordCa">
+  <rdfs:label xml:lang="en">concord</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>103763</cityPopulation>
+</City>
+<City rdf:ID="berkeleyCa">
+  <rdfs:label xml:lang="en">berkeley</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>103328</cityPopulation>
+</City>
+<City rdf:ID="fullertonCa">
+  <rdfs:label xml:lang="en">fullerton</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>102246</cityPopulation>
+</City>
+<City rdf:ID="inglewoodCa">
+  <rdfs:label xml:lang="en">inglewood</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>94162</cityPopulation>
+</City>
+<City rdf:ID="haywardCa">
+  <rdfs:label xml:lang="en">hayward</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>93585</cityPopulation>
+</City>
+<City rdf:ID="pomonaCa">
+  <rdfs:label xml:lang="en">pomona</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>92742</cityPopulation>
+</City>
+<City rdf:ID="orangeCa">
+  <rdfs:label xml:lang="en">orange</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>91450</cityPopulation>
+</City>
+<City rdf:ID="ontarioCa">
+  <rdfs:label xml:lang="en">ontario</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>88820</cityPopulation>
+</City>
+<City rdf:ID="santaMonicaCa">
+  <rdfs:label xml:lang="en">santa monica</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>88314</cityPopulation>
+</City>
+<City rdf:ID="santaClaraCa">
+  <rdfs:label xml:lang="en">santa clara</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>87700</cityPopulation>
+</City>
+<City rdf:ID="citrusHeightsCa">
+  <rdfs:label xml:lang="en">citrus heights</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>85911</cityPopulation>
+</City>
+<City rdf:ID="norwalkCa">
+  <rdfs:label xml:lang="en">norwalk</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>84901</cityPopulation>
+</City>
+<City rdf:ID="burbankCa">
+  <rdfs:label xml:lang="en">burbank</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>84625</cityPopulation>
+</City>
+<City rdf:ID="chulaVistaCa">
+  <rdfs:label xml:lang="en">chula vista</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>83927</cityPopulation>
+</City>
+<City rdf:ID="santaRosaCa">
+  <rdfs:label xml:lang="en">santa rosa</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>83205</cityPopulation>
+</City>
+<City rdf:ID="downeyCa">
+  <rdfs:label xml:lang="en">downey</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>82602</cityPopulation>
+</City>
+<City rdf:ID="costaMesaCa">
+  <rdfs:label xml:lang="en">costa mesa</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>82291</cityPopulation>
+</City>
+<City rdf:ID="comptonCa">
+  <rdfs:label xml:lang="en">compton</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>81230</cityPopulation>
+</City>
+<City rdf:ID="carsonCa">
+  <rdfs:label xml:lang="en">carson</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>81221</cityPopulation>
+</City>
+<City rdf:ID="salinasCa">
+  <rdfs:label xml:lang="en">salinas</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>80479</cityPopulation>
+</City>
+<City rdf:ID="westCovinaCa">
+  <rdfs:label xml:lang="en">west covina</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>80292</cityPopulation>
+</City>
+<City rdf:ID="vallejoCa">
+  <rdfs:label xml:lang="en">vallejo</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>80188</cityPopulation>
+</City>
+<City rdf:ID="elMonteCa">
+  <rdfs:label xml:lang="en">el monte</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>79494</cityPopulation>
+</City>
+<City rdf:ID="dalyCityCa">
+  <rdfs:label xml:lang="en">daly city</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>78519</cityPopulation>
+</City>
+<City rdf:ID="thousandOaksCa">
+  <rdfs:label xml:lang="en">thousand oaks</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>77797</cityPopulation>
+</City>
+<City rdf:ID="sanMateoCa">
+  <rdfs:label xml:lang="en">san mateo</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>77640</cityPopulation>
+</City>
+<City rdf:ID="simiValleyCa">
+  <rdfs:label xml:lang="en">simi valley</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>77500</cityPopulation>
+</City>
+<City rdf:ID="oceansideCa">
+  <rdfs:label xml:lang="en">oceanside</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>76698</cityPopulation>
+</City>
+<City rdf:ID="richmondCa">
+  <rdfs:label xml:lang="en">richmond</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>74676</cityPopulation>
+</City>
+<City rdf:ID="lakewoodCa">
+  <rdfs:label xml:lang="en">lakewood</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>74654</cityPopulation>
+</City>
+<City rdf:ID="santaBarbaraCa">
+  <rdfs:label xml:lang="en">santa barbara</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>74542</cityPopulation>
+</City>
+<City rdf:ID="elCajonCa">
+  <rdfs:label xml:lang="en">el cajon</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>73892</cityPopulation>
+</City>
+<City rdf:ID="venturaCa">
+  <rdfs:label xml:lang="en">ventura</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>73774</cityPopulation>
+</City>
+<City rdf:ID="westminsterCa">
+  <rdfs:label xml:lang="en">westminster</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>71133</cityPopulation>
+</City>
+<City rdf:ID="whittierCa">
+  <rdfs:label xml:lang="en">whittier</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>68558</cityPopulation>
+</City>
+<City rdf:ID="southGateCa">
+  <rdfs:label xml:lang="en">south gate</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>66784</cityPopulation>
+</City>
+<City rdf:ID="alhambraCa">
+  <rdfs:label xml:lang="en">alhambra</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>64767</cityPopulation>
+</City>
+<City rdf:ID="buenaParkCa">
+  <rdfs:label xml:lang="en">buena park</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>64165</cityPopulation>
+</City>
+<City rdf:ID="sanLeandroCa">
+  <rdfs:label xml:lang="en">san leandro</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>63952</cityPopulation>
+</City>
+<City rdf:ID="alamedaCa">
+  <rdfs:label xml:lang="en">alameda</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>63852</cityPopulation>
+</City>
+<City rdf:ID="newportBeachCa">
+  <rdfs:label xml:lang="en">newport beach</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>63475</cityPopulation>
+</City>
+<City rdf:ID="escondidoCa">
+  <rdfs:label xml:lang="en">escondido</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>62480</cityPopulation>
+</City>
+<City rdf:ID="irvineCa">
+  <rdfs:label xml:lang="en">irvine</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>62134</cityPopulation>
+</City>
+<City rdf:ID="mountainViewCa">
+  <rdfs:label xml:lang="en">mountain view</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>58655</cityPopulation>
+</City>
+<City rdf:ID="fairfieldCa">
+  <rdfs:label xml:lang="en">fairfield</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>58099</cityPopulation>
+</City>
+<City rdf:ID="redondoBeachCa">
+  <rdfs:label xml:lang="en">redondo beach</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>57102</cityPopulation>
+</City>
+<City rdf:ID="scottsValleyCa">
+  <rdfs:label xml:lang="en">scotts valley</rdfs:label>
+  <isCityOf rdf:resource="#california" />
+  <cityPopulation>6037</cityPopulation>
+</City>
+<Capital rdf:ID="denverCo">
+  <rdfs:label xml:lang="en">denver</rdfs:label>
+  <isCapitalOf rdf:resource="#colorado" />
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>492365</cityPopulation>
+</Capital>
+<City rdf:ID="coloradoSpringsCo">
+  <rdfs:label xml:lang="en">colorado springs</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>215150</cityPopulation>
+</City>
+<City rdf:ID="auroraCo">
+  <rdfs:label xml:lang="en">aurora</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>158588</cityPopulation>
+</City>
+<City rdf:ID="lakewoodCo">
+  <rdfs:label xml:lang="en">lakewood</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>113808</cityPopulation>
+</City>
+<City rdf:ID="puebloCo">
+  <rdfs:label xml:lang="en">pueblo</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>101686</cityPopulation>
+</City>
+<City rdf:ID="arvadaCo">
+  <rdfs:label xml:lang="en">arvada</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>84576</cityPopulation>
+</City>
+<City rdf:ID="boulderCo">
+  <rdfs:label xml:lang="en">boulder</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>76685</cityPopulation>
+</City>
+<City rdf:ID="fortCollinsCo">
+  <rdfs:label xml:lang="en">fort collins</rdfs:label>
+  <isCityOf rdf:resource="#colorado" />
+  <cityPopulation>64632</cityPopulation>
+</City>
+<City rdf:ID="bridgeportCt">
+  <rdfs:label xml:lang="en">bridgeport</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>142546</cityPopulation>
+</City>
+<Capital rdf:ID="hartfordCt">
+  <rdfs:label xml:lang="en">hartford</rdfs:label>
+  <isCapitalOf rdf:resource="#connecticut" />
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>136392</cityPopulation>
+</Capital>
+<City rdf:ID="newHavenCt">
+  <rdfs:label xml:lang="en">new haven</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>126089</cityPopulation>
+</City>
+<City rdf:ID="waterburyCt">
+  <rdfs:label xml:lang="en">waterbury</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>103266</cityPopulation>
+</City>
+<City rdf:ID="stamfordCt">
+  <rdfs:label xml:lang="en">stamford</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>102466</cityPopulation>
+</City>
+<City rdf:ID="norwalkCt">
+  <rdfs:label xml:lang="en">norwalk</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>77767</cityPopulation>
+</City>
+<City rdf:ID="newBritainCt">
+  <rdfs:label xml:lang="en">new britain</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>73840</cityPopulation>
+</City>
+<City rdf:ID="westHartfordCt">
+  <rdfs:label xml:lang="en">west hartford</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>61301</cityPopulation>
+</City>
+<City rdf:ID="danburyCt">
+  <rdfs:label xml:lang="en">danbury</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>60470</cityPopulation>
+</City>
+<City rdf:ID="greenwichCt">
+  <rdfs:label xml:lang="en">greenwich</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>59578</cityPopulation>
+</City>
+<City rdf:ID="bristolCt">
+  <rdfs:label xml:lang="en">bristol</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>57370</cityPopulation>
+</City>
+<City rdf:ID="meridenCt">
+  <rdfs:label xml:lang="en">meriden</rdfs:label>
+  <isCityOf rdf:resource="#connecticut" />
+  <cityPopulation>57118</cityPopulation>
+</City>
+<City rdf:ID="wilmingtonDe">
+  <rdfs:label xml:lang="en">wilmington</rdfs:label>
+  <isCityOf rdf:resource="#delaware" />
+  <cityPopulation>70195</cityPopulation>
+</City>
+<Capital rdf:ID="doverDe">
+  <rdfs:label xml:lang="en">dover</rdfs:label>
+  <isCapitalOf rdf:resource="#delaware" />
+  <isCityOf rdf:resource="#delaware" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="washingtonDc">
+  <rdfs:label xml:lang="en">washington</rdfs:label>
+  <isCapitalOf rdf:resource="#districtOfColumbia" />
+  <isCityOf rdf:resource="#districtOfColumbia" />
+  <cityPopulation>638333</cityPopulation>
+</Capital>
+<City rdf:ID="jacksonvilleFl">
+  <rdfs:label xml:lang="en">jacksonville</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>540920</cityPopulation>
+</City>
+<City rdf:ID="miamiFl">
+  <rdfs:label xml:lang="en">miami</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>346865</cityPopulation>
+</City>
+<City rdf:ID="tampaFl">
+  <rdfs:label xml:lang="en">tampa</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>271523</cityPopulation>
+</City>
+<City rdf:ID="st.PetersburgFl">
+  <rdfs:label xml:lang="en">st. petersburg</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>238647</cityPopulation>
+</City>
+<City rdf:ID="fortLauderdaleFl">
+  <rdfs:label xml:lang="en">fort lauderdale</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>153256</cityPopulation>
+</City>
+<City rdf:ID="orlandoFl">
+  <rdfs:label xml:lang="en">orlando</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>128394</cityPopulation>
+</City>
+<City rdf:ID="hollywoodFl">
+  <rdfs:label xml:lang="en">hollywood</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>117188</cityPopulation>
+</City>
+<City rdf:ID="miamiBeachFl">
+  <rdfs:label xml:lang="en">miami beach</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>96298</cityPopulation>
+</City>
+<City rdf:ID="clearwaterFl">
+  <rdfs:label xml:lang="en">clearwater</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>85450</cityPopulation>
+</City>
+<Capital rdf:ID="tallahasseeFl">
+  <rdfs:label xml:lang="en">tallahassee</rdfs:label>
+  <isCapitalOf rdf:resource="#florida" />
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>81548</cityPopulation>
+</Capital>
+<City rdf:ID="gainesvilleFl">
+  <rdfs:label xml:lang="en">gainesville</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>81371</cityPopulation>
+</City>
+<City rdf:ID="kendallFl">
+  <rdfs:label xml:lang="en">kendall</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>73758</cityPopulation>
+</City>
+<City rdf:ID="westPalmBeachFl">
+  <rdfs:label xml:lang="en">west palm beach</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>62530</cityPopulation>
+</City>
+<City rdf:ID="largoFl">
+  <rdfs:label xml:lang="en">largo</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>58977</cityPopulation>
+</City>
+<City rdf:ID="pensacolaFl">
+  <rdfs:label xml:lang="en">pensacola</rdfs:label>
+  <isCityOf rdf:resource="#florida" />
+  <cityPopulation>57619</cityPopulation>
+</City>
+<Capital rdf:ID="atlantaGa">
+  <rdfs:label xml:lang="en">atlanta</rdfs:label>
+  <isCapitalOf rdf:resource="#georgia" />
+  <isCityOf rdf:resource="#georgia" />
+  <cityPopulation>425022</cityPopulation>
+</Capital>
+<City rdf:ID="columbusGa">
+  <rdfs:label xml:lang="en">columbus</rdfs:label>
+  <isCityOf rdf:resource="#georgia" />
+  <cityPopulation>169441</cityPopulation>
+</City>
+<City rdf:ID="savannahGa">
+  <rdfs:label xml:lang="en">savannah</rdfs:label>
+  <isCityOf rdf:resource="#georgia" />
+  <cityPopulation>141654</cityPopulation>
+</City>
+<City rdf:ID="maconGa">
+  <rdfs:label xml:lang="en">macon</rdfs:label>
+  <isCityOf rdf:resource="#georgia" />
+  <cityPopulation>116860</cityPopulation>
+</City>
+<City rdf:ID="albanyGa">
+  <rdfs:label xml:lang="en">albany</rdfs:label>
+  <isCityOf rdf:resource="#georgia" />
+  <cityPopulation>74425</cityPopulation>
+</City>
+<Capital rdf:ID="honoluluHi">
+  <rdfs:label xml:lang="en">honolulu</rdfs:label>
+  <isCapitalOf rdf:resource="#hawaii" />
+  <isCityOf rdf:resource="#hawaii" />
+  <cityPopulation>762874</cityPopulation>
+</Capital>
+<City rdf:ID="ewaHi">
+  <rdfs:label xml:lang="en">ewa</rdfs:label>
+  <isCityOf rdf:resource="#hawaii" />
+  <cityPopulation>190037</cityPopulation>
+</City>
+<City rdf:ID="koolaupokoHi">
+  <rdfs:label xml:lang="en">koolaupoko</rdfs:label>
+  <isCityOf rdf:resource="#hawaii" />
+  <cityPopulation>109373</cityPopulation>
+</City>
+<Capital rdf:ID="boiseId">
+  <rdfs:label xml:lang="en">boise</rdfs:label>
+  <isCapitalOf rdf:resource="#idaho" />
+  <isCityOf rdf:resource="#idaho" />
+  <cityPopulation>102249</cityPopulation>
+</Capital>
+<City rdf:ID="chicagoIl">
+  <rdfs:label xml:lang="en">chicago</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>3005172</cityPopulation>
+</City>
+<City rdf:ID="rockfordIl">
+  <rdfs:label xml:lang="en">rockford</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>139712</cityPopulation>
+</City>
+<City rdf:ID="peoriaIl">
+  <rdfs:label xml:lang="en">peoria</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>124160</cityPopulation>
+</City>
+<Capital rdf:ID="springfieldIl">
+  <rdfs:label xml:lang="en">springfield</rdfs:label>
+  <isCapitalOf rdf:resource="#illinois" />
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>100054</cityPopulation>
+</Capital>
+<City rdf:ID="decaturIl">
+  <rdfs:label xml:lang="en">decatur</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>93939</cityPopulation>
+</City>
+<City rdf:ID="auroraIl">
+  <rdfs:label xml:lang="en">aurora</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>81293</cityPopulation>
+</City>
+<City rdf:ID="jolietIl">
+  <rdfs:label xml:lang="en">joliet</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>77956</cityPopulation>
+</City>
+<City rdf:ID="evanstonIl">
+  <rdfs:label xml:lang="en">evanston</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>73706</cityPopulation>
+</City>
+<City rdf:ID="waukeganIl">
+  <rdfs:label xml:lang="en">waukegan</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>67653</cityPopulation>
+</City>
+<City rdf:ID="arlingtonHeightsIl">
+  <rdfs:label xml:lang="en">arlington heights</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>66116</cityPopulation>
+</City>
+<City rdf:ID="elginIl">
+  <rdfs:label xml:lang="en">elgin</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>63668</cityPopulation>
+</City>
+<City rdf:ID="ciceroIl">
+  <rdfs:label xml:lang="en">cicero</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>61232</cityPopulation>
+</City>
+<City rdf:ID="oakLawnIl">
+  <rdfs:label xml:lang="en">oak lawn</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>60590</cityPopulation>
+</City>
+<City rdf:ID="skokieIl">
+  <rdfs:label xml:lang="en">skokie</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>60278</cityPopulation>
+</City>
+<City rdf:ID="champaignIl">
+  <rdfs:label xml:lang="en">champaign</rdfs:label>
+  <isCityOf rdf:resource="#illinois" />
+  <cityPopulation>58267</cityPopulation>
+</City>
+<Capital rdf:ID="indianapolisIn">
+  <rdfs:label xml:lang="en">indianapolis</rdfs:label>
+  <isCapitalOf rdf:resource="#indiana" />
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>700807</cityPopulation>
+</Capital>
+<City rdf:ID="fortWayneIn">
+  <rdfs:label xml:lang="en">fort wayne</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>172196</cityPopulation>
+</City>
+<City rdf:ID="garyIn">
+  <rdfs:label xml:lang="en">gary</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>151968</cityPopulation>
+</City>
+<City rdf:ID="evansvilleIn">
+  <rdfs:label xml:lang="en">evansville</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>130496</cityPopulation>
+</City>
+<City rdf:ID="southBendIn">
+  <rdfs:label xml:lang="en">south bend</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>109727</cityPopulation>
+</City>
+<City rdf:ID="hammondIn">
+  <rdfs:label xml:lang="en">hammond</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>93714</cityPopulation>
+</City>
+<City rdf:ID="muncieIn">
+  <rdfs:label xml:lang="en">muncie</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>77216</cityPopulation>
+</City>
+<City rdf:ID="andersonIn">
+  <rdfs:label xml:lang="en">anderson</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>64695</cityPopulation>
+</City>
+<City rdf:ID="terreHauteIn">
+  <rdfs:label xml:lang="en">terre haute</rdfs:label>
+  <isCityOf rdf:resource="#indiana" />
+  <cityPopulation>61125</cityPopulation>
+</City>
+<Capital rdf:ID="desMoinesIa">
+  <rdfs:label xml:lang="en">des moines</rdfs:label>
+  <isCapitalOf rdf:resource="#iowa" />
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>191003</cityPopulation>
+</Capital>
+<City rdf:ID="cedarRapidsIa">
+  <rdfs:label xml:lang="en">cedar rapids</rdfs:label>
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>110243</cityPopulation>
+</City>
+<City rdf:ID="davenportIa">
+  <rdfs:label xml:lang="en">davenport</rdfs:label>
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>103254</cityPopulation>
+</City>
+<City rdf:ID="siouxCityIa">
+  <rdfs:label xml:lang="en">sioux city</rdfs:label>
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>82003</cityPopulation>
+</City>
+<City rdf:ID="waterlooIa">
+  <rdfs:label xml:lang="en">waterloo</rdfs:label>
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>75985</cityPopulation>
+</City>
+<City rdf:ID="dubuqueIa">
+  <rdfs:label xml:lang="en">dubuque</rdfs:label>
+  <isCityOf rdf:resource="#iowa" />
+  <cityPopulation>62321</cityPopulation>
+</City>
+<City rdf:ID="wichitaKs">
+  <rdfs:label xml:lang="en">wichita</rdfs:label>
+  <isCityOf rdf:resource="#kansas" />
+  <cityPopulation>279212</cityPopulation>
+</City>
+<City rdf:ID="kansasCityKs">
+  <rdfs:label xml:lang="en">kansas city</rdfs:label>
+  <isCityOf rdf:resource="#kansas" />
+  <cityPopulation>161148</cityPopulation>
+</City>
+<Capital rdf:ID="topekaKs">
+  <rdfs:label xml:lang="en">topeka</rdfs:label>
+  <isCapitalOf rdf:resource="#kansas" />
+  <isCityOf rdf:resource="#kansas" />
+  <cityPopulation>118690</cityPopulation>
+</Capital>
+<City rdf:ID="overlandParkKs">
+  <rdfs:label xml:lang="en">overland park</rdfs:label>
+  <isCityOf rdf:resource="#kansas" />
+  <cityPopulation>81784</cityPopulation>
+</City>
+<City rdf:ID="louisvilleKy">
+  <rdfs:label xml:lang="en">louisville</rdfs:label>
+  <isCityOf rdf:resource="#kentucky" />
+  <cityPopulation>298451</cityPopulation>
+</City>
+<Capital rdf:ID="frankfortKy">
+  <rdfs:label xml:lang="en">frankfort</rdfs:label>
+  <isCapitalOf rdf:resource="#kentucky" />
+  <isCityOf rdf:resource="#kentucky" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="lexingtonKy">
+  <rdfs:label xml:lang="en">lexington</rdfs:label>
+  <isCityOf rdf:resource="#kentucky" />
+  <cityPopulation>204165</cityPopulation>
+</City>
+<City rdf:ID="newOrleansLa">
+  <rdfs:label xml:lang="en">new orleans</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>557515</cityPopulation>
+</City>
+<Capital rdf:ID="batonRougeLa">
+  <rdfs:label xml:lang="en">baton rouge</rdfs:label>
+  <isCapitalOf rdf:resource="#louisiana" />
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>219419</cityPopulation>
+</Capital>
+<City rdf:ID="shreveportLa">
+  <rdfs:label xml:lang="en">shreveport</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>205820</cityPopulation>
+</City>
+<City rdf:ID="metairieLa">
+  <rdfs:label xml:lang="en">metairie</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>164160</cityPopulation>
+</City>
+<City rdf:ID="lafayetteLa">
+  <rdfs:label xml:lang="en">lafayette</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>80584</cityPopulation>
+</City>
+<City rdf:ID="lakeCharlesLa">
+  <rdfs:label xml:lang="en">lake charles</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>75051</cityPopulation>
+</City>
+<City rdf:ID="kennerLa">
+  <rdfs:label xml:lang="en">kenner</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>66382</cityPopulation>
+</City>
+<City rdf:ID="monroeLa">
+  <rdfs:label xml:lang="en">monroe</rdfs:label>
+  <isCityOf rdf:resource="#louisiana" />
+  <cityPopulation>57597</cityPopulation>
+</City>
+<City rdf:ID="portlandMe">
+  <rdfs:label xml:lang="en">portland</rdfs:label>
+  <isCityOf rdf:resource="#maine" />
+  <cityPopulation>61572</cityPopulation>
+</City>
+<Capital rdf:ID="augustaMe">
+  <rdfs:label xml:lang="en">augusta</rdfs:label>
+  <isCapitalOf rdf:resource="#maine" />
+  <isCityOf rdf:resource="#maine" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="annapolisMd">
+  <rdfs:label xml:lang="en">annapolis</rdfs:label>
+  <isCapitalOf rdf:resource="#maryland" />
+  <isCityOf rdf:resource="#maryland" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="baltimoreMd">
+  <rdfs:label xml:lang="en">baltimore</rdfs:label>
+  <isCityOf rdf:resource="#maryland" />
+  <cityPopulation>786775</cityPopulation>
+</City>
+<City rdf:ID="silverSpringMd">
+  <rdfs:label xml:lang="en">silver spring</rdfs:label>
+  <isCityOf rdf:resource="#maryland" />
+  <cityPopulation>72893</cityPopulation>
+</City>
+<City rdf:ID="dundalkMd">
+  <rdfs:label xml:lang="en">dundalk</rdfs:label>
+  <isCityOf rdf:resource="#maryland" />
+  <cityPopulation>71293</cityPopulation>
+</City>
+<City rdf:ID="bethesdaMd">
+  <rdfs:label xml:lang="en">bethesda</rdfs:label>
+  <isCityOf rdf:resource="#maryland" />
+  <cityPopulation>63022</cityPopulation>
+</City>
+<Capital rdf:ID="bostonMa">
+  <rdfs:label xml:lang="en">boston</rdfs:label>
+  <isCapitalOf rdf:resource="#massachusetts" />
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>562994</cityPopulation>
+</Capital>
+<City rdf:ID="worcesterMa">
+  <rdfs:label xml:lang="en">worcester</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>161799</cityPopulation>
+</City>
+<City rdf:ID="springfieldMa">
+  <rdfs:label xml:lang="en">springfield</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>152319</cityPopulation>
+</City>
+<City rdf:ID="newBedfordMa">
+  <rdfs:label xml:lang="en">new bedford</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>98478</cityPopulation>
+</City>
+<City rdf:ID="cambridgeMa">
+  <rdfs:label xml:lang="en">cambridge</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>95322</cityPopulation>
+</City>
+<City rdf:ID="brocktonMa">
+  <rdfs:label xml:lang="en">brockton</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>95172</cityPopulation>
+</City>
+<City rdf:ID="fallRiverMa">
+  <rdfs:label xml:lang="en">fall river</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>92574</cityPopulation>
+</City>
+<City rdf:ID="lowellMa">
+  <rdfs:label xml:lang="en">lowell</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>92418</cityPopulation>
+</City>
+<City rdf:ID="quincyMa">
+  <rdfs:label xml:lang="en">quincy</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>84743</cityPopulation>
+</City>
+<City rdf:ID="newtonMa">
+  <rdfs:label xml:lang="en">newton</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>83622</cityPopulation>
+</City>
+<City rdf:ID="lynnMa">
+  <rdfs:label xml:lang="en">lynn</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>78471</cityPopulation>
+</City>
+<City rdf:ID="somervilleMa">
+  <rdfs:label xml:lang="en">somerville</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>77372</cityPopulation>
+</City>
+<City rdf:ID="framinghamMa">
+  <rdfs:label xml:lang="en">framingham</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>65113</cityPopulation>
+</City>
+<City rdf:ID="lawrenceMa">
+  <rdfs:label xml:lang="en">lawrence</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>63175</cityPopulation>
+</City>
+<City rdf:ID="walthamMa">
+  <rdfs:label xml:lang="en">waltham</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>58200</cityPopulation>
+</City>
+<City rdf:ID="medfordMa">
+  <rdfs:label xml:lang="en">medford</rdfs:label>
+  <isCityOf rdf:resource="#massachusetts" />
+  <cityPopulation>58076</cityPopulation>
+</City>
+<City rdf:ID="detroitMi">
+  <rdfs:label xml:lang="en">detroit</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>1203339</cityPopulation>
+</City>
+<City rdf:ID="grandRapidsMi">
+  <rdfs:label xml:lang="en">grand rapids</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>181843</cityPopulation>
+</City>
+<City rdf:ID="warrenMi">
+  <rdfs:label xml:lang="en">warren</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>161134</cityPopulation>
+</City>
+<City rdf:ID="flintMi">
+  <rdfs:label xml:lang="en">flint</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>159611</cityPopulation>
+</City>
+<Capital rdf:ID="lansingMi">
+  <rdfs:label xml:lang="en">lansing</rdfs:label>
+  <isCapitalOf rdf:resource="#michigan" />
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>130414</cityPopulation>
+</Capital>
+<City rdf:ID="sterlingHeightsMi">
+  <rdfs:label xml:lang="en">sterling heights</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>108999</cityPopulation>
+</City>
+<City rdf:ID="annArborMi">
+  <rdfs:label xml:lang="en">ann arbor</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>107969</cityPopulation>
+</City>
+<City rdf:ID="livoniaMi">
+  <rdfs:label xml:lang="en">livonia</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>104814</cityPopulation>
+</City>
+<City rdf:ID="dearbornMi">
+  <rdfs:label xml:lang="en">dearborn</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>90660</cityPopulation>
+</City>
+<City rdf:ID="westlandMi">
+  <rdfs:label xml:lang="en">westland</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>84603</cityPopulation>
+</City>
+<City rdf:ID="kalamazooMi">
+  <rdfs:label xml:lang="en">kalamazoo</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>79722</cityPopulation>
+</City>
+<City rdf:ID="taylorMi">
+  <rdfs:label xml:lang="en">taylor</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>77568</cityPopulation>
+</City>
+<City rdf:ID="saginawMi">
+  <rdfs:label xml:lang="en">saginaw</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>77508</cityPopulation>
+</City>
+<City rdf:ID="pontiacMi">
+  <rdfs:label xml:lang="en">pontiac</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>76715</cityPopulation>
+</City>
+<City rdf:ID="st.ClairShoresMi">
+  <rdfs:label xml:lang="en">st. clair shores</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>76210</cityPopulation>
+</City>
+<City rdf:ID="southfieldMi">
+  <rdfs:label xml:lang="en">southfield</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>75568</cityPopulation>
+</City>
+<City rdf:ID="clintonMi">
+  <rdfs:label xml:lang="en">clinton</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>72400</cityPopulation>
+</City>
+<City rdf:ID="royalOakMi">
+  <rdfs:label xml:lang="en">royal oak</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>70893</cityPopulation>
+</City>
+<City rdf:ID="dearbornHeightsMi">
+  <rdfs:label xml:lang="en">dearborn heights</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>67706</cityPopulation>
+</City>
+<City rdf:ID="troyMi">
+  <rdfs:label xml:lang="en">troy</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>67102</cityPopulation>
+</City>
+<City rdf:ID="waterfordMi">
+  <rdfs:label xml:lang="en">waterford</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>64250</cityPopulation>
+</City>
+<City rdf:ID="wyomingMi">
+  <rdfs:label xml:lang="en">wyoming</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>59616</cityPopulation>
+</City>
+<City rdf:ID="redfordMi">
+  <rdfs:label xml:lang="en">redford</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>58441</cityPopulation>
+</City>
+<City rdf:ID="farmingtonHillsMi">
+  <rdfs:label xml:lang="en">farmington hills</rdfs:label>
+  <isCityOf rdf:resource="#michigan" />
+  <cityPopulation>58056</cityPopulation>
+</City>
+<City rdf:ID="minneapolisMn">
+  <rdfs:label xml:lang="en">minneapolis</rdfs:label>
+  <isCityOf rdf:resource="#minnesota" />
+  <cityPopulation>370951</cityPopulation>
+</City>
+<Capital rdf:ID="st.PaulMn">
+  <rdfs:label xml:lang="en">st. paul</rdfs:label>
+  <isCapitalOf rdf:resource="#minnesota" />
+  <isCityOf rdf:resource="#minnesota" />
+  <cityPopulation>270230</cityPopulation>
+</Capital>
+<City rdf:ID="duluthMn">
+  <rdfs:label xml:lang="en">duluth</rdfs:label>
+  <isCityOf rdf:resource="#minnesota" />
+  <cityPopulation>92811</cityPopulation>
+</City>
+<City rdf:ID="bloomingtonMn">
+  <rdfs:label xml:lang="en">bloomington</rdfs:label>
+  <isCityOf rdf:resource="#minnesota" />
+  <cityPopulation>81831</cityPopulation>
+</City>
+<City rdf:ID="rochesterMn">
+  <rdfs:label xml:lang="en">rochester</rdfs:label>
+  <isCityOf rdf:resource="#minnesota" />
+  <cityPopulation>57906</cityPopulation>
+</City>
+<Capital rdf:ID="jacksonMs">
+  <rdfs:label xml:lang="en">jackson</rdfs:label>
+  <isCapitalOf rdf:resource="#mississippi" />
+  <isCityOf rdf:resource="#mississippi" />
+  <cityPopulation>202895</cityPopulation>
+</Capital>
+<City rdf:ID="st.LouisMo">
+  <rdfs:label xml:lang="en">st. louis</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>453085</cityPopulation>
+</City>
+<City rdf:ID="kansasCityMo">
+  <rdfs:label xml:lang="en">kansas city</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>448159</cityPopulation>
+</City>
+<City rdf:ID="springfieldMo">
+  <rdfs:label xml:lang="en">springfield</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>133116</cityPopulation>
+</City>
+<City rdf:ID="independenceMo">
+  <rdfs:label xml:lang="en">independence</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>111797</cityPopulation>
+</City>
+<City rdf:ID="st.JosephMo">
+  <rdfs:label xml:lang="en">st. joseph</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>76691</cityPopulation>
+</City>
+<City rdf:ID="columbiaMo">
+  <rdfs:label xml:lang="en">columbia</rdfs:label>
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>62061</cityPopulation>
+</City>
+<Capital rdf:ID="jeffersonCityMo">
+  <rdfs:label xml:lang="en">jefferson city</rdfs:label>
+  <isCapitalOf rdf:resource="#missouri" />
+  <isCityOf rdf:resource="#missouri" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="helenaMt">
+  <rdfs:label xml:lang="en">helena</rdfs:label>
+  <isCapitalOf rdf:resource="#montana" />
+  <isCityOf rdf:resource="#montana" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="billingsMt">
+  <rdfs:label xml:lang="en">billings</rdfs:label>
+  <isCityOf rdf:resource="#montana" />
+  <cityPopulation>66842</cityPopulation>
+</City>
+<City rdf:ID="greatFallsMt">
+  <rdfs:label xml:lang="en">great falls</rdfs:label>
+  <isCityOf rdf:resource="#montana" />
+  <cityPopulation>56725</cityPopulation>
+</City>
+<City rdf:ID="omahaNe">
+  <rdfs:label xml:lang="en">omaha</rdfs:label>
+  <isCityOf rdf:resource="#nebraska" />
+  <cityPopulation>314255</cityPopulation>
+</City>
+<Capital rdf:ID="lincolnNe">
+  <rdfs:label xml:lang="en">lincoln</rdfs:label>
+  <isCapitalOf rdf:resource="#nebraska" />
+  <isCityOf rdf:resource="#nebraska" />
+  <cityPopulation>171932</cityPopulation>
+</Capital>
+<City rdf:ID="lasVegasNv">
+  <rdfs:label xml:lang="en">las vegas</rdfs:label>
+  <isCityOf rdf:resource="#nevada" />
+  <cityPopulation>164674</cityPopulation>
+</City>
+<City rdf:ID="renoNv">
+  <rdfs:label xml:lang="en">reno</rdfs:label>
+  <isCityOf rdf:resource="#nevada" />
+  <cityPopulation>100756</cityPopulation>
+</City>
+<Capital rdf:ID="carsonCityNv">
+  <rdfs:label xml:lang="en">carson city</rdfs:label>
+  <isCapitalOf rdf:resource="#nevada" />
+  <isCityOf rdf:resource="#nevada" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="concordNh">
+  <rdfs:label xml:lang="en">concord</rdfs:label>
+  <isCapitalOf rdf:resource="#newHampshire" />
+  <isCityOf rdf:resource="#newHampshire" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="manchesterNh">
+  <rdfs:label xml:lang="en">manchester</rdfs:label>
+  <isCityOf rdf:resource="#newHampshire" />
+  <cityPopulation>90936</cityPopulation>
+</City>
+<City rdf:ID="nashuaNh">
+  <rdfs:label xml:lang="en">nashua</rdfs:label>
+  <isCityOf rdf:resource="#newHampshire" />
+  <cityPopulation>67865</cityPopulation>
+</City>
+<City rdf:ID="newarkNj">
+  <rdfs:label xml:lang="en">newark</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>329248</cityPopulation>
+</City>
+<City rdf:ID="jerseyCityNj">
+  <rdfs:label xml:lang="en">jersey city</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>223532</cityPopulation>
+</City>
+<City rdf:ID="patersonNj">
+  <rdfs:label xml:lang="en">paterson</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>137970</cityPopulation>
+</City>
+<City rdf:ID="elizabethNj">
+  <rdfs:label xml:lang="en">elizabeth</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>106201</cityPopulation>
+</City>
+<Capital rdf:ID="trentonNj">
+  <rdfs:label xml:lang="en">trenton</rdfs:label>
+  <isCapitalOf rdf:resource="#newJersey" />
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>92124</cityPopulation>
+</Capital>
+<City rdf:ID="woodbridgeNj">
+  <rdfs:label xml:lang="en">woodbridge</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>90074</cityPopulation>
+</City>
+<City rdf:ID="camdenNj">
+  <rdfs:label xml:lang="en">camden</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>84910</cityPopulation>
+</City>
+<City rdf:ID="eastOrangeNj">
+  <rdfs:label xml:lang="en">east orange</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>77878</cityPopulation>
+</City>
+<City rdf:ID="cliftonNj">
+  <rdfs:label xml:lang="en">clifton</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>74388</cityPopulation>
+</City>
+<City rdf:ID="edisonNj">
+  <rdfs:label xml:lang="en">edison</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>70193</cityPopulation>
+</City>
+<City rdf:ID="cherryHillNj">
+  <rdfs:label xml:lang="en">cherry hill</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>68785</cityPopulation>
+</City>
+<City rdf:ID="bayonneNj">
+  <rdfs:label xml:lang="en">bayonne</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>65047</cityPopulation>
+</City>
+<City rdf:ID="middletownNj">
+  <rdfs:label xml:lang="en">middletown</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>61615</cityPopulation>
+</City>
+<City rdf:ID="irvingtonNj">
+  <rdfs:label xml:lang="en">irvington</rdfs:label>
+  <isCityOf rdf:resource="#newJersey" />
+  <cityPopulation>61493</cityPopulation>
+</City>
+<City rdf:ID="albuquerqueNm">
+  <rdfs:label xml:lang="en">albuquerque</rdfs:label>
+  <isCityOf rdf:resource="#newMexico" />
+  <cityPopulation>331767</cityPopulation>
+</City>
+<Capital rdf:ID="santaFeNm">
+  <rdfs:label xml:lang="en">santa fe</rdfs:label>
+  <isCapitalOf rdf:resource="#newMexico" />
+  <isCityOf rdf:resource="#newMexico" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="newYorkNy">
+  <rdfs:label xml:lang="en">new york</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>7071639</cityPopulation>
+</City>
+<City rdf:ID="buffaloNy">
+  <rdfs:label xml:lang="en">buffalo</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>357870</cityPopulation>
+</City>
+<City rdf:ID="rochesterNy">
+  <rdfs:label xml:lang="en">rochester</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>241741</cityPopulation>
+</City>
+<City rdf:ID="yonkersNy">
+  <rdfs:label xml:lang="en">yonkers</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>195351</cityPopulation>
+</City>
+<City rdf:ID="syracuseNy">
+  <rdfs:label xml:lang="en">syracuse</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>170105</cityPopulation>
+</City>
+<Capital rdf:ID="albanyNy">
+  <rdfs:label xml:lang="en">albany</rdfs:label>
+  <isCapitalOf rdf:resource="#newYork" />
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>101727</cityPopulation>
+</Capital>
+<City rdf:ID="cheektowagaNy">
+  <rdfs:label xml:lang="en">cheektowaga</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>92145</cityPopulation>
+</City>
+<City rdf:ID="uticaNy">
+  <rdfs:label xml:lang="en">utica</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>75632</cityPopulation>
+</City>
+<City rdf:ID="niagaraFallsNy">
+  <rdfs:label xml:lang="en">niagara falls</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>71384</cityPopulation>
+</City>
+<City rdf:ID="newRochelleNy">
+  <rdfs:label xml:lang="en">new rochelle</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>70794</cityPopulation>
+</City>
+<City rdf:ID="schenectadyNy">
+  <rdfs:label xml:lang="en">schenectady</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>67972</cityPopulation>
+</City>
+<City rdf:ID="mountVernonNy">
+  <rdfs:label xml:lang="en">mount vernon</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>66713</cityPopulation>
+</City>
+<City rdf:ID="irondequoitNy">
+  <rdfs:label xml:lang="en">irondequoit</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>57648</cityPopulation>
+</City>
+<City rdf:ID="levittownNy">
+  <rdfs:label xml:lang="en">levittown</rdfs:label>
+  <isCityOf rdf:resource="#newYork" />
+  <cityPopulation>57045</cityPopulation>
+</City>
+<City rdf:ID="charlotteNc">
+  <rdfs:label xml:lang="en">charlotte</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>314447</cityPopulation>
+</City>
+<City rdf:ID="greensboroNc">
+  <rdfs:label xml:lang="en">greensboro</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>155642</cityPopulation>
+</City>
+<Capital rdf:ID="raleighNc">
+  <rdfs:label xml:lang="en">raleigh</rdfs:label>
+  <isCapitalOf rdf:resource="#northCarolina" />
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>149771</cityPopulation>
+</Capital>
+<City rdf:ID="winston-salemNc">
+  <rdfs:label xml:lang="en">winston-salem</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>131885</cityPopulation>
+</City>
+<City rdf:ID="durhamNc">
+  <rdfs:label xml:lang="en">durham</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>100538</cityPopulation>
+</City>
+<City rdf:ID="highPointNc">
+  <rdfs:label xml:lang="en">high point</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>64107</cityPopulation>
+</City>
+<City rdf:ID="fayettevilleNc">
+  <rdfs:label xml:lang="en">fayetteville</rdfs:label>
+  <isCityOf rdf:resource="#northCarolina" />
+  <cityPopulation>59507</cityPopulation>
+</City>
+<City rdf:ID="fargoNd">
+  <rdfs:label xml:lang="en">fargo</rdfs:label>
+  <isCityOf rdf:resource="#northDakota" />
+  <cityPopulation>61308</cityPopulation>
+</City>
+<Capital rdf:ID="bismarckNd">
+  <rdfs:label xml:lang="en">bismarck</rdfs:label>
+  <isCapitalOf rdf:resource="#northDakota" />
+  <isCityOf rdf:resource="#northDakota" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="clevelandOh">
+  <rdfs:label xml:lang="en">cleveland</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>573822</cityPopulation>
+</City>
+<Capital rdf:ID="columbusOh">
+  <rdfs:label xml:lang="en">columbus</rdfs:label>
+  <isCapitalOf rdf:resource="#ohio" />
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>564871</cityPopulation>
+</Capital>
+<City rdf:ID="cincinnatiOh">
+  <rdfs:label xml:lang="en">cincinnati</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>385457</cityPopulation>
+</City>
+<City rdf:ID="toledoOh">
+  <rdfs:label xml:lang="en">toledo</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>354635</cityPopulation>
+</City>
+<City rdf:ID="akronOh">
+  <rdfs:label xml:lang="en">akron</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>237177</cityPopulation>
+</City>
+<City rdf:ID="daytonOh">
+  <rdfs:label xml:lang="en">dayton</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>203371</cityPopulation>
+</City>
+<City rdf:ID="youngstownOh">
+  <rdfs:label xml:lang="en">youngstown</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>115436</cityPopulation>
+</City>
+<City rdf:ID="cantonOh">
+  <rdfs:label xml:lang="en">canton</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>93077</cityPopulation>
+</City>
+<City rdf:ID="parmaOh">
+  <rdfs:label xml:lang="en">parma</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>92548</cityPopulation>
+</City>
+<City rdf:ID="lorainOh">
+  <rdfs:label xml:lang="en">lorain</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>75416</cityPopulation>
+</City>
+<City rdf:ID="springfieldOh">
+  <rdfs:label xml:lang="en">springfield</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>72563</cityPopulation>
+</City>
+<City rdf:ID="hamiltonOh">
+  <rdfs:label xml:lang="en">hamilton</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>63189</cityPopulation>
+</City>
+<City rdf:ID="lakewoodOh">
+  <rdfs:label xml:lang="en">lakewood</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>61963</cityPopulation>
+</City>
+<City rdf:ID="ketteringOh">
+  <rdfs:label xml:lang="en">kettering</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>61186</cityPopulation>
+</City>
+<City rdf:ID="euclidOh">
+  <rdfs:label xml:lang="en">euclid</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>59999</cityPopulation>
+</City>
+<City rdf:ID="elyriaOh">
+  <rdfs:label xml:lang="en">elyria</rdfs:label>
+  <isCityOf rdf:resource="#ohio" />
+  <cityPopulation>57504</cityPopulation>
+</City>
+<Capital rdf:ID="oklahomaCityOk">
+  <rdfs:label xml:lang="en">oklahoma city</rdfs:label>
+  <isCapitalOf rdf:resource="#oklahoma" />
+  <isCityOf rdf:resource="#oklahoma" />
+  <cityPopulation>403213</cityPopulation>
+</Capital>
+<City rdf:ID="tulsaOk">
+  <rdfs:label xml:lang="en">tulsa</rdfs:label>
+  <isCityOf rdf:resource="#oklahoma" />
+  <cityPopulation>360919</cityPopulation>
+</City>
+<City rdf:ID="lawtonOk">
+  <rdfs:label xml:lang="en">lawton</rdfs:label>
+  <isCityOf rdf:resource="#oklahoma" />
+  <cityPopulation>80054</cityPopulation>
+</City>
+<City rdf:ID="normanOk">
+  <rdfs:label xml:lang="en">norman</rdfs:label>
+  <isCityOf rdf:resource="#oklahoma" />
+  <cityPopulation>68020</cityPopulation>
+</City>
+<City rdf:ID="portlandOr">
+  <rdfs:label xml:lang="en">portland</rdfs:label>
+  <isCityOf rdf:resource="#oregon" />
+  <cityPopulation>366383</cityPopulation>
+</City>
+<City rdf:ID="eugeneOr">
+  <rdfs:label xml:lang="en">eugene</rdfs:label>
+  <isCityOf rdf:resource="#oregon" />
+  <cityPopulation>105664</cityPopulation>
+</City>
+<Capital rdf:ID="salemOr">
+  <rdfs:label xml:lang="en">salem</rdfs:label>
+  <isCapitalOf rdf:resource="#oregon" />
+  <isCityOf rdf:resource="#oregon" />
+  <cityPopulation>89233</cityPopulation>
+</Capital>
+<City rdf:ID="philadelphiaPa">
+  <rdfs:label xml:lang="en">philadelphia</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>1688210</cityPopulation>
+</City>
+<City rdf:ID="pittsburghPa">
+  <rdfs:label xml:lang="en">pittsburgh</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>423938</cityPopulation>
+</City>
+<City rdf:ID="eriePa">
+  <rdfs:label xml:lang="en">erie</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>119123</cityPopulation>
+</City>
+<City rdf:ID="allentownPa">
+  <rdfs:label xml:lang="en">allentown</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>103758</cityPopulation>
+</City>
+<City rdf:ID="scrantonPa">
+  <rdfs:label xml:lang="en">scranton</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>88117</cityPopulation>
+</City>
+<City rdf:ID="upperDarbyPa">
+  <rdfs:label xml:lang="en">upper darby</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>84054</cityPopulation>
+</City>
+<City rdf:ID="readingPa">
+  <rdfs:label xml:lang="en">reading</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>78686</cityPopulation>
+</City>
+<City rdf:ID="bethlehemPa">
+  <rdfs:label xml:lang="en">bethlehem</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>70419</cityPopulation>
+</City>
+<City rdf:ID="lowerMerionPa">
+  <rdfs:label xml:lang="en">lower merion</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>59651</cityPopulation>
+</City>
+<City rdf:ID="abingdonPa">
+  <rdfs:label xml:lang="en">abingdon</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>59084</cityPopulation>
+</City>
+<City rdf:ID="bristolTownshipPa">
+  <rdfs:label xml:lang="en">bristol township</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>58733</cityPopulation>
+</City>
+<City rdf:ID="pennHillsPa">
+  <rdfs:label xml:lang="en">penn hills</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>57632</cityPopulation>
+</City>
+<City rdf:ID="altoonaPa">
+  <rdfs:label xml:lang="en">altoona</rdfs:label>
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>57078</cityPopulation>
+</City>
+<Capital rdf:ID="harrisburgPa">
+  <rdfs:label xml:lang="en">harrisburg</rdfs:label>
+  <isCapitalOf rdf:resource="#pennsylvania" />
+  <isCityOf rdf:resource="#pennsylvania" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<Capital rdf:ID="providenceRi">
+  <rdfs:label xml:lang="en">providence</rdfs:label>
+  <isCapitalOf rdf:resource="#rhodeIsland" />
+  <isCityOf rdf:resource="#rhodeIsland" />
+  <cityPopulation>156804</cityPopulation>
+</Capital>
+<City rdf:ID="warwickRi">
+  <rdfs:label xml:lang="en">warwick</rdfs:label>
+  <isCityOf rdf:resource="#rhodeIsland" />
+  <cityPopulation>87123</cityPopulation>
+</City>
+<City rdf:ID="cranstonRi">
+  <rdfs:label xml:lang="en">cranston</rdfs:label>
+  <isCityOf rdf:resource="#rhodeIsland" />
+  <cityPopulation>71992</cityPopulation>
+</City>
+<City rdf:ID="pawtucketRi">
+  <rdfs:label xml:lang="en">pawtucket</rdfs:label>
+  <isCityOf rdf:resource="#rhodeIsland" />
+  <cityPopulation>71204</cityPopulation>
+</City>
+<Capital rdf:ID="columbiaSc">
+  <rdfs:label xml:lang="en">columbia</rdfs:label>
+  <isCapitalOf rdf:resource="#southCarolina" />
+  <isCityOf rdf:resource="#southCarolina" />
+  <cityPopulation>101229</cityPopulation>
+</Capital>
+<City rdf:ID="charlestonSc">
+  <rdfs:label xml:lang="en">charleston</rdfs:label>
+  <isCityOf rdf:resource="#southCarolina" />
+  <cityPopulation>69855</cityPopulation>
+</City>
+<City rdf:ID="northCharlestonSc">
+  <rdfs:label xml:lang="en">north charleston</rdfs:label>
+  <isCityOf rdf:resource="#southCarolina" />
+  <cityPopulation>62504</cityPopulation>
+</City>
+<City rdf:ID="greenvilleSc">
+  <rdfs:label xml:lang="en">greenville</rdfs:label>
+  <isCityOf rdf:resource="#southCarolina" />
+  <cityPopulation>58242</cityPopulation>
+</City>
+<City rdf:ID="siouxFallsSd">
+  <rdfs:label xml:lang="en">sioux falls</rdfs:label>
+  <isCityOf rdf:resource="#southDakota" />
+  <cityPopulation>81343</cityPopulation>
+</City>
+<Capital rdf:ID="pierreSd">
+  <rdfs:label xml:lang="en">pierre</rdfs:label>
+  <isCapitalOf rdf:resource="#southDakota" />
+  <isCityOf rdf:resource="#southDakota" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="memphisTn">
+  <rdfs:label xml:lang="en">memphis</rdfs:label>
+  <isCityOf rdf:resource="#tennessee" />
+  <cityPopulation>646356</cityPopulation>
+</City>
+<Capital rdf:ID="nashvilleTn">
+  <rdfs:label xml:lang="en">nashville</rdfs:label>
+  <isCapitalOf rdf:resource="#tennessee" />
+  <isCityOf rdf:resource="#tennessee" />
+  <cityPopulation>455651</cityPopulation>
+</Capital>
+<City rdf:ID="knoxvilleTn">
+  <rdfs:label xml:lang="en">knoxville</rdfs:label>
+  <isCityOf rdf:resource="#tennessee" />
+  <cityPopulation>175030</cityPopulation>
+</City>
+<City rdf:ID="chattanoogaTn">
+  <rdfs:label xml:lang="en">chattanooga</rdfs:label>
+  <isCityOf rdf:resource="#tennessee" />
+  <cityPopulation>169728</cityPopulation>
+</City>
+<City rdf:ID="houstonTx">
+  <rdfs:label xml:lang="en">houston</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>1595138</cityPopulation>
+</City>
+<City rdf:ID="dallasTx">
+  <rdfs:label xml:lang="en">dallas</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>904078</cityPopulation>
+</City>
+<City rdf:ID="sanAntonioTx">
+  <rdfs:label xml:lang="en">san antonio</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>785880</cityPopulation>
+</City>
+<City rdf:ID="elPasoTx">
+  <rdfs:label xml:lang="en">el paso</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>425259</cityPopulation>
+</City>
+<City rdf:ID="fortWorthTx">
+  <rdfs:label xml:lang="en">fort worth</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>385164</cityPopulation>
+</City>
+<Capital rdf:ID="austinTx">
+  <rdfs:label xml:lang="en">austin</rdfs:label>
+  <isCapitalOf rdf:resource="#texas" />
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>345496</cityPopulation>
+</Capital>
+<City rdf:ID="corpusChristiTx">
+  <rdfs:label xml:lang="en">corpus christi</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>231999</cityPopulation>
+</City>
+<City rdf:ID="lubbockTx">
+  <rdfs:label xml:lang="en">lubbock</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>173979</cityPopulation>
+</City>
+<City rdf:ID="arlingtonTx">
+  <rdfs:label xml:lang="en">arlington</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>160123</cityPopulation>
+</City>
+<City rdf:ID="amarilloTx">
+  <rdfs:label xml:lang="en">amarillo</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>149230</cityPopulation>
+</City>
+<City rdf:ID="garlandTx">
+  <rdfs:label xml:lang="en">garland</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>138857</cityPopulation>
+</City>
+<City rdf:ID="beaumontTx">
+  <rdfs:label xml:lang="en">beaumont</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>118102</cityPopulation>
+</City>
+<City rdf:ID="pasadenaTx">
+  <rdfs:label xml:lang="en">pasadena</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>112560</cityPopulation>
+</City>
+<City rdf:ID="irvingTx">
+  <rdfs:label xml:lang="en">irving</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>109943</cityPopulation>
+</City>
+<City rdf:ID="wacoTx">
+  <rdfs:label xml:lang="en">waco</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>101261</cityPopulation>
+</City>
+<City rdf:ID="abileneTx">
+  <rdfs:label xml:lang="en">abilene</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>98315</cityPopulation>
+</City>
+<City rdf:ID="wichitaFallsTx">
+  <rdfs:label xml:lang="en">wichita falls</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>94201</cityPopulation>
+</City>
+<City rdf:ID="laredoTx">
+  <rdfs:label xml:lang="en">laredo</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>91449</cityPopulation>
+</City>
+<City rdf:ID="odessaTx">
+  <rdfs:label xml:lang="en">odessa</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>90027</cityPopulation>
+</City>
+<City rdf:ID="brownsvilleTx">
+  <rdfs:label xml:lang="en">brownsville</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>84997</cityPopulation>
+</City>
+<City rdf:ID="sanAngeloTx">
+  <rdfs:label xml:lang="en">san angelo</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>73240</cityPopulation>
+</City>
+<City rdf:ID="richardsonTx">
+  <rdfs:label xml:lang="en">richardson</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>72496</cityPopulation>
+</City>
+<City rdf:ID="planoTx">
+  <rdfs:label xml:lang="en">plano</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>72331</cityPopulation>
+</City>
+<City rdf:ID="grandPrairieTx">
+  <rdfs:label xml:lang="en">grand prairie</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>71462</cityPopulation>
+</City>
+<City rdf:ID="midlandTx">
+  <rdfs:label xml:lang="en">midland</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>70525</cityPopulation>
+</City>
+<City rdf:ID="tylerTx">
+  <rdfs:label xml:lang="en">tyler</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>70508</cityPopulation>
+</City>
+<City rdf:ID="mesquiteTx">
+  <rdfs:label xml:lang="en">mesquite</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>67053</cityPopulation>
+</City>
+<City rdf:ID="mcallenTx">
+  <rdfs:label xml:lang="en">mcallen</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>67042</cityPopulation>
+</City>
+<City rdf:ID="longviewTx">
+  <rdfs:label xml:lang="en">longview</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>62762</cityPopulation>
+</City>
+<City rdf:ID="portArthurTx">
+  <rdfs:label xml:lang="en">port arthur</rdfs:label>
+  <isCityOf rdf:resource="#texas" />
+  <cityPopulation>61195</cityPopulation>
+</City>
+<Capital rdf:ID="saltLakeCityUt">
+  <rdfs:label xml:lang="en">salt lake city</rdfs:label>
+  <isCapitalOf rdf:resource="#utah" />
+  <isCityOf rdf:resource="#utah" />
+  <cityPopulation>163034</cityPopulation>
+</Capital>
+<City rdf:ID="provoUt">
+  <rdfs:label xml:lang="en">provo</rdfs:label>
+  <isCityOf rdf:resource="#utah" />
+  <cityPopulation>74111</cityPopulation>
+</City>
+<City rdf:ID="westValleyUt">
+  <rdfs:label xml:lang="en">west valley</rdfs:label>
+  <isCityOf rdf:resource="#utah" />
+  <cityPopulation>72299</cityPopulation>
+</City>
+<City rdf:ID="ogdenUt">
+  <rdfs:label xml:lang="en">ogden</rdfs:label>
+  <isCityOf rdf:resource="#utah" />
+  <cityPopulation>64407</cityPopulation>
+</City>
+<Capital rdf:ID="montpelierVt">
+  <rdfs:label xml:lang="en">montpelier</rdfs:label>
+  <isCapitalOf rdf:resource="#vermont" />
+  <isCityOf rdf:resource="#vermont" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="norfolkVa">
+  <rdfs:label xml:lang="en">norfolk</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>266979</cityPopulation>
+</City>
+<City rdf:ID="virginiaBeachVa">
+  <rdfs:label xml:lang="en">virginia beach</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>262199</cityPopulation>
+</City>
+<Capital rdf:ID="richmondVa">
+  <rdfs:label xml:lang="en">richmond</rdfs:label>
+  <isCapitalOf rdf:resource="#virginia" />
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>219214</cityPopulation>
+</Capital>
+<City rdf:ID="arlingtonVa">
+  <rdfs:label xml:lang="en">arlington</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>152599</cityPopulation>
+</City>
+<City rdf:ID="newportNewsVa">
+  <rdfs:label xml:lang="en">newport news</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>144903</cityPopulation>
+</City>
+<City rdf:ID="hamptonVa">
+  <rdfs:label xml:lang="en">hampton</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>122617</cityPopulation>
+</City>
+<City rdf:ID="chesapeakeVa">
+  <rdfs:label xml:lang="en">chesapeake</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>114226</cityPopulation>
+</City>
+<City rdf:ID="portsmouthVa">
+  <rdfs:label xml:lang="en">portsmouth</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>104577</cityPopulation>
+</City>
+<City rdf:ID="alexandriaVa">
+  <rdfs:label xml:lang="en">alexandria</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>103217</cityPopulation>
+</City>
+<City rdf:ID="roanokeVa">
+  <rdfs:label xml:lang="en">roanoke</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>100427</cityPopulation>
+</City>
+<City rdf:ID="lynchburgVa">
+  <rdfs:label xml:lang="en">lynchburg</rdfs:label>
+  <isCityOf rdf:resource="#virginia" />
+  <cityPopulation>66743</cityPopulation>
+</City>
+<Capital rdf:ID="olympiaWa">
+  <rdfs:label xml:lang="en">olympia</rdfs:label>
+  <isCapitalOf rdf:resource="#washington" />
+  <isCityOf rdf:resource="#washington" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+<City rdf:ID="seattleWa">
+  <rdfs:label xml:lang="en">seattle</rdfs:label>
+  <isCityOf rdf:resource="#washington" />
+  <cityPopulation>493846</cityPopulation>
+</City>
+<City rdf:ID="spokaneWa">
+  <rdfs:label xml:lang="en">spokane</rdfs:label>
+  <isCityOf rdf:resource="#washington" />
+  <cityPopulation>171300</cityPopulation>
+</City>
+<City rdf:ID="tacomaWa">
+  <rdfs:label xml:lang="en">tacoma</rdfs:label>
+  <isCityOf rdf:resource="#washington" />
+  <cityPopulation>158501</cityPopulation>
+</City>
+<City rdf:ID="bellevueWa">
+  <rdfs:label xml:lang="en">bellevue</rdfs:label>
+  <isCityOf rdf:resource="#washington" />
+  <cityPopulation>73903</cityPopulation>
+</City>
+<Capital rdf:ID="charlestonWv">
+  <rdfs:label xml:lang="en">charleston</rdfs:label>
+  <isCapitalOf rdf:resource="#westVirginia" />
+  <isCityOf rdf:resource="#westVirginia" />
+  <cityPopulation>63968</cityPopulation>
+</Capital>
+<City rdf:ID="huntingtonWv">
+  <rdfs:label xml:lang="en">huntington</rdfs:label>
+  <isCityOf rdf:resource="#westVirginia" />
+  <cityPopulation>63684</cityPopulation>
+</City>
+<City rdf:ID="milwaukeeWi">
+  <rdfs:label xml:lang="en">milwaukee</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>636212</cityPopulation>
+</City>
+<Capital rdf:ID="madisonWi">
+  <rdfs:label xml:lang="en">madison</rdfs:label>
+  <isCapitalOf rdf:resource="#wisconsin" />
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>170616</cityPopulation>
+</Capital>
+<City rdf:ID="greenBayWi">
+  <rdfs:label xml:lang="en">green bay</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>87899</cityPopulation>
+</City>
+<City rdf:ID="racineWi">
+  <rdfs:label xml:lang="en">racine</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>85725</cityPopulation>
+</City>
+<City rdf:ID="kenoshaWi">
+  <rdfs:label xml:lang="en">kenosha</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>77685</cityPopulation>
+</City>
+<City rdf:ID="westAllisWi">
+  <rdfs:label xml:lang="en">west allis</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>63982</cityPopulation>
+</City>
+<City rdf:ID="appletonWi">
+  <rdfs:label xml:lang="en">appleton</rdfs:label>
+  <isCityOf rdf:resource="#wisconsin" />
+  <cityPopulation>58913</cityPopulation>
+</City>
+<City rdf:ID="casperWy">
+  <rdfs:label xml:lang="en">casper</rdfs:label>
+  <isCityOf rdf:resource="#wyoming" />
+  <cityPopulation>51016</cityPopulation>
+</City>
+<Capital rdf:ID="cheyenneWy">
+  <rdfs:label xml:lang="en">cheyenne</rdfs:label>
+  <isCapitalOf rdf:resource="#wyoming" />
+  <isCityOf rdf:resource="#wyoming" />
+  <cityPopulation>0</cityPopulation>
+</Capital>
+  
+  
+<!-- Rivers ======================================================== -->
+    
+<River rdf:ID="mississippi2">
+  <rdfs:label xml:lang="en">mississippi</rdfs:label>
+  <length>3778</length>
+  <runsThrough rdf:resource="#minnesota" />
+  <runsThrough rdf:resource="#wisconsin" />
+  <runsThrough rdf:resource="#iowa" />
+  <runsThrough rdf:resource="#illinois" />
+  <runsThrough rdf:resource="#missouri" />
+  <runsThrough rdf:resource="#kentucky" />
+  <runsThrough rdf:resource="#tennessee" />
+  <runsThrough rdf:resource="#arkansas" />
+  <runsThrough rdf:resource="#mississippi" />
+  <runsThrough rdf:resource="#louisiana" />
+  <runsThrough rdf:resource="#louisiana" />
+</River>
+<River rdf:ID="missouri2">
+  <rdfs:label xml:lang="en">missouri</rdfs:label>
+  <length>3968</length>
+  <runsThrough rdf:resource="#montana" />
+  <runsThrough rdf:resource="#northDakota" />
+  <runsThrough rdf:resource="#southDakota" />
+  <runsThrough rdf:resource="#iowa" />
+  <runsThrough rdf:resource="#nebraska" />
+  <runsThrough rdf:resource="#missouri" />
+  <runsThrough rdf:resource="#missouri" />
+</River>
+<River rdf:ID="colorado2">
+  <rdfs:label xml:lang="en">colorado</rdfs:label>
+  <length>2333</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#utah" />
+  <runsThrough rdf:resource="#arizona" />
+  <runsThrough rdf:resource="#nevada" />
+  <runsThrough rdf:resource="#california" />
+</River>
+<River rdf:ID="ohio2">
+  <rdfs:label xml:lang="en">ohio</rdfs:label>
+  <length>1569</length>
+  <runsThrough rdf:resource="#pennsylvania" />
+  <runsThrough rdf:resource="#westVirginia" />
+  <runsThrough rdf:resource="#kentucky" />
+  <runsThrough rdf:resource="#indiana" />
+  <runsThrough rdf:resource="#illinois" />
+  <runsThrough rdf:resource="#illinois" />
+  <runsThrough rdf:resource="#ohio" />
+</River>
+<River rdf:ID="red2">
+  <rdfs:label xml:lang="en">red</rdfs:label>
+  <length>1638</length>
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#texas" />
+  <runsThrough rdf:resource="#oklahoma" />
+  <runsThrough rdf:resource="#arkansas" />
+  <runsThrough rdf:resource="#arkansas" />
+  <runsThrough rdf:resource="#louisiana" />
+</River>
+<River rdf:ID="arkansas2">
+  <rdfs:label xml:lang="en">arkansas</rdfs:label>
+  <length>2333</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#kansas" />
+  <runsThrough rdf:resource="#oklahoma" />
+  <runsThrough rdf:resource="#arkansas" />
+</River>
+<River rdf:ID="canadian2">
+  <rdfs:label xml:lang="en">canadian</rdfs:label>
+  <length>1458</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#texas" />
+  <runsThrough rdf:resource="#oklahoma" />
+</River>
+<River rdf:ID="connecticut2">
+  <rdfs:label xml:lang="en">connecticut</rdfs:label>
+  <length>655</length>
+  <runsThrough rdf:resource="#newHampshire" />
+  <runsThrough rdf:resource="#vermont" />
+  <runsThrough rdf:resource="#massachusetts" />
+  <runsThrough rdf:resource="#connecticut" />
+</River>
+<River rdf:ID="delaware2">
+  <rdfs:label xml:lang="en">delaware</rdfs:label>
+  <length>451</length>
+  <runsThrough rdf:resource="#newYork" />
+  <runsThrough rdf:resource="#pennsylvania" />
+  <runsThrough rdf:resource="#newJersey" />
+  <runsThrough rdf:resource="#delaware" />
+</River>
+<River rdf:ID="littleMissouri2">
+  <rdfs:label xml:lang="en">little missouri</rdfs:label>
+  <length>901</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#montana" />
+  <runsThrough rdf:resource="#southDakota" />
+  <runsThrough rdf:resource="#northDakota" />
+</River>
+<River rdf:ID="snake2">
+  <rdfs:label xml:lang="en">snake</rdfs:label>
+  <length>1670</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#idaho" />
+  <runsThrough rdf:resource="#oregon" />
+  <runsThrough rdf:resource="#washington" />
+  <runsThrough rdf:resource="#washington" />
+</River>
+<River rdf:ID="chattahoochee2">
+  <rdfs:label xml:lang="en">chattahoochee</rdfs:label>
+  <length>702</length>
+  <runsThrough rdf:resource="#georgia" />
+  <runsThrough rdf:resource="#georgia" />
+  <runsThrough rdf:resource="#florida" />
+</River>
+<River rdf:ID="cimarron2">
+  <rdfs:label xml:lang="en">cimarron</rdfs:label>
+  <length>965</length>
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#kansas" />
+  <runsThrough rdf:resource="#oklahoma" />
+</River>
+<River rdf:ID="green2">
+  <rdfs:label xml:lang="en">green</rdfs:label>
+  <length>1175</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#utah" />
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#utah" />
+</River>
+<River rdf:ID="northPlatte2">
+  <rdfs:label xml:lang="en">north platte</rdfs:label>
+  <length>1094</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#nebraska" />
+</River>
+<River rdf:ID="potomac2">
+  <rdfs:label xml:lang="en">potomac</rdfs:label>
+  <length>462</length>
+  <runsThrough rdf:resource="#westVirginia" />
+  <runsThrough rdf:resource="#maryland" />
+  <runsThrough rdf:resource="#virginia" />
+  <runsThrough rdf:resource="#districtOfColumbia" />
+</River>
+<River rdf:ID="republican2">
+  <rdfs:label xml:lang="en">republican</rdfs:label>
+  <length>679</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#nebraska" />
+  <runsThrough rdf:resource="#kansas" />
+</River>
+<River rdf:ID="rioGrande2">
+  <rdfs:label xml:lang="en">rio grande</rdfs:label>
+  <length>3033</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#texas" />
+</River>
+<River rdf:ID="sanJuan2">
+  <rdfs:label xml:lang="en">san juan</rdfs:label>
+  <length>579</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#utah" />
+</River>
+<River rdf:ID="tennessee2">
+  <rdfs:label xml:lang="en">tennessee</rdfs:label>
+  <length>1049</length>
+  <runsThrough rdf:resource="#tennessee" />
+  <runsThrough rdf:resource="#alabama" />
+  <runsThrough rdf:resource="#tennessee" />
+  <runsThrough rdf:resource="#kentucky" />
+</River>
+<River rdf:ID="wabash2">
+  <rdfs:label xml:lang="en">wabash</rdfs:label>
+  <length>764</length>
+  <runsThrough rdf:resource="#ohio" />
+  <runsThrough rdf:resource="#indiana" />
+  <runsThrough rdf:resource="#illinois" />
+</River>
+<River rdf:ID="yellowstone2">
+  <rdfs:label xml:lang="en">yellowstone</rdfs:label>
+  <length>1080</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#montana" />
+  <runsThrough rdf:resource="#northDakota" />
+</River>
+<River rdf:ID="allegheny2">
+  <rdfs:label xml:lang="en">allegheny</rdfs:label>
+  <length>523</length>
+  <runsThrough rdf:resource="#pennsylvania" />
+  <runsThrough rdf:resource="#newYork" />
+  <runsThrough rdf:resource="#pennsylvania" />
+</River>
+<River rdf:ID="bighorn2">
+  <rdfs:label xml:lang="en">bighorn</rdfs:label>
+  <length>541</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#montana" />
+</River>
+<River rdf:ID="cheyenne2">
+  <rdfs:label xml:lang="en">cheyenne</rdfs:label>
+  <length>848</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#northDakota" />
+</River>
+<River rdf:ID="clarkFork2">
+  <rdfs:label xml:lang="en">clark fork</rdfs:label>
+  <length>483</length>
+  <runsThrough rdf:resource="#montana" />
+  <runsThrough rdf:resource="#idaho" />
+</River>
+<River rdf:ID="columbia2">
+  <rdfs:label xml:lang="en">columbia</rdfs:label>
+  <length>1953</length>
+  <runsThrough rdf:resource="#washington" />
+  <runsThrough rdf:resource="#oregon" />
+</River>
+<River rdf:ID="cumberland2">
+  <rdfs:label xml:lang="en">cumberland</rdfs:label>
+  <length>1105</length>
+  <runsThrough rdf:resource="#kentucky" />
+  <runsThrough rdf:resource="#tennessee" />
+  <runsThrough rdf:resource="#kentucky" />
+</River>
+<River rdf:ID="dakota2">
+  <rdfs:label xml:lang="en">dakota</rdfs:label>
+  <length>1142</length>
+  <runsThrough rdf:resource="#northDakota" />
+  <runsThrough rdf:resource="#southDakota" />
+</River>
+<River rdf:ID="gila2">
+  <rdfs:label xml:lang="en">gila</rdfs:label>
+  <length>805</length>
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#arizona" />
+</River>
+<River rdf:ID="hudson2">
+  <rdfs:label xml:lang="en">hudson</rdfs:label>
+  <length>492</length>
+  <runsThrough rdf:resource="#newYork" />
+  <runsThrough rdf:resource="#newJersey" />
+</River>
+<River rdf:ID="neosho2">
+  <rdfs:label xml:lang="en">neosho</rdfs:label>
+  <length>740</length>
+  <runsThrough rdf:resource="#kansas" />
+  <runsThrough rdf:resource="#oklahoma" />
+</River>
+<River rdf:ID="niobrara2">
+  <rdfs:label xml:lang="en">niobrara</rdfs:label>
+  <length>693</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#nebraska" />
+</River>
+<River rdf:ID="ouachita2">
+  <rdfs:label xml:lang="en">ouachita</rdfs:label>
+  <length>973</length>
+  <runsThrough rdf:resource="#arkansas" />
+  <runsThrough rdf:resource="#louisiana" />
+</River>
+<River rdf:ID="pearl2">
+  <rdfs:label xml:lang="en">pearl</rdfs:label>
+  <length>788</length>
+  <runsThrough rdf:resource="#michigan" />
+  <runsThrough rdf:resource="#louisiana" />
+</River>
+<River rdf:ID="pecos2">
+  <rdfs:label xml:lang="en">pecos</rdfs:label>
+  <length>805</length>
+  <runsThrough rdf:resource="#newMexico" />
+  <runsThrough rdf:resource="#texas" />
+</River>
+<River rdf:ID="powder2">
+  <rdfs:label xml:lang="en">powder</rdfs:label>
+  <length>603</length>
+  <runsThrough rdf:resource="#wyoming" />
+  <runsThrough rdf:resource="#montana" />
+</River>
+<River rdf:ID="roanoke2">
+  <rdfs:label xml:lang="en">roanoke</rdfs:label>
+  <length>660</length>
+  <runsThrough rdf:resource="#virginia" />
+  <runsThrough rdf:resource="#northCarolina" />
+</River>
+<River rdf:ID="rock2">
+  <rdfs:label xml:lang="en">rock</rdfs:label>
+  <length>459</length>
+  <runsThrough rdf:resource="#wisconsin" />
+  <runsThrough rdf:resource="#illinois" />
+</River>
+<River rdf:ID="smokyHill2">
+  <rdfs:label xml:lang="en">smoky hill</rdfs:label>
+  <length>869</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#kansas" />
+</River>
+<River rdf:ID="southPlatte2">
+  <rdfs:label xml:lang="en">south platte</rdfs:label>
+  <length>682</length>
+  <runsThrough rdf:resource="#colorado" />
+  <runsThrough rdf:resource="#nebraska" />
+</River>
+<River rdf:ID="st.Francis2">
+  <rdfs:label xml:lang="en">st. francis</rdfs:label>
+  <length>684</length>
+  <runsThrough rdf:resource="#missouri" />
+  <runsThrough rdf:resource="#arkansas" />
+</River>
+<River rdf:ID="tombigbee2">
+  <rdfs:label xml:lang="en">tombigbee</rdfs:label>
+  <length>658</length>
+  <runsThrough rdf:resource="#mississippi" />
+  <runsThrough rdf:resource="#alabama" />
+</River>
+<River rdf:ID="washita2">
+  <rdfs:label xml:lang="en">washita</rdfs:label>
+  <length>805</length>
+  <runsThrough rdf:resource="#texas" />
+  <runsThrough rdf:resource="#oklahoma" />
+</River>
+<River rdf:ID="watereeCatawba2">
+  <rdfs:label xml:lang="en">wateree catawba</rdfs:label>
+  <length>636</length>
+  <runsThrough rdf:resource="#northCarolina" />
+  <runsThrough rdf:resource="#southCarolina" />
+</River>
+<River rdf:ID="white2">
+  <rdfs:label xml:lang="en">white</rdfs:label>
+  <length>1110</length>
+  <runsThrough rdf:resource="#arkansas" />
+  <runsThrough rdf:resource="#missouri" />
+  <runsThrough rdf:resource="#arkansas" />
+</River>
+
+
+<!-- High and Low Points =========================================== -->
+
+<HiPoint rdf:ID="cheahaMountainAl">
+  <rdfs:label xml:lang="en">cheaha mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#alabama" />
+  <hiElevation>734</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="gulfOfMexicoAl">
+  <rdfs:label xml:lang="en">gulf of mexico</rdfs:label>
+  <isLowestPointOf rdf:resource="#alabama" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountMckinleyAk">
+  <rdfs:label xml:lang="en">mount mckinley</rdfs:label>
+  <isHighestPointOf rdf:resource="#alaska" />
+  <hiElevation>6194</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="pacificOceanAk">
+  <rdfs:label xml:lang="en">pacific ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#alaska" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="humphreysPeakAz">
+  <rdfs:label xml:lang="en">humphreys peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#arizona" />
+  <hiElevation>3851</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="coloradoRiverAz">
+  <rdfs:label xml:lang="en">colorado river</rdfs:label>
+  <isLowestPointOf rdf:resource="#arizona" />
+  <loElevation>21</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="magazineMountainAr">
+  <rdfs:label xml:lang="en">magazine mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#arkansas" />
+  <hiElevation>839</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="ouachitaRiverAr">
+  <rdfs:label xml:lang="en">ouachita river</rdfs:label>
+  <isLowestPointOf rdf:resource="#arkansas" />
+  <loElevation>17</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountWhitneyCa">
+  <rdfs:label xml:lang="en">mount whitney</rdfs:label>
+  <isHighestPointOf rdf:resource="#california" />
+  <hiElevation>4418</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="deathValleyCa">
+  <rdfs:label xml:lang="en">death valley</rdfs:label>
+  <isLowestPointOf rdf:resource="#california" />
+  <loElevation>-85</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountElbertCo">
+  <rdfs:label xml:lang="en">mount elbert</rdfs:label>
+  <isHighestPointOf rdf:resource="#colorado" />
+  <hiElevation>4399</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="arkansasRiverCo">
+  <rdfs:label xml:lang="en">arkansas river</rdfs:label>
+  <isLowestPointOf rdf:resource="#colorado" />
+  <loElevation>1021</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountFrissellCt">
+  <rdfs:label xml:lang="en">mount frissell</rdfs:label>
+  <isHighestPointOf rdf:resource="#connecticut" />
+  <hiElevation>725</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="longIslandSoundCt">
+  <rdfs:label xml:lang="en">long island sound</rdfs:label>
+  <isLowestPointOf rdf:resource="#connecticut" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="centervilleDe">
+  <rdfs:label xml:lang="en">centerville</rdfs:label>
+  <isHighestPointOf rdf:resource="#delaware" />
+  <hiElevation>135</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanDe">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#delaware" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="tenleytownDc">
+  <rdfs:label xml:lang="en">tenleytown</rdfs:label>
+  <isHighestPointOf rdf:resource="#districtOfColumbia" />
+  <hiElevation>125</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="potomacRiverDc">
+  <rdfs:label xml:lang="en">potomac river</rdfs:label>
+  <isLowestPointOf rdf:resource="#districtOfColumbia" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="waltonCountyFl">
+  <rdfs:label xml:lang="en">walton county</rdfs:label>
+  <isHighestPointOf rdf:resource="#florida" />
+  <hiElevation>105</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanFl">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#florida" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="brasstownBaldGa">
+  <rdfs:label xml:lang="en">brasstown bald</rdfs:label>
+  <isHighestPointOf rdf:resource="#georgia" />
+  <hiElevation>1458</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanGa">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#georgia" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="maunaKeaHi">
+  <rdfs:label xml:lang="en">mauna kea</rdfs:label>
+  <isHighestPointOf rdf:resource="#hawaii" />
+  <hiElevation>4205</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="pacificOceanHi">
+  <rdfs:label xml:lang="en">pacific ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#hawaii" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="borahPeakId">
+  <rdfs:label xml:lang="en">borah peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#idaho" />
+  <hiElevation>3859</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="snakeRiverId">
+  <rdfs:label xml:lang="en">snake river</rdfs:label>
+  <isLowestPointOf rdf:resource="#idaho" />
+  <loElevation>216</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="charlesMoundIl">
+  <rdfs:label xml:lang="en">charles mound</rdfs:label>
+  <isHighestPointOf rdf:resource="#illinois" />
+  <hiElevation>376</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="mississippiRiverIl">
+  <rdfs:label xml:lang="en">mississippi river</rdfs:label>
+  <isLowestPointOf rdf:resource="#illinois" />
+  <loElevation>85</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="franklinTownshipIn">
+  <rdfs:label xml:lang="en">franklin township</rdfs:label>
+  <isHighestPointOf rdf:resource="#indiana" />
+  <hiElevation>383</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="ohioRiverIn">
+  <rdfs:label xml:lang="en">ohio river</rdfs:label>
+  <isLowestPointOf rdf:resource="#indiana" />
+  <loElevation>98</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="ocheyedanMoundIa">
+  <rdfs:label xml:lang="en">ocheyedan mound</rdfs:label>
+  <isHighestPointOf rdf:resource="#iowa" />
+  <hiElevation>511</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="mississippiRiverIa">
+  <rdfs:label xml:lang="en">mississippi river</rdfs:label>
+  <isLowestPointOf rdf:resource="#iowa" />
+  <loElevation>146</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountSunflowerKs">
+  <rdfs:label xml:lang="en">mount sunflower</rdfs:label>
+  <isHighestPointOf rdf:resource="#kansas" />
+  <hiElevation>1231</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="verdigrisRiverKs">
+  <rdfs:label xml:lang="en">verdigris river</rdfs:label>
+  <isLowestPointOf rdf:resource="#kansas" />
+  <loElevation>207</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="blackMountainKy">
+  <rdfs:label xml:lang="en">black mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#kentucky" />
+  <hiElevation>1263</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="mississippiRiverKy">
+  <rdfs:label xml:lang="en">mississippi river</rdfs:label>
+  <isLowestPointOf rdf:resource="#kentucky" />
+  <loElevation>78</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="driskillMountainLa">
+  <rdfs:label xml:lang="en">driskill mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#louisiana" />
+  <hiElevation>163</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="newOrleansLa2">
+  <rdfs:label xml:lang="en">new orleans</rdfs:label>
+  <isLowestPointOf rdf:resource="#louisiana" />
+  <loElevation>-1</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountKatahdinMe">
+  <rdfs:label xml:lang="en">mount katahdin</rdfs:label>
+  <isHighestPointOf rdf:resource="#maine" />
+  <hiElevation>1606</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanMe">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#maine" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="backboneMountainMd">
+  <rdfs:label xml:lang="en">backbone mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#maryland" />
+  <hiElevation>1024</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanMd">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#maryland" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountGreylockMa">
+  <rdfs:label xml:lang="en">mount greylock</rdfs:label>
+  <isHighestPointOf rdf:resource="#massachusetts" />
+  <hiElevation>1064</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanMa">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#massachusetts" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountCurwoodMi">
+  <rdfs:label xml:lang="en">mount curwood</rdfs:label>
+  <isHighestPointOf rdf:resource="#michigan" />
+  <hiElevation>604</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="lakeErieMi">
+  <rdfs:label xml:lang="en">lake erie</rdfs:label>
+  <isLowestPointOf rdf:resource="#michigan" />
+  <loElevation>174</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="eagleMountainMn">
+  <rdfs:label xml:lang="en">eagle mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#minnesota" />
+  <hiElevation>701</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="lakeSuperiorMn">
+  <rdfs:label xml:lang="en">lake superior</rdfs:label>
+  <isLowestPointOf rdf:resource="#minnesota" />
+  <loElevation>183</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="woodallMountainMs">
+  <rdfs:label xml:lang="en">woodall mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#mississippi" />
+  <hiElevation>246</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="gulfOfMexicoMs">
+  <rdfs:label xml:lang="en">gulf of mexico</rdfs:label>
+  <isLowestPointOf rdf:resource="#mississippi" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="taumSaukMountainMo">
+  <rdfs:label xml:lang="en">taum sauk mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#missouri" />
+  <hiElevation>540</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="st.FrancisRiverMo">
+  <rdfs:label xml:lang="en">st. francis river</rdfs:label>
+  <isLowestPointOf rdf:resource="#missouri" />
+  <loElevation>70</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="granitePeakMt">
+  <rdfs:label xml:lang="en">granite peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#montana" />
+  <hiElevation>3901</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="kootenaiRiverMt">
+  <rdfs:label xml:lang="en">kootenai river</rdfs:label>
+  <isLowestPointOf rdf:resource="#montana" />
+  <loElevation>549</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="johnsonTownshipNe">
+  <rdfs:label xml:lang="en">johnson township</rdfs:label>
+  <isHighestPointOf rdf:resource="#nebraska" />
+  <hiElevation>1654</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="southeastCornerNe">
+  <rdfs:label xml:lang="en">southeast corner</rdfs:label>
+  <isLowestPointOf rdf:resource="#nebraska" />
+  <loElevation>256</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="boundaryPeakNv">
+  <rdfs:label xml:lang="en">boundary peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#nevada" />
+  <hiElevation>4005</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="coloradoRiverNv">
+  <rdfs:label xml:lang="en">colorado river</rdfs:label>
+  <isLowestPointOf rdf:resource="#nevada" />
+  <loElevation>143</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountWashingtonNh">
+  <rdfs:label xml:lang="en">mount washington</rdfs:label>
+  <isHighestPointOf rdf:resource="#newHampshire" />
+  <hiElevation>1917</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanNh">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#newHampshire" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="highPointNj">
+  <rdfs:label xml:lang="en">high point</rdfs:label>
+  <isHighestPointOf rdf:resource="#newJersey" />
+  <hiElevation>550</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanNj">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#newJersey" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="wheelerPeakNm">
+  <rdfs:label xml:lang="en">wheeler peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#newMexico" />
+  <hiElevation>4011</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="redBluffReservoirNm">
+  <rdfs:label xml:lang="en">red bluff reservoir</rdfs:label>
+  <isLowestPointOf rdf:resource="#newMexico" />
+  <loElevation>859</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountMarcyNy">
+  <rdfs:label xml:lang="en">mount marcy</rdfs:label>
+  <isHighestPointOf rdf:resource="#newYork" />
+  <hiElevation>1629</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanNy">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#newYork" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountMitchellNc">
+  <rdfs:label xml:lang="en">mount mitchell</rdfs:label>
+  <isHighestPointOf rdf:resource="#northCarolina" />
+  <hiElevation>2037</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanNc">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#northCarolina" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="whiteButteNd">
+  <rdfs:label xml:lang="en">white butte</rdfs:label>
+  <isHighestPointOf rdf:resource="#northDakota" />
+  <hiElevation>1069</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="redRiverNd">
+  <rdfs:label xml:lang="en">red river</rdfs:label>
+  <isLowestPointOf rdf:resource="#northDakota" />
+  <loElevation>229</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="campbellHillOh">
+  <rdfs:label xml:lang="en">campbell hill</rdfs:label>
+  <isHighestPointOf rdf:resource="#ohio" />
+  <hiElevation>472</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="ohioRiverOh">
+  <rdfs:label xml:lang="en">ohio river</rdfs:label>
+  <isLowestPointOf rdf:resource="#ohio" />
+  <loElevation>132</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="blackMesaOk">
+  <rdfs:label xml:lang="en">black mesa</rdfs:label>
+  <isHighestPointOf rdf:resource="#oklahoma" />
+  <hiElevation>1516</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="littleRiverOk">
+  <rdfs:label xml:lang="en">little river</rdfs:label>
+  <isLowestPointOf rdf:resource="#oklahoma" />
+  <loElevation>87</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountHoodOr">
+  <rdfs:label xml:lang="en">mount hood</rdfs:label>
+  <isHighestPointOf rdf:resource="#oregon" />
+  <hiElevation>3424</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="pacificOceanOr">
+  <rdfs:label xml:lang="en">pacific ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#oregon" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountDavisPa">
+  <rdfs:label xml:lang="en">mount davis</rdfs:label>
+  <isHighestPointOf rdf:resource="#pennsylvania" />
+  <hiElevation>979</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="delawareRiverPa">
+  <rdfs:label xml:lang="en">delaware river</rdfs:label>
+  <isLowestPointOf rdf:resource="#pennsylvania" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="jerimothHillRi">
+  <rdfs:label xml:lang="en">jerimoth hill</rdfs:label>
+  <isHighestPointOf rdf:resource="#rhodeIsland" />
+  <hiElevation>247</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanRi">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#rhodeIsland" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="sassafrasMountainSc">
+  <rdfs:label xml:lang="en">sassafras mountain</rdfs:label>
+  <isHighestPointOf rdf:resource="#southCarolina" />
+  <hiElevation>1085</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanSc">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#southCarolina" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="harneyPeakSd">
+  <rdfs:label xml:lang="en">harney peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#southDakota" />
+  <hiElevation>2207</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="bigStoneLakeSd">
+  <rdfs:label xml:lang="en">big stone lake</rdfs:label>
+  <isLowestPointOf rdf:resource="#southDakota" />
+  <loElevation>284</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="clingmansDomeTn">
+  <rdfs:label xml:lang="en">clingmans dome</rdfs:label>
+  <isHighestPointOf rdf:resource="#tennessee" />
+  <hiElevation>2025</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="mississippiRiverTn">
+  <rdfs:label xml:lang="en">mississippi river</rdfs:label>
+  <isLowestPointOf rdf:resource="#tennessee" />
+  <loElevation>55</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="guadalupePeakTx">
+  <rdfs:label xml:lang="en">guadalupe peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#texas" />
+  <hiElevation>2667</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="gulfOfMexicoTx">
+  <rdfs:label xml:lang="en">gulf of mexico</rdfs:label>
+  <isLowestPointOf rdf:resource="#texas" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="kingsPeakUt">
+  <rdfs:label xml:lang="en">kings peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#utah" />
+  <hiElevation>4123</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="beaverDamCreekUt">
+  <rdfs:label xml:lang="en">beaver dam creek</rdfs:label>
+  <isLowestPointOf rdf:resource="#utah" />
+  <loElevation>610</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountMansfieldVt">
+  <rdfs:label xml:lang="en">mount mansfield</rdfs:label>
+  <isHighestPointOf rdf:resource="#vermont" />
+  <hiElevation>1339</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="lakeChamplainVt">
+  <rdfs:label xml:lang="en">lake champlain</rdfs:label>
+  <isLowestPointOf rdf:resource="#vermont" />
+  <loElevation>29</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountRogersVa">
+  <rdfs:label xml:lang="en">mount rogers</rdfs:label>
+  <isHighestPointOf rdf:resource="#virginia" />
+  <hiElevation>1746</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="atlanticOceanVa">
+  <rdfs:label xml:lang="en">atlantic ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#virginia" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="mountRainierWa">
+  <rdfs:label xml:lang="en">mount rainier</rdfs:label>
+  <isHighestPointOf rdf:resource="#washington" />
+  <hiElevation>4392</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="pacificOceanWa">
+  <rdfs:label xml:lang="en">pacific ocean</rdfs:label>
+  <isLowestPointOf rdf:resource="#washington" />
+  <loElevation>0</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="spruceKnobWv">
+  <rdfs:label xml:lang="en">spruce knob</rdfs:label>
+  <isHighestPointOf rdf:resource="#westVirginia" />
+  <hiElevation>1482</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="potomacRiverWv">
+  <rdfs:label xml:lang="en">potomac river</rdfs:label>
+  <isLowestPointOf rdf:resource="#westVirginia" />
+  <loElevation>73</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="timmsHillWi">
+  <rdfs:label xml:lang="en">timms hill</rdfs:label>
+  <isHighestPointOf rdf:resource="#wisconsin" />
+  <hiElevation>595</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="lakeMichiganWi">
+  <rdfs:label xml:lang="en">lake michigan</rdfs:label>
+  <isLowestPointOf rdf:resource="#wisconsin" />
+  <loElevation>177</loElevation>
+</LoPoint>
+<HiPoint rdf:ID="gannettPeakWy">
+  <rdfs:label xml:lang="en">gannett peak</rdfs:label>
+  <isHighestPointOf rdf:resource="#wyoming" />
+  <hiElevation>4202</hiElevation>
+</HiPoint>
+<LoPoint rdf:ID="belleFourcheRiverWy">
+  <rdfs:label xml:lang="en">belle fourche river</rdfs:label>
+  <isLowestPointOf rdf:resource="#wyoming" />
+  <loElevation>945</loElevation>
+</LoPoint>
+
+
+<!-- Mountains ===================================================== -->
+
+<Mountain rdf:ID="mckinley">
+  <rdfs:label xml:lang="en">mckinley</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>6194</height>
+</Mountain>
+<Mountain rdf:ID="st.Elias">
+  <rdfs:label xml:lang="en">st. elias</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>5489</height>
+</Mountain>
+<Mountain rdf:ID="foraker">
+  <rdfs:label xml:lang="en">foraker</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>5304</height>
+</Mountain>
+<Mountain rdf:ID="bona">
+  <rdfs:label xml:lang="en">bona</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>5044</height>
+</Mountain>
+<Mountain rdf:ID="blackburn">
+  <rdfs:label xml:lang="en">blackburn</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4996</height>
+</Mountain>
+<Mountain rdf:ID="kennedy">
+  <rdfs:label xml:lang="en">kennedy</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4964</height>
+</Mountain>
+<Mountain rdf:ID="sanford">
+  <rdfs:label xml:lang="en">sanford</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4949</height>
+</Mountain>
+<Mountain rdf:ID="southButtress">
+  <rdfs:label xml:lang="en">south buttress</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4842</height>
+</Mountain>
+<Mountain rdf:ID="vancouver">
+  <rdfs:label xml:lang="en">vancouver</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4785</height>
+</Mountain>
+<Mountain rdf:ID="churchill">
+  <rdfs:label xml:lang="en">churchill</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4766</height>
+</Mountain>
+<Mountain rdf:ID="fairweather">
+  <rdfs:label xml:lang="en">fairweather</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4663</height>
+</Mountain>
+<Mountain rdf:ID="hubbard">
+  <rdfs:label xml:lang="en">hubbard</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4577</height>
+</Mountain>
+<Mountain rdf:ID="bear">
+  <rdfs:label xml:lang="en">bear</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4520</height>
+</Mountain>
+<Mountain rdf:ID="eastButtress">
+  <rdfs:label xml:lang="en">east buttress</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4490</height>
+</Mountain>
+<Mountain rdf:ID="hunter">
+  <rdfs:label xml:lang="en">hunter</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4442</height>
+</Mountain>
+<Mountain rdf:ID="alverstone">
+  <rdfs:label xml:lang="en">alverstone</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4439</height>
+</Mountain>
+<Mountain rdf:ID="browneTower">
+  <rdfs:label xml:lang="en">browne tower</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4429</height>
+</Mountain>
+<Mountain rdf:ID="whitney">
+  <rdfs:label xml:lang="en">whitney</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4418</height>
+</Mountain>
+<Mountain rdf:ID="elbert">
+  <rdfs:label xml:lang="en">elbert</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4399</height>
+</Mountain>
+<Mountain rdf:ID="massive">
+  <rdfs:label xml:lang="en">massive</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4396</height>
+</Mountain>
+<Mountain rdf:ID="harvard">
+  <rdfs:label xml:lang="en">harvard</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4395</height>
+</Mountain>
+<Mountain rdf:ID="rainier">
+  <rdfs:label xml:lang="en">rainier</rdfs:label>
+  <isMountainOf rdf:resource="#washington" />
+  <height>4392</height>
+</Mountain>
+<Mountain rdf:ID="williamson">
+  <rdfs:label xml:lang="en">williamson</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4382</height>
+</Mountain>
+<Mountain rdf:ID="bianca">
+  <rdfs:label xml:lang="en">bianca</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4372</height>
+</Mountain>
+<Mountain rdf:ID="laPlata">
+  <rdfs:label xml:lang="en">la plata</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4370</height>
+</Mountain>
+<Mountain rdf:ID="uncompahgre">
+  <rdfs:label xml:lang="en">uncompahgre</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4361</height>
+</Mountain>
+<Mountain rdf:ID="crestone">
+  <rdfs:label xml:lang="en">crestone</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4357</height>
+</Mountain>
+<Mountain rdf:ID="lincoln">
+  <rdfs:label xml:lang="en">lincoln</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4354</height>
+</Mountain>
+<Mountain rdf:ID="grays">
+  <rdfs:label xml:lang="en">grays</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4349</height>
+</Mountain>
+<Mountain rdf:ID="antero">
+  <rdfs:label xml:lang="en">antero</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4349</height>
+</Mountain>
+<Mountain rdf:ID="torreys">
+  <rdfs:label xml:lang="en">torreys</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4349</height>
+</Mountain>
+<Mountain rdf:ID="castle">
+  <rdfs:label xml:lang="en">castle</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4348</height>
+</Mountain>
+<Mountain rdf:ID="quandary">
+  <rdfs:label xml:lang="en">quandary</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4348</height>
+</Mountain>
+<Mountain rdf:ID="evans">
+  <rdfs:label xml:lang="en">evans</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4348</height>
+</Mountain>
+<Mountain rdf:ID="longs">
+  <rdfs:label xml:lang="en">longs</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4345</height>
+</Mountain>
+<Mountain rdf:ID="wilson">
+  <rdfs:label xml:lang="en">wilson</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4342</height>
+</Mountain>
+<Mountain rdf:ID="white">
+  <rdfs:label xml:lang="en">white</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4342</height>
+</Mountain>
+<Mountain rdf:ID="northPalisade">
+  <rdfs:label xml:lang="en">north palisade</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4341</height>
+</Mountain>
+<Mountain rdf:ID="shavano">
+  <rdfs:label xml:lang="en">shavano</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4337</height>
+</Mountain>
+<Mountain rdf:ID="belford">
+  <rdfs:label xml:lang="en">belford</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4327</height>
+</Mountain>
+<Mountain rdf:ID="princeton">
+  <rdfs:label xml:lang="en">princeton</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4327</height>
+</Mountain>
+<Mountain rdf:ID="crestoneNeedle">
+  <rdfs:label xml:lang="en">crestone needle</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4327</height>
+</Mountain>
+<Mountain rdf:ID="yale">
+  <rdfs:label xml:lang="en">yale</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4327</height>
+</Mountain>
+<Mountain rdf:ID="bross">
+  <rdfs:label xml:lang="en">bross</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4320</height>
+</Mountain>
+<Mountain rdf:ID="kitCarson">
+  <rdfs:label xml:lang="en">kit carson</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4317</height>
+</Mountain>
+<Mountain rdf:ID="wrangell">
+  <rdfs:label xml:lang="en">wrangell</rdfs:label>
+  <isMountainOf rdf:resource="#alaska" />
+  <height>4317</height>
+</Mountain>
+<Mountain rdf:ID="shasta">
+  <rdfs:label xml:lang="en">shasta</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4317</height>
+</Mountain>
+<Mountain rdf:ID="sill">
+  <rdfs:label xml:lang="en">sill</rdfs:label>
+  <isMountainOf rdf:resource="#california" />
+  <height>4317</height>
+</Mountain>
+<Mountain rdf:ID="elDiente">
+  <rdfs:label xml:lang="en">el diente</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4316</height>
+</Mountain>
+<Mountain rdf:ID="maroon">
+  <rdfs:label xml:lang="en">maroon</rdfs:label>
+  <isMountainOf rdf:resource="#colorado" />
+  <height>4315</height>
+</Mountain>
+
+
+<!-- Roads ========================================================= -->
+
+<Road rdf:ID="road95">
+  <rdfs:label xml:lang="en">road 95</rdfs:label>
+  <number>95</number>
+  <passesThrough rdf:resource="#maine" />
+  <passesThrough rdf:resource="#newHampshire" />
+  <passesThrough rdf:resource="#rhodeIsland" />
+  <passesThrough rdf:resource="#connecticut" />
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#newJersey" />
+  <passesThrough rdf:resource="#delaware" />
+  <passesThrough rdf:resource="#maryland" />
+  <passesThrough rdf:resource="#districtOfColumbia" />
+  <passesThrough rdf:resource="#virginia" />
+  <passesThrough rdf:resource="#northCarolina" />
+  <passesThrough rdf:resource="#southCarolina" />
+  <passesThrough rdf:resource="#georgia" />
+  <passesThrough rdf:resource="#florida" />
+</Road>
+<Road rdf:ID="road90">
+  <rdfs:label xml:lang="en">road 90</rdfs:label>
+  <number>90</number>
+  <passesThrough rdf:resource="#massachusetts" />
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#wisconsin" />
+  <passesThrough rdf:resource="#minnesota" />
+  <passesThrough rdf:resource="#southDakota" />
+  <passesThrough rdf:resource="#wyoming" />
+  <passesThrough rdf:resource="#montana" />
+  <passesThrough rdf:resource="#idaho" />
+  <passesThrough rdf:resource="#washington" />
+</Road>
+<Road rdf:ID="road80">
+  <rdfs:label xml:lang="en">road 80</rdfs:label>
+  <number>80</number>
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#newJersey" />
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#iowa" />
+  <passesThrough rdf:resource="#nebraska" />
+  <passesThrough rdf:resource="#wyoming" />
+  <passesThrough rdf:resource="#utah" />
+  <passesThrough rdf:resource="#nevada" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road70">
+  <rdfs:label xml:lang="en">road 70</rdfs:label>
+  <number>70</number>
+  <passesThrough rdf:resource="#districtOfColumbia" />
+  <passesThrough rdf:resource="#maryland" />
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#missouri" />
+  <passesThrough rdf:resource="#kansas" />
+  <passesThrough rdf:resource="#colorado" />
+  <passesThrough rdf:resource="#utah" />
+</Road>
+<Road rdf:ID="road10">
+  <rdfs:label xml:lang="en">road 10</rdfs:label>
+  <number>10</number>
+  <passesThrough rdf:resource="#florida" />
+  <passesThrough rdf:resource="#alabama" />
+  <passesThrough rdf:resource="#mississippi" />
+  <passesThrough rdf:resource="#louisiana" />
+  <passesThrough rdf:resource="#texas" />
+  <passesThrough rdf:resource="#newMexico" />
+  <passesThrough rdf:resource="#arizona" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road40">
+  <rdfs:label xml:lang="en">road 40</rdfs:label>
+  <number>40</number>
+  <passesThrough rdf:resource="#northCarolina" />
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#arkansas" />
+  <passesThrough rdf:resource="#oklahoma" />
+  <passesThrough rdf:resource="#texas" />
+  <passesThrough rdf:resource="#newMexico" />
+  <passesThrough rdf:resource="#arizona" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road15">
+  <rdfs:label xml:lang="en">road 15</rdfs:label>
+  <number>15</number>
+  <passesThrough rdf:resource="#montana" />
+  <passesThrough rdf:resource="#idaho" />
+  <passesThrough rdf:resource="#utah" />
+  <passesThrough rdf:resource="#arizona" />
+  <passesThrough rdf:resource="#nevada" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road20">
+  <rdfs:label xml:lang="en">road 20</rdfs:label>
+  <number>20</number>
+  <passesThrough rdf:resource="#southCarolina" />
+  <passesThrough rdf:resource="#georgia" />
+  <passesThrough rdf:resource="#alabama" />
+  <passesThrough rdf:resource="#mississippi" />
+  <passesThrough rdf:resource="#louisiana" />
+  <passesThrough rdf:resource="#texas" />
+</Road>
+<Road rdf:ID="road35">
+  <rdfs:label xml:lang="en">road 35</rdfs:label>
+  <number>35</number>
+  <passesThrough rdf:resource="#minnesota" />
+  <passesThrough rdf:resource="#iowa" />
+  <passesThrough rdf:resource="#missouri" />
+  <passesThrough rdf:resource="#kansas" />
+  <passesThrough rdf:resource="#oklahoma" />
+  <passesThrough rdf:resource="#texas" />
+</Road>
+<Road rdf:ID="road55">
+  <rdfs:label xml:lang="en">road 55</rdfs:label>
+  <number>55</number>
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#missouri" />
+  <passesThrough rdf:resource="#arkansas" />
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#mississippi" />
+  <passesThrough rdf:resource="#louisiana" />
+</Road>
+<Road rdf:ID="road64">
+  <rdfs:label xml:lang="en">road 64</rdfs:label>
+  <number>64</number>
+  <passesThrough rdf:resource="#virginia" />
+  <passesThrough rdf:resource="#westVirginia" />
+  <passesThrough rdf:resource="#kentucky" />
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#missouri" />
+</Road>
+<Road rdf:ID="road75">
+  <rdfs:label xml:lang="en">road 75</rdfs:label>
+  <number>75</number>
+  <passesThrough rdf:resource="#michigan" />
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#kentucky" />
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#georgia" />
+  <passesThrough rdf:resource="#florida" />
+</Road>
+<Road rdf:ID="road81">
+  <rdfs:label xml:lang="en">road 81</rdfs:label>
+  <number>81</number>
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#maryland" />
+  <passesThrough rdf:resource="#westVirginia" />
+  <passesThrough rdf:resource="#virginia" />
+  <passesThrough rdf:resource="#tennessee" />
+</Road>
+<Road rdf:ID="road77">
+  <rdfs:label xml:lang="en">road 77</rdfs:label>
+  <number>77</number>
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#westVirginia" />
+  <passesThrough rdf:resource="#virginia" />
+  <passesThrough rdf:resource="#northCarolina" />
+  <passesThrough rdf:resource="#southCarolina" />
+</Road>
+<Road rdf:ID="road85">
+  <rdfs:label xml:lang="en">road 85</rdfs:label>
+  <number>85</number>
+  <passesThrough rdf:resource="#virginia" />
+  <passesThrough rdf:resource="#northCarolina" />
+  <passesThrough rdf:resource="#southCarolina" />
+  <passesThrough rdf:resource="#georgia" />
+  <passesThrough rdf:resource="#alabama" />
+</Road>
+<Road rdf:ID="road94">
+  <rdfs:label xml:lang="en">road 94</rdfs:label>
+  <number>94</number>
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#wisconsin" />
+  <passesThrough rdf:resource="#minnesota" />
+  <passesThrough rdf:resource="#northDakota" />
+  <passesThrough rdf:resource="#montana" />
+</Road>
+<Road rdf:ID="road29">
+  <rdfs:label xml:lang="en">road 29</rdfs:label>
+  <number>29</number>
+  <passesThrough rdf:resource="#northDakota" />
+  <passesThrough rdf:resource="#southDakota" />
+  <passesThrough rdf:resource="#iowa" />
+  <passesThrough rdf:resource="#missouri" />
+</Road>
+<Road rdf:ID="road65">
+  <rdfs:label xml:lang="en">road 65</rdfs:label>
+  <number>65</number>
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#kentucky" />
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#alabama" />
+</Road>
+<Road rdf:ID="road87">
+  <rdfs:label xml:lang="en">road 87</rdfs:label>
+  <number>87</number>
+  <passesThrough rdf:resource="#connecticut" />
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#newJersey" />
+  <passesThrough rdf:resource="#pennsylvania" />
+</Road>
+<Road rdf:ID="road5">
+  <rdfs:label xml:lang="en">road 5</rdfs:label>
+  <number>5</number>
+  <passesThrough rdf:resource="#washington" />
+  <passesThrough rdf:resource="#oregon" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road24">
+  <rdfs:label xml:lang="en">road 24</rdfs:label>
+  <number>24</number>
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#kentucky" />
+  <passesThrough rdf:resource="#illinois" />
+</Road>
+<Road rdf:ID="road25">
+  <rdfs:label xml:lang="en">road 25</rdfs:label>
+  <number>25</number>
+  <passesThrough rdf:resource="#wyoming" />
+  <passesThrough rdf:resource="#colorado" />
+  <passesThrough rdf:resource="#newMexico" />
+</Road>
+<Road rdf:ID="road44">
+  <rdfs:label xml:lang="en">road 44</rdfs:label>
+  <number>44</number>
+  <passesThrough rdf:resource="#missouri" />
+  <passesThrough rdf:resource="#oklahoma" />
+  <passesThrough rdf:resource="#texas" />
+</Road>
+<Road rdf:ID="road59">
+  <rdfs:label xml:lang="en">road 59</rdfs:label>
+  <number>59</number>
+  <passesThrough rdf:resource="#tennessee" />
+  <passesThrough rdf:resource="#georgia" />
+  <passesThrough rdf:resource="#alabama" />
+</Road>
+<Road rdf:ID="road74">
+  <rdfs:label xml:lang="en">road 74</rdfs:label>
+  <number>74</number>
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#indiana" />
+  <passesThrough rdf:resource="#illinois" />
+</Road>
+<Road rdf:ID="road78">
+  <rdfs:label xml:lang="en">road 78</rdfs:label>
+  <number>78</number>
+  <passesThrough rdf:resource="#newYork" />
+  <passesThrough rdf:resource="#newJersey" />
+  <passesThrough rdf:resource="#pennsylvania" />
+</Road>
+<Road rdf:ID="road84">
+  <rdfs:label xml:lang="en">road 84</rdfs:label>
+  <number>84</number>
+  <passesThrough rdf:resource="#utah" />
+  <passesThrough rdf:resource="#idaho" />
+  <passesThrough rdf:resource="#oregon" />
+</Road>
+<Road rdf:ID="road91">
+  <rdfs:label xml:lang="en">road 91</rdfs:label>
+  <number>91</number>
+  <passesThrough rdf:resource="#vermont" />
+  <passesThrough rdf:resource="#massachusetts" />
+  <passesThrough rdf:resource="#connecticut" />
+</Road>
+<Road rdf:ID="road93">
+  <rdfs:label xml:lang="en">road 93</rdfs:label>
+  <number>93</number>
+  <passesThrough rdf:resource="#newHampshire" />
+  <passesThrough rdf:resource="#vermont" />
+  <passesThrough rdf:resource="#massachusetts" />
+</Road>
+<Road rdf:ID="road8">
+  <rdfs:label xml:lang="en">road 8</rdfs:label>
+  <number>8</number>
+  <passesThrough rdf:resource="#arizona" />
+  <passesThrough rdf:resource="#california" />
+</Road>
+<Road rdf:ID="road30">
+  <rdfs:label xml:lang="en">road 30</rdfs:label>
+  <number>30</number>
+  <passesThrough rdf:resource="#arkansas" />
+  <passesThrough rdf:resource="#texas" />
+</Road>
+<Road rdf:ID="road57">
+  <rdfs:label xml:lang="en">road 57</rdfs:label>
+  <number>57</number>
+  <passesThrough rdf:resource="#illinois" />
+  <passesThrough rdf:resource="#missouri" />
+</Road>
+<Road rdf:ID="road66">
+  <rdfs:label xml:lang="en">road 66</rdfs:label>
+  <number>66</number>
+  <passesThrough rdf:resource="#districtOfColumbia" />
+  <passesThrough rdf:resource="#virginia" />
+</Road>
+<Road rdf:ID="road69">
+  <rdfs:label xml:lang="en">road 69</rdfs:label>
+  <number>69</number>
+  <passesThrough rdf:resource="#michigan" />
+  <passesThrough rdf:resource="#indiana" />
+</Road>
+<Road rdf:ID="road71">
+  <rdfs:label xml:lang="en">road 71</rdfs:label>
+  <number>71</number>
+  <passesThrough rdf:resource="#ohio" />
+  <passesThrough rdf:resource="#kentucky" />
+</Road>
+<Road rdf:ID="road76">
+  <rdfs:label xml:lang="en">road 76</rdfs:label>
+  <number>76</number>
+  <passesThrough rdf:resource="#nebraska" />
+  <passesThrough rdf:resource="#colorado" />
+</Road>
+<Road rdf:ID="road79">
+  <rdfs:label xml:lang="en">road 79</rdfs:label>
+  <number>79</number>
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#westVirginia" />
+</Road>
+<Road rdf:ID="road83">
+  <rdfs:label xml:lang="en">road 83</rdfs:label>
+  <number>83</number>
+  <passesThrough rdf:resource="#pennsylvania" />
+  <passesThrough rdf:resource="#maryland" />
+</Road>
+<Road rdf:ID="road86">
+  <rdfs:label xml:lang="en">road 86</rdfs:label>
+  <number>86</number>
+  <passesThrough rdf:resource="#massachusetts" />
+  <passesThrough rdf:resource="#connecticut" />
+</Road>
+<Road rdf:ID="road89">
+  <rdfs:label xml:lang="en">road 89</rdfs:label>
+  <number>89</number>
+  <passesThrough rdf:resource="#vermont" />
+  <passesThrough rdf:resource="#newHampshire" />
+</Road>
+
+
+<!-- Lakes ========================================================= -->
+
+<Lake rdf:ID="superior">
+  <rdfs:label xml:lang="en">superior</rdfs:label>
+  <lakeArea>82362</lakeArea>
+  <isLakeOf rdf:resource="#michigan" />
+  <isLakeOf rdf:resource="#wisconsin" />
+  <isLakeOf rdf:resource="#minnesota" />
+</Lake>
+<Lake rdf:ID="huron">
+  <rdfs:label xml:lang="en">huron</rdfs:label>
+  <lakeArea>59570</lakeArea>
+  <isLakeOf rdf:resource="#michigan" />
+</Lake>
+<Lake rdf:ID="michigan2">
+  <rdfs:label xml:lang="en">michigan</rdfs:label>
+  <lakeArea>58016</lakeArea>
+  <isLakeOf rdf:resource="#michigan" />
+  <isLakeOf rdf:resource="#indiana" />
+  <isLakeOf rdf:resource="#illinois" />
+  <isLakeOf rdf:resource="#wisconsin" />
+</Lake>
+<Lake rdf:ID="erie">
+  <rdfs:label xml:lang="en">erie</rdfs:label>
+  <lakeArea>25667</lakeArea>
+  <isLakeOf rdf:resource="#newYork" />
+  <isLakeOf rdf:resource="#pennsylvania" />
+  <isLakeOf rdf:resource="#ohio" />
+  <isLakeOf rdf:resource="#michigan" />
+</Lake>
+<Lake rdf:ID="ontario">
+  <rdfs:label xml:lang="en">ontario</rdfs:label>
+  <lakeArea>19684</lakeArea>
+  <isLakeOf rdf:resource="#newYork" />
+</Lake>
+<Lake rdf:ID="greatSaltLake">
+  <rdfs:label xml:lang="en">great salt lake</rdfs:label>
+  <lakeArea>5180</lakeArea>
+  <isLakeOf rdf:resource="#utah" />
+</Lake>
+<Lake rdf:ID="lakeOfTheWoods">
+  <rdfs:label xml:lang="en">lake of the woods</rdfs:label>
+  <lakeArea>4391</lakeArea>
+  <isLakeOf rdf:resource="#minnesota" />
+</Lake>
+<Lake rdf:ID="iliamna">
+  <rdfs:label xml:lang="en">iliamna</rdfs:label>
+  <lakeArea>2675</lakeArea>
+  <isLakeOf rdf:resource="#alaska" />
+</Lake>
+<Lake rdf:ID="okeechobee">
+  <rdfs:label xml:lang="en">okeechobee</rdfs:label>
+  <lakeArea>1810</lakeArea>
+  <isLakeOf rdf:resource="#florida" />
+</Lake>
+<Lake rdf:ID="pontchartrain">
+  <rdfs:label xml:lang="en">pontchartrain</rdfs:label>
+  <lakeArea>1632</lakeArea>
+  <isLakeOf rdf:resource="#louisiana" />
+</Lake>
+<Lake rdf:ID="becharof">
+  <rdfs:label xml:lang="en">becharof</rdfs:label>
+  <lakeArea>1186</lakeArea>
+  <isLakeOf rdf:resource="#alaska" />
+</Lake>
+<Lake rdf:ID="red">
+  <rdfs:label xml:lang="en">red</rdfs:label>
+  <lakeArea>1169</lakeArea>
+  <isLakeOf rdf:resource="#minnesota" />
+</Lake>
+<Lake rdf:ID="st.Clair">
+  <rdfs:label xml:lang="en">st. clair</rdfs:label>
+  <lakeArea>1119</lakeArea>
+  <isLakeOf rdf:resource="#michigan" />
+</Lake>
+<Lake rdf:ID="champlain">
+  <rdfs:label xml:lang="en">champlain</rdfs:label>
+  <lakeArea>1114</lakeArea>
+  <isLakeOf rdf:resource="#vermont" />
+  <isLakeOf rdf:resource="#newYork" />
+</Lake>
+<Lake rdf:ID="rainy">
+  <rdfs:label xml:lang="en">rainy</rdfs:label>
+  <lakeArea>932</lakeArea>
+  <isLakeOf rdf:resource="#minnesota" />
+</Lake>
+<Lake rdf:ID="saltonSea">
+  <rdfs:label xml:lang="en">salton sea</rdfs:label>
+  <lakeArea>932</lakeArea>
+  <isLakeOf rdf:resource="#california" />
+</Lake>
+<Lake rdf:ID="teshekpuk">
+  <rdfs:label xml:lang="en">teshekpuk</rdfs:label>
+  <lakeArea>816</lakeArea>
+  <isLakeOf rdf:resource="#alaska" />
+</Lake>
+<Lake rdf:ID="naknek">
+  <rdfs:label xml:lang="en">naknek</rdfs:label>
+  <lakeArea>630</lakeArea>
+  <isLakeOf rdf:resource="#alaska" />
+</Lake>
+<Lake rdf:ID="winnebago">
+  <rdfs:label xml:lang="en">winnebago</rdfs:label>
+  <lakeArea>557</lakeArea>
+  <isLakeOf rdf:resource="#wisconsin" />
+</Lake>
+<Lake rdf:ID="milleLacs">
+  <rdfs:label xml:lang="en">mille lacs</rdfs:label>
+  <lakeArea>536</lakeArea>
+  <isLakeOf rdf:resource="#minnesota" />
+</Lake>
+<Lake rdf:ID="flathead">
+  <rdfs:label xml:lang="en">flathead</rdfs:label>
+  <lakeArea>510</lakeArea>
+  <isLakeOf rdf:resource="#montana" />
+</Lake>
+<Lake rdf:ID="tahoe">
+  <rdfs:label xml:lang="en">tahoe</rdfs:label>
+  <lakeArea>497</lakeArea>
+  <isLakeOf rdf:resource="#nevada" />
+  <isLakeOf rdf:resource="#california" />
+</Lake>
+
+</rdf:RDF>

@@ -1,0 +1,31 @@
+PREFIX sesame: <http://www.openrdf.org/schema/sesame#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+SELECT DISTINCT ?E ?T ?L ?P
+WHERE {
+      #### Query component extracting the ontology data
+      { ?E rdf:type ?T.
+      FILTER (?T = rdfs:Class ||
+              ?T = rdf:Property || ?T = owl:Class 
+              || ?T = owl:DatatypeProperty || ?T = owl:ObjectProperty ) .
+              # Label Retrieval sub-component
+              OPTIONAL {
+              ?E ?P ?L.
+              FILTER (?P = rdfs:label).
+              }
+      } 
+        
+        UNION
+       #now get instances and their direct types with labels and literals
+       {?E sesame:directType ?T.
+        FILTER (!regex(str(?T), "^http://www.w3.org/*", "i")).
+        # Label Retrieval sub-component
+        
+        ?E ?P ?L.
+        FILTER isLiteral(?L).
+        }
+       
+        # General domain name filter for the Entity
+        FILTER (!regex(str(?E), "^http://www.w3.org/*", "i")) . 
+        }
