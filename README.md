@@ -47,7 +47,7 @@ Download Solr 4.6 Recommended version: http://lucene.apache.org/solr/downloads.h
 
 unpack SOLR and go to example dir
 
-Copy conf file into relevant dir 
+Copy conf file into relevant dir -> example/solr/collection1/conf 
 
 
 Reindexing SOLR:
