@@ -7,9 +7,9 @@ found through ontology reasoning and are initially ranked using the combination 
 FREyA Web Site:
 https://sites.google.com/site/naturallanguageinterfaces/freya
 
------
-Preparation:
 
+Preparation
+--------------------------------------------------------------------------------
 1. Prepare your repository: you can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
 [Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)
 
@@ -21,7 +21,8 @@ cd ~/projects
 
 git clone https://github.com/danicadamljanovic/freya freya
 
-Quickstart Freya (using Mooney geography):
+Quickstart Freya (using Mooney geography)
+--------------------------------------------------------------------------------
 
 1. Update freya.properties to point to your repositoryURL and repositoryId.
    - you can find mooney ontology in freya-annotate/src/main/resources/ontologies/mooney folder
@@ -30,7 +31,7 @@ Quickstart Freya (using Mooney geography):
 3. Copy war file into your tomcat webapps folder and start tomcat.
 4. Open it: http://localhost:8080/freya
 
---------------------------------------------------------------------------------
+
 Using freya with other ontologies
 --------------------------------------------------------------------------------
 
@@ -38,7 +39,7 @@ Using freya with other ontologies
 2. Open the homepage of freya at: http://localhost:8080/freya
 and click 'Reindex'.
 
---------------------------------------------------------------------------------
+
 Setting up SOLR:
 --------------------------------------------------------------------------------
 
@@ -48,7 +49,7 @@ unpack SOLR and go to example dir
 
 Copy conf file into relevant dir 
 
-----------------------------------------
+
 Reindexing SOLR:
 ----------------------------------------
 If for any reason you want to wipe out the SORL index and build it again, the best way to do this is as follows:
@@ -64,18 +65,18 @@ http://localhost:8983/solr/update?stream.body=%3Ccommit/%3E
 http://localhost:8080/freya/service/solr/reindex
 
 
-- What types of natural language queries are supported by FREyA?
+What types of natural language queries are supported by FREyA?
 --------------------------------------------------------------------------------
-Factual questions: 
+Factual questions, e.g.:
 -  List cities.
 -  What is the capital of California?
 -  What is the smallest city in California? (using minimum function on cityPopulation of City locatedIn California)
 -  What is the largest city in California? (using maximum function on cityPopulation of City locatedIn California)
 -  What is the total state area? (using sum function on stateArea)
 -  what is the average population of the cities in california? (using avg function on cityPopulation of City locatedIn California)  
-----------------------------------------
-----------------------------------------
-SPARQL example 1
+
+
+SPARQL example
 ----------------------------------------
 NLP query: 
 
