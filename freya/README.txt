@@ -21,6 +21,16 @@ unpack solr and go to example dir
 
 Copy conf file into relevant dir 
 
+-----
+How to set up FREyA to work with a new dataset (initialise the lucene index):
+create empty owlim repository (ruleset=empty, so no inference)
+create Lucene/SOLR index - basic
+create another owlim repository with ruleset=rdfs
+update Lucene index (connect to owlim-rdfs):
+add subClasses
+add properties
+START FREyA
+
 - --------- --------- --------- --------- --------- --------- ---------
 Licence
 - --------- --------- --------- --------- --------- --------- ---------
