@@ -1,0 +1,21 @@
+------
+Q: I would like to learn about FREyA, where do I start?
+
+A: The short summary of FREyA accompanied with Mooney dataset evaluation can be found in this paper:
+D. Damljanovic, M. Agatonovic, H. Cunningham: Natural Language Interfaces to Ontologies: Combining Syntactic Analysis and Ontology- based Lookup through the User Interaction. In Proceedings of the 7th Extended Semantic Web Conference (ESWC’10), Springer Verlag, Heraklion, Greece, May 31-June 3, 2010.
+Link: https://gate.ac.uk/sale/eswc10/freya-main.pdf
+
+The other paper which focuses on the portability - configuring FREyA to work with 
+huge datasets. It explains how to port FREyA to DBpedia and MusicBrainz:
+D. Damljanovic, M. Agatonovic, H. Cunningham: FREyA: an Interactive Way of Querying Linked Data using Natural Language. In: Pro- ceedings of 1st Workshop on Question Answering over Linked Data (QALD-1), collocated with the 8th Extended Semantic Web Confer- ence (ESWC’11). Heraklion, Greece, June 2011.
+http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.228.2539&rep=rep1&type=pdf
+
+Also, Chapters 9 of my thesis largerly covers the above papers, but perhaps has some more details:
+Damljanovic, D. (2011) Natural Language Interfaces to Conceptual Models. PhD thesis, University of Sheffield.
+http://etheses.whiterose.ac.uk/1630/2/Damljanovic%2C_Danica.pdf
+
+------
+Q: How can I turn off disambiguation dialogue in FREyA?
+
+A: You can use askNoDialog method from FreyaService - if you call localhost:8080/freya/index-auto.html
+that should do it.
