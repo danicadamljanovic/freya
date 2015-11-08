@@ -110,10 +110,10 @@ are relevant if you decide to do that. This is not a recommended route.
 
 How to set up FREyA to work with a new dataset (initialise the lucene index):
 ----------------------------------------
-create empty owlim repository (ruleset=empty, so no inference)
-create Lucene/SOLR index - basic
-create another owlim repository with ruleset=rdfs
-update Lucene index (connect to owlim-rdfs):
-add subClasses
-add properties
-START FREyA
+1. create empty owlim repository (ruleset=empty, so no inference)
+2. create Lucene/SOLR index - basic
+3. create another owlim repository with ruleset=rdfs
+4. update Lucene index (connect to owlim-rdfs):
+5. add subClasses
+6. add properties
+7. START FREyA
