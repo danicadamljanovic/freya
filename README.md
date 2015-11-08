@@ -99,14 +99,17 @@ Uploading bulk ontologies using Freya:
 use loadBulk service from FreyaService.
 
 See an example in FreyaServiceTest.loadBulk;
-----------------------------------------
+
+
 Lucene instead of Solr (depricated)
 ----------------------------------------
 FREya out of the box works with Solr. It is possible to use it with 
 Lucene only, however that will require some code changes. Below notes 
 are relevant if you decide to do that. This is not a recommended route.
------
+
+
 How to set up FREyA to work with a new dataset (initialise the lucene index):
+----------------------------------------
 create empty owlim repository (ruleset=empty, so no inference)
 create Lucene/SOLR index - basic
 create another owlim repository with ruleset=rdfs
