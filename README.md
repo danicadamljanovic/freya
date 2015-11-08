@@ -1,14 +1,15 @@
-# freya
-FREyA is a Natural Language Interface for Querying Ontologies
-FREyA is an interactive Natural Language Interface for querying ontologies which combines usability enhancement methods such as feedback and clari
-cation dialogs in an attempt to: 1) improve recall by generating the dialog and enriching the domain lexicon from the user's vocabulary, whenever an "unknown" term appears in a question 2) improve precision by resolving ambiguities more effectively through the dialog. The suggestions shown to the user are
-found through ontology reasoning and are initially ranked using the combination of string similarity and synonym detection. The system then learns from the user's selections, and improves its performance over time.
+# FREyA
+FREyA - a Natural Language Interface for Querying Ontologies
+
+FREyA is an interactive Natural Language Interface for querying ontologies which combines usability enhancement methods such as feedback and clarification dialogs in order to:
+1) improve recall by generating the dialog and enriching the domain lexicon from the user's vocabulary, whenever an "unknown" term appears in a question
+2) improve precision by resolving ambiguities more effectively through the dialog. The suggestions shown to the user are found through ontology reasoning and are initially ranked using the combination of string similarity and synonym detection. The system then learns from the user's selections, and improves its performance over time.
 
 FREyA Web Site:
 https://sites.google.com/site/naturallanguageinterfaces/freya
 
 
-Preparation
+ Install FREyA
 --------------------------------------------------------------------------------
 1. Prepare your repository: you can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
 [Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)
@@ -37,7 +38,7 @@ Using freya with other ontologies
 
 1. Configure freya.properties to point to the right repositoryURL and repositoryId
 2. Open the homepage of freya at: http://localhost:8080/freya
-and click 'Reindex'.
+and click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
 
 
 Setting up SOLR:
@@ -73,7 +74,7 @@ Factual questions, e.g.:
 -  What is the smallest city in California? (using minimum function on cityPopulation of City locatedIn California)
 -  What is the largest city in California? (using maximum function on cityPopulation of City locatedIn California)
 -  What is the total state area? (using sum function on stateArea)
--  what is the average population of the cities in california? (using avg function on cityPopulation of City locatedIn California)  
+-  What is the average population of the cities in california? (using avg function on cityPopulation of City locatedIn California)  
 
 
 SPARQL example
@@ -98,3 +99,18 @@ Uploading bulk ontologies using Freya:
 use loadBulk service from FreyaService.
 
 See an example in FreyaServiceTest.loadBulk;
+----------------------------------------
+Lucene instead of Solr (depricated)
+----------------------------------------
+FREya out of the box works with Solr. It is possible to use it with 
+Lucene only, however that will require some code changes. Below notes 
+are relevant if you decide to do that. This is not a recommended route.
+-----
+How to set up FREyA to work with a new dataset (initialise the lucene index):
+create empty owlim repository (ruleset=empty, so no inference)
+create Lucene/SOLR index - basic
+create another owlim repository with ruleset=rdfs
+update Lucene index (connect to owlim-rdfs):
+add subClasses
+add properties
+START FREyA
