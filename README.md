@@ -55,15 +55,12 @@ Reindexing SOLR:
 ----------------------------------------
 If for any reason you want to wipe out the SORL index and build it again, the best way to do this is as follows:
 
-1. Startup your solr
-2. In the browser call this command:
-http://localhost:8983/solr/update?stream.body=%3Cdelete%3E%3Cquery%3E*:*%3C/query%3E%3C/delete%3E
-3. Then this command:
-http://localhost:8983/solr/update?stream.body=%3Ccommit/%3E
-4. Wait for X seconds for updates to take place
-5. Start up freya
-6. Call Reindex from the freya home page or directly:
-http://localhost:8080/freya/service/solr/reindex
+1. Start up your solr
+2. Start up Freya platform
+3. Call **Reindex** from the Freya home page
+
+By clicking the **reindex** link, the existing index will be automatically removed, and you will be able to see the reindex processing in a new browser window.
+
 
 
 What types of natural language queries are supported by FREyA?
