@@ -1,5 +1,15 @@
 package org.freya.index.solr;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -18,29 +28,32 @@ import org.openrdf.query.QueryEvaluationException;
 import org.openrdf.query.TupleQueryResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import java.io.IOException;
-import java.util.*;
-
-public class TripleIndexer {
+public class TripleIndexer implements DisposableBean {
 
     private static final Logger log = LoggerFactory.getLogger(TripleIndexer.class);
 
     private final static List<String> FILTER_CLASS_AND_PROPERTY_URIS = Arrays.asList(
-                    "http://www.w3.org/2002/07/owl#Class",
-                    "http://www.w3.org/2000/01/rdf-schema#Class",
-                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
-                    "http://www.w3.org/2002/07/owl#DatatypeProperty",
-                    "http://www.w3.org/2002/07/owl#ObjectProperty"
-                    );
+            "http://www.w3.org/2002/07/owl#Class",
+            "http://www.w3.org/2000/01/rdf-schema#Class",
+            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+            "http://www.w3.org/2002/07/owl#DatatypeProperty",
+            "http://www.w3.org/2002/07/owl#ObjectProperty"
+    );
 
     private final List<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 
-    @Autowired @Qualifier("rdfRepository") private SesameRepositoryManager sesame;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    @Autowired private QueryUtil queryUtil;
+    @Autowired
+    @Qualifier("rdfRepository")
+    private SesameRepositoryManager sesame;
+
+    @Autowired
+    private QueryUtil queryUtil;
 
     private SolrServer solrServer;
 
@@ -53,36 +66,49 @@ public class TripleIndexer {
     }
 
     public void indexAll() {
-        try {
-            solrServer.deleteByQuery("*:*");
-            indexbaseQueryClassesAndProperties();
-            indexBaseQueryInstances();
-            indexSubClasses();
-            indexPropertyRangeAndDomain();
-            solrServer.add(docs);
-            solrServer.commit();
-        } catch (SolrServerException e) {
-            log.error("Error while communicating with SolrServer", e);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            log.error("Error while adding document to Solr", e);
-            throw new RuntimeException(e);
-        }
+        this.executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    //clear();
+                    indexbaseQueryClassesAndProperties();
+                    indexBaseQueryInstances();
+                    indexSubClasses();
+                    indexPropertyRangeAndDomain();
+                    solrServer.add(docs);
+                    solrServer.commit();
+                } catch (SolrServerException e) {
+                    log.error("Error while communicating with SolrServer", e);
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    log.error("Error while adding document to Solr", e);
+                    throw new RuntimeException(e);
+                } finally {
+                    docs.clear();
+                }
+            }
+        });
     }
 
     public void clear() {
-        try {
-            solrServer.deleteByQuery("*:*");
-           
-            solrServer.commit();
-        } catch (SolrServerException e) {
-            log.error("Error while communicating with SolrServer", e);
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            log.error("Error while adding document to Solr", e);
-            throw new RuntimeException(e);
-        }
+        this.executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    solrServer.deleteByQuery("*:*");
+                    solrServer.commit();
+                    log.info("## Deleted all indexes.");
+                } catch (SolrServerException e) {
+                    log.error("Error while communicating with SolrServer", e);
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    log.error("Error while adding document to Solr", e);
+                    throw new RuntimeException(e);
+                }
+            }
+        });
     }
+
     public void indexbaseQueryClassesAndProperties() {
         log.info("## Reindexing classes and properties ...");
         String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryClassesAndProperties.sparql");
@@ -138,7 +164,7 @@ public class TripleIndexer {
                     addDocument(property.stringValue(), rangeUri, range.stringValue());
                 }
                 if (domain != null) {
-                    addDocument(property.stringValue(), domainUri, domain.stringValue());;
+                    addDocument(property.stringValue(), domainUri, domain.stringValue());
                 }
             }
         } catch (QueryEvaluationException e) {
@@ -153,8 +179,8 @@ public class TripleIndexer {
         }
     }
 
-    private void indexBaseQuery(Collection<String> filterUris, String baseQuery, String position, boolean camelCase,
-                    boolean saveStemmed) {
+    private void indexBaseQuery(Collection<String> filterUris, String baseQuery,
+                                String position, boolean camelCase, boolean saveStemmed) {
         for (String uri : filterUris) {
             String query = addExtraStatement(baseQuery, uri, position);
             TupleQueryResult result = sesame.executeQuery(query, false);
@@ -198,8 +224,8 @@ public class TripleIndexer {
         return filterUris;
     }
 
-    private void addIndex(TupleQueryResult result, String filterUri, boolean camelCase, boolean saveStemmed)
-                    throws QueryEvaluationException {
+    private void addIndex(TupleQueryResult result, String filterUri, boolean camelCase,
+                          boolean saveStemmed) throws QueryEvaluationException {
         log.info("indexing for filter URI <" + filterUri + ">");
         while (result.hasNext()) {
             BindingSet row = result.next();
@@ -243,8 +269,8 @@ public class TripleIndexer {
         variations.addAll(filteredContentWords);
     }
 
-    private void addDocument(Set<String> variations, String instanceURI, String classURI, String predURI,
-                    boolean saveStemmed) {
+    private void addDocument(Set<String> variations, String instanceURI,
+                             String classURI, String predURI, boolean saveStemmed) {
         log.debug("addDocument: " + instanceURI + ", " + classURI + ", " + predURI + ", " + variations);
         for (String variation : variations) {
             SolrInputDocument doc = new SolrInputDocument();
@@ -277,28 +303,21 @@ public class TripleIndexer {
 
     private String addExtraStatement(String baseQuery, String filterURI, String where) {
         String additionalStatement = "  ?E rdf:type <" + filterURI + "> .";
-        // int whereEnd = baseQuery.lastIndexOf("}");
-        int whereStart = -1;
-        // if (firstIndex){
-        whereStart = baseQuery.indexOf(where);
-        // }
-        // else{
-        // whereEnd=baseQuery.lastIndexOf(stringToBeSearchedInTheBaseQuery);
-        // }
+        int whereStart = baseQuery.indexOf(where);
+
         if (whereStart == -1) {
-            throw new RuntimeException("Character: "
-                            + where + " NOT found in SPARQL:\n"
-                            + baseQuery);
+            throw new RuntimeException("Character: " + where + " NOT found in SPARQL:\n" + baseQuery);
         }
-        //else
-        //    whereStart = whereStart + 1;
-        
+
         String beginPart = baseQuery.substring(0, whereStart).trim();
-        String endPart = baseQuery.substring(whereStart+where.length());
-        
-        return beginPart+ "\n" + where + "\n"
-                        + additionalStatement + endPart;
-        
+        String endPart = baseQuery.substring(whereStart + where.length());
+
+        return beginPart + "\n" + where + "\n" + additionalStatement + endPart;
+
     }
 
+    @Override
+    public void destroy() throws Exception {
+        this.executor.shutdownNow();
+    }
 }
