@@ -11,7 +11,7 @@ https://sites.google.com/site/naturallanguageinterfaces/freya
 
  Install FREyA
 --------------------------------------------------------------------------------
-1. Prepare your repository
+[Prepare your repository]
 
 You can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
 
@@ -31,7 +31,7 @@ When you created a repository, click 'Add' under 'Modify' and upload your ontolo
 
 You can also use mooney ontology from freya-annotate/src/main/resources/ontologies/mooney folder.
 
-2. Set up SOLR
+[Set up SOLR]
 
 Download Solr 4.6 version: http://archive.apache.org/dist/lucene/solr/4.6.0/
 
