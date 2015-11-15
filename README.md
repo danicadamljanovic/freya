@@ -15,17 +15,24 @@ https://sites.google.com/site/naturallanguageinterfaces/freya
 
 You can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
 
-[Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)
+[Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)]
+
 Download Sesame version 4.0 from http://rdf4j.org/
+
 Copy the two war files from war directory into your tomcat's webapp directory
 
 Open http://localhost:8080/openrdf-workbench in your browser and create a new repository.
+
 For example, you can specify id: 'mooney' and type of repository as 'Native Java Store RDF Schema aand Direct Type Hierarchy'.
+
 Leave everything else as default.
 
-When you created a repository, click 'Add' under 'Modify' and upload your ontology. You can also use mooney ontology from freya-annotate/src/main/resources/ontologies/mooney folder.
+When you created a repository, click 'Add' under 'Modify' and upload your ontology. 
+
+You can also use mooney ontology from freya-annotate/src/main/resources/ontologies/mooney folder.
 
 2. Set up SOLR
+
 Download Solr 4.6 version: http://archive.apache.org/dist/lucene/solr/4.6.0/
 
 unpack SOLR and go to example dir
@@ -33,8 +40,11 @@ unpack SOLR and go to example dir
 Copy conf file from freya-annotate/src/main/resources/solr into relevant dir -> example/solr/collection1/conf 
 
 run Solr:
+
 from the example dir run:
+
 java -jar start.jar
+
 this will start solr on the default port: 8983
 
 You are now ready to install Freya.
