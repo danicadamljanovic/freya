@@ -65,10 +65,15 @@ If you wish to change that you will need to do so before building freya: update 
  src/main/resources/META-INF/spring/freya.properties file.
 
 STEP 2: mvn clean install -DskipTests will create war file in freya-annotate/target directory and skip running all tests
+
 STEP 3: Copy war file into your tomcat webapps folder e.g. 
+
 cp freya-annotate/target/freya.war /Applications/apache-tomcat-8.0.28/webapps/
+
 STEP 4: Start tomcat e.g. from tomcat's bin directory do sh ./catalina.sh run
+
 STEP 5: Open the home page: http://localhost:8080/freya
+
 STEP 6: Click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
 
 
