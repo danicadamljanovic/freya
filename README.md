@@ -11,7 +11,7 @@ https://sites.google.com/site/naturallanguageinterfaces/freya
 
  Install FREyA
 --------------------------------------------------------------------------------
-[Prepare your repository]
+STEP 1: SET UP RDF REPOSITORY
 
 You can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
 
@@ -31,7 +31,7 @@ When you created a repository, click 'Add' under 'Modify' and upload your ontolo
 
 You can also use mooney ontology from freya-annotate/src/main/resources/ontologies/mooney folder.
 
-[Set up SOLR]
+STEP 2: SET UP SOLR REPOSITORY
 
 Download Solr 4.6 version: http://archive.apache.org/dist/lucene/solr/4.6.0/
 
@@ -47,13 +47,12 @@ java -jar start.jar
 
 this will start solr on the default port: 8983
 
-You are now ready to install Freya.
 
+STEP 3: INSTALL FREYA
 
-Quickstart Freya (using Mooney geography)
+Install FREyA
 --------------------------------------------------------------------------------
-
-1. Check out the FREyA code
+STEP 1: Check out the FREyA code
 
 cd to the dir where you want to check out the freya project e.g. 
 
@@ -65,12 +64,12 @@ The default settings for the rdf repository is 'http://localhost:8080/openrdf-se
 If you wish to change that you will need to do so before building freya: update your repositoryURL and repositoryId in
  src/main/resources/META-INF/spring/freya.properties file.
 
-2. mvn clean install -DskipTests will create war file in freya-annotate/target directory and skip running all tests
-3. Copy war file into your tomcat webapps folder e.g. 
+STEP 2: mvn clean install -DskipTests will create war file in freya-annotate/target directory and skip running all tests
+STEP 3: Copy war file into your tomcat webapps folder e.g. 
 cp freya-annotate/target/freya.war /Applications/apache-tomcat-8.0.28/webapps/
-4. Start tomcat e.g. from tomcat's bin directory do sh ./catalina.sh run
-5. Open the home page: http://localhost:8080/freya
-6. Click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
+STEP 4: Start tomcat e.g. from tomcat's bin directory do sh ./catalina.sh run
+STEP 5: Open the home page: http://localhost:8080/freya
+STEP 6: Click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
 
 
 Reindexing SOLR:
