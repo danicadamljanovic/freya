@@ -11,10 +11,39 @@ https://sites.google.com/site/naturallanguageinterfaces/freya
 
  Install FREyA
 --------------------------------------------------------------------------------
-1. Prepare your repository: you can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
-[Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)
+1. Prepare your repository
 
-2. Check out the FREyA code
+You can use sesame workbench to set up a Sesame SPARQL endpoint or you could use OWLIM:
+
+[Setting up OWLIM repository using Sesame Workbench (http://researchsemantics.blogspot.co.uk/2012/03/set-up-your-own-sparql-endpoint-with.html)
+Download Sesame version 4.0 from http://rdf4j.org/
+Copy the two war files from war directory into your tomcat's webapp directory
+
+Open http://localhost:8080/openrdf-workbench in your browser and create a new repository.
+For example, you can specify id: 'mooney' and type of repository as 'Native Java Store RDF Schema aand Direct Type Hierarchy'.
+Leave everything else as default.
+
+When you created a repository, click 'Add' under 'Modify' and upload your ontology. You can also use mooney ontology from freya-annotate/src/main/resources/ontologies/mooney folder.
+
+2. Set up SOLR
+Download Solr 4.6 version: http://archive.apache.org/dist/lucene/solr/4.6.0/
+
+unpack SOLR and go to example dir
+
+Copy conf file from freya-annotate/src/main/resources/solr into relevant dir -> example/solr/collection1/conf 
+
+run Solr:
+from the example dir run:
+java -jar start.jar
+this will start solr on the default port: 8983
+
+You are now ready to install Freya.
+
+
+Quickstart Freya (using Mooney geography)
+--------------------------------------------------------------------------------
+
+1. Check out the FREyA code
 
 cd to the dir where you want to check out the freya project e.g. 
 
@@ -22,33 +51,16 @@ cd ~/projects
 
 git clone https://github.com/danicadamljanovic/freya freya
 
-Quickstart Freya (using Mooney geography)
---------------------------------------------------------------------------------
+The default settings for the rdf repository is 'http://localhost:8080/openrdf-sesame' as repositoryUrl, and 'mooney' as id.
+If you wish to change that you will need to do so before building freya: update your repositoryURL and repositoryId in
+ src/main/resources/META-INF/spring/freya.properties file.
 
-1. Update freya.properties to point to your repositoryURL and repositoryId.
-   - you can find mooney ontology in freya-annotate/src/main/resources/ontologies/mooney folder
-   - it is recommended to use owlimlite with owlimhorst when setting up repository
 2. mvn clean install -DskipTests will create war file in freya-annotate/target directory and skip running all tests
-3. Copy war file into your tomcat webapps folder and start tomcat.
-4. Open it: http://localhost:8080/freya
-
-
-Using freya with other ontologies
---------------------------------------------------------------------------------
-
-1. Configure freya.properties to point to the right repositoryURL and repositoryId
-2. Open the homepage of freya at: http://localhost:8080/freya
-and click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
-
-
-Setting up SOLR:
---------------------------------------------------------------------------------
-
-Download Solr 4.6 Recommended version: http://lucene.apache.org/solr/downloads.html
-
-unpack SOLR and go to example dir
-
-Copy conf file from freya-annotate/src/main/resources/solr into relevant dir -> example/solr/collection1/conf 
+3. Copy war file into your tomcat webapps folder e.g. 
+cp freya-annotate/target/freya.war /Applications/apache-tomcat-8.0.28/webapps/
+4. Start tomcat e.g. from tomcat's bin directory do sh ./catalina.sh run
+5. Open the home page: http://localhost:8080/freya
+6. Click 'Reindex' (or point your browser to http://localhost:8080/freya/service/solr/reindex)
 
 
 Reindexing SOLR:
