@@ -38,7 +38,7 @@ public class SolrAnnotatorTest {
         Annotation annotation = new Annotation();
         annotation.setText("cities");
         List<Annotation> result = solrAnnotator.searchExactContentFirst(annotation);
-        assertEquals(4, result.size());
+        assertEquals(1, result.size());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SolrAnnotatorTest {
 
         annotation.setText("cities");
         result = solrAnnotator.searchExactContentFirst(annotation);
-        assertEquals(4, result.size());
+        assertEquals(1, result.size());
 
         annotation.setText("River");
         result = solrAnnotator.searchExactContentFirst(annotation);

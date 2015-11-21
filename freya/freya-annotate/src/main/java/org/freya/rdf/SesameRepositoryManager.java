@@ -25,12 +25,15 @@ import org.openrdf.repository.config.RepositoryConfig;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.repository.manager.LocalRepositoryManager;
+import org.openrdf.repository.sail.SailRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
 import org.openrdf.rio.RDFParseException;
 import org.openrdf.rio.RDFParser;
 import org.openrdf.rio.Rio;
+import org.openrdf.sail.inferencer.fc.ForwardChainingRDFSInferencer;
+import org.openrdf.sail.memory.MemoryStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,8 +68,8 @@ public class SesameRepositoryManager implements RepositoryManager {
 	@Value("${org.freya.rdf.sesame.repository.ontology.load.pattern}")
 	String ontologyLoadPattern;
 
-	@Value("${org.freya.rdf.owlim.config}")
-	String config;
+	// @Value("${org.freya.rdf.owlim.config}")
+	// String config;
 
 	@Value("${org.freya.rdf.sesame.repository.localmanagerstoragedir}")
 	String localRepositoryManagerDir;
@@ -171,63 +174,68 @@ public class SesameRepositoryManager implements RepositoryManager {
 	 * load ontologies from URLs
 	 */
 	void initLocalRepository() {
-		InputStream configFileInputStream;
+		// InputStream configFileInputStream;
 		try {
-			ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-			org.springframework.core.io.Resource[] resources = resolver
-					.getResources(config);
-			configFileInputStream = resources[0].getInputStream();
+			// ResourcePatternResolver resolver = new
+			// PathMatchingResourcePatternResolver();
+			// org.springframework.core.io.Resource[] resources = resolver
+			// .getResources(config);
+			// configFileInputStream = resources[0].getInputStream();
 
-			repositoryManager = new LocalRepositoryManager(new File(
-					localRepositoryManagerDir));
+			// repositoryManager = new LocalRepositoryManager(new File(
+			// localRepositoryManagerDir));
+			//
+			// repositoryManager.initialize();
 
-			repositoryManager.initialize();
+			repository = new SailRepository(
+					new ForwardChainingRDFSInferencer(new MemoryStore()));
+			repository.initialize();
+
 			log.debug("Local repository initialised, ontologies not yet added");
 		} catch (Exception e) {
-			log.error("error loading local repository, configFile:{}", config,
-					e);
+			log.error("error loading local repository", e);
 			throw new RuntimeException(e);
 		}
 
-		final Graph graph = new GraphImpl();
-		RDFParser parser = Rio.createParser(RDFFormat.TURTLE);
-		RDFHandler handler = new RDFHandler() {
-			public void endRDF() throws RDFHandlerException {
-			}
+		// final Graph graph = new GraphImpl();
+		// RDFParser parser = Rio.createParser(RDFFormat.TURTLE);
+		// RDFHandler handler = new RDFHandler() {
+		// public void endRDF() throws RDFHandlerException {
+		// }
+		//
+		// public void handleComment(String arg0) throws RDFHandlerException {
+		// }
+		//
+		// public void handleNamespace(String arg0, String arg1)
+		// throws RDFHandlerException {
+		// }
+		//
+		// public void handleStatement(Statement arg0)
+		// throws RDFHandlerException {
+		// graph.add(arg0);
+		// }
+		//
+		// public void startRDF() throws RDFHandlerException {
+		// }
+		// };
+		// parser.setRDFHandler(handler);
 
-			public void handleComment(String arg0) throws RDFHandlerException {
-			}
+		// try {
+		// parser.parse(configFileInputStream, "http://example.org#");
+		// Iterator<Statement> iter = graph.match(null, RDF.TYPE, new URIImpl(
+		// "http://www.openrdf.org/config/repository#Repository"));
+		// org.openrdf.model.Resource repNode = null;
+		// if (iter.hasNext()) {
+		// Statement st = iter.next();
+		// repNode = st.getSubject();
+		// }
+		// repConfig = RepositoryConfig.create(graph, repNode);
+		// repositoryManager.addRepositoryConfig(repConfig);
 
-			public void handleNamespace(String arg0, String arg1)
-					throws RDFHandlerException {
-			}
-
-			public void handleStatement(Statement arg0)
-					throws RDFHandlerException {
-				graph.add(arg0);
-			}
-
-			public void startRDF() throws RDFHandlerException {
-			}
-		};
-		parser.setRDFHandler(handler);
-
-		try {
-			parser.parse(configFileInputStream, "http://example.org#");
-			Iterator<Statement> iter = graph.match(null, RDF.TYPE, new URIImpl(
-					"http://www.openrdf.org/config/repository#Repository"));
-			org.openrdf.model.Resource repNode = null;
-			if (iter.hasNext()) {
-				Statement st = iter.next();
-				repNode = st.getSubject();
-			}
-			repConfig = RepositoryConfig.create(graph, repNode);
-			repositoryManager.addRepositoryConfig(repConfig);
-
-		} catch (Exception e) {
-			log.error("error parsing file:{}", config, e);
-			throw new RuntimeException(e);
-		}
+		// } catch (Exception e) {
+		// log.error("error parsing file:{}", config, e);
+		// throw new RuntimeException(e);
+		// }
 	}
 
 	@PostConstruct
@@ -252,7 +260,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 				throw new RuntimeException(
 						"couldn't create local repository manager");
 			}
-			repository = repositoryManager.getRepository(repositoryId);
+			// repository = repositoryManager.getRepository(repositoryId);
 		}
 
 		try {
