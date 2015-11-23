@@ -218,7 +218,7 @@ public class FreyaService {
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/askNoDialog", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/askNoDialog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public List<FreyaResponse> askNoDialog(
 			@RequestParam(value = "query") String query,
 			HttpServletRequest request) throws Exception {

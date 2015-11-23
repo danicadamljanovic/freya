@@ -24,7 +24,7 @@ public class SolrAnnotatorTest {
 
     @Autowired
     private SolrAnnotator solrAnnotator;
-
+    
     @Test
     public void testExactMatch() throws Exception {
         Annotation annotation = new Annotation();
@@ -38,7 +38,7 @@ public class SolrAnnotatorTest {
         Annotation annotation = new Annotation();
         annotation.setText("cities");
         List<Annotation> result = solrAnnotator.searchExactContentFirst(annotation);
-        assertEquals(1, result.size());
+        assertEquals(4, result.size());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class SolrAnnotatorTest {
 
         annotation.setText("cities");
         result = solrAnnotator.searchExactContentFirst(annotation);
-        assertEquals(1, result.size());
+        assertEquals(4, result.size());
 
         annotation.setText("River");
         result = solrAnnotator.searchExactContentFirst(annotation);

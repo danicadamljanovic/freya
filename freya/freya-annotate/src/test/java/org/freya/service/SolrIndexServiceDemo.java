@@ -3,7 +3,6 @@ package org.freya.service;
 import java.util.Map;
 import static org.springframework.http.HttpMethod.POST;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.freya.model.service.FreyaResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;

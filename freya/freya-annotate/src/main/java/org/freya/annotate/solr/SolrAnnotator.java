@@ -31,7 +31,15 @@ public class SolrAnnotator {
     @Autowired
     private TripleIndexer indexer;
 
-    public SolrDocumentList query(String k, String v) {
+    public TripleIndexer getIndexer() {
+		return indexer;
+	}
+
+	public void setIndexer(TripleIndexer indexer) {
+		this.indexer = indexer;
+	}
+
+	public SolrDocumentList query(String k, String v) {
         SolrQuery query = new SolrQuery();
         query.setParam("fl", "*,score");
         query.setQuery(k + ":\"" + v + "\"");

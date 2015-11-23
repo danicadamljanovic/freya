@@ -24,7 +24,7 @@ public class FocusDemo {
     
     @Autowired Mapper mapper;
 
-    @Test
+   // @Test
     public void testMapper() throws Exception {
 
     	File inFile = new File("src/test/resources/FactualQuestions.txt");
