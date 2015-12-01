@@ -59,58 +59,58 @@
 		</dependency>
 
 
-	<dependency>
+		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
 			<version>4.0.0</version>
-									 <exclusions>
-              <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-              </exclusion>
-                            <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-cache</artifactId>
-              </exclusion>
-                            <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient-osgi</artifactId>
-              </exclusion>              
-                          <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclientcomponents-core</artifactId>
-              </exclusion>    
-              <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-              </exclusion>
-                           <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore-nio</artifactId>
-              </exclusion>
-                                         <exclusion>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore-osgi</artifactId>
-              </exclusion>
-            </exclusions>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient-cache</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient-osgi</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclientcomponents-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore-nio</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore-osgi</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpclient</artifactId>
-	<version>4.5.1</version>
-</dependency>
-<dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpcore</artifactId>
-	<version>4.4.4</version>
-</dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
+		</dependency>
 
 
-<!-- <dependency> -->
-<!-- 	<groupId>org.openrdf.sesame</groupId> -->
-<!-- 	<artifactId>sesame-http-client</artifactId> -->
-<!-- 	<version>4.0.0</version> -->
-<!-- </dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.openrdf.sesame</groupId> -->
+		<!-- <artifactId>sesame-http-client</artifactId> -->
+		<!-- <version>4.0.0</version> -->
+		<!-- </dependency> -->
 
 
 		<dependency>
@@ -253,12 +253,13 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
-		
-		<dependency>
-	<groupId>org.apache.httpcomponents</groupId>
-	<artifactId>httpcore</artifactId>
-	<version>4.4.1</version>
+
+<dependency>
+	<groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-databind</artifactId>
+	<version>2.6.3</version>
 </dependency>
-		
+
+
 	</dependencies>
 </project>

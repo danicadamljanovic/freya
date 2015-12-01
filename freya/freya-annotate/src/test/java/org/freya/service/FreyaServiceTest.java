@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jackson.map.ObjectMapper;
 import org.freya.model.service.FreyaResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,6 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.servlet.DispatcherServlet;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Maps;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -73,11 +74,15 @@ public class FreyaServiceTest {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("query", "List capitals.");
 
-		FreyaResponse[] actual = objectMapper.readValue(
-				send(GET, "/ask", parameters).getContentAsString(),
-				FreyaResponse[].class);
-		log.info(actual[0].getTextResponse().toString());
-		// assertTrue( actual.getTextResponse());
+//		FreyaResponse[] actual = objectMapper.readValue(
+//				send(GET, "/ask", parameters).getContentAsString(),
+//				FreyaResponse[].class);
+//		log.info(actual[0].getTextResponse().toString());
+		
+		String response = send(GET, "/ask", parameters).getContentAsString();
+		FreyaResponse[] actual = objectMapper.readValue(response, FreyaResponse[].class);
+		System.out.println(response);
+		assertNotNull(actual[0].getTextResponse().toString());
 	}
 
 	@Test
