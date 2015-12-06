@@ -19,3 +19,7 @@ Q: How can I turn off disambiguation dialogue in FREyA?
 
 A: You can use askNoDialog method from FreyaService - if you call localhost:8080/freya/index-auto.html
 that should do it.
+------
+Q: Does FREyA understand multiple sentences?
+
+A: No. However, there is a partial support in FREyA for multiple sentences/questions. There is some work left to be done in order to have it working properly.

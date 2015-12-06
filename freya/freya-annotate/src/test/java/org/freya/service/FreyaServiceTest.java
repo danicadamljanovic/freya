@@ -2,19 +2,13 @@ package org.freya.service;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.POST;
-
-import java.io.File;
 import java.net.URI;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-//import org.codehaus.jackson.map.ObjectMapper;
 import org.freya.model.service.FreyaResponse;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -215,7 +209,7 @@ public class FreyaServiceTest {
 
 	// uncomment this to run the loadBulk service
 	//@Test
-	public void loadBulk() throws Exception {
+	public void testLoadBulk() throws Exception {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("url", "http://localhost:8080/openrdf-sesame");
 		parameters.put("id", "fibo");

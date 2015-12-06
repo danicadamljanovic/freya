@@ -23,7 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * this class communicates with stanford executor and query (gate) executor and mappes results of one to the other (pocs
+ * this class communicates with stanford executor and query (gate/solr) executor and mapps results of one to the other (pocs
  * to ocs)
  * 
  * @author danica
@@ -63,9 +63,9 @@ public class Mapper {
      * @param preferLonger
      * @return
      */
-    public Question processQuestionLucene(String text, boolean forceDialog,
+    public Question processQuestion(String text, boolean forceDialog,
                     Long forceDialogThreshold, boolean preferLonger) {
-        return processQuestionLucene(text, forceDialog, forceDialogThreshold, preferLonger,
+        return processQuestion(text, forceDialog, forceDialogThreshold, preferLonger,
                         forceDialog);
     }
 
@@ -78,7 +78,7 @@ public class Mapper {
      * @param preferLonger
      * @return
      */
-    public Question processQuestionLucene(String text, boolean forceDialog,
+    public Question processQuestion(String text, boolean forceDialog,
                     Long forceDialogThreshold, boolean preferLonger, boolean addNoneToOCDialog) {
         Question question = new Question();
         // get POCs start
@@ -96,12 +96,12 @@ public class Mapper {
                                         question.getSyntaxTree(), preferLonger);
 
 
-        // /filter instance class or class instance
+        // filter instance class or class instance
         long start = System.currentTimeMillis();
         Set<Annotation> toRemove = ocUtil.filterInstanceClass(lookupsList);
         logger.info("To remove due to automatic disambiguation:" + toRemove.size());
-        // ///////////////////////////////////////////////////
-        // //////////move this somewhere else start ////////////////
+        /////////////////////////////////////////////////////////////////////////
+        ///////////move this somewhere else start ///////////////////////////////
         Set<POC> pocsToRemove = new HashSet<POC>();
         if (toRemove.size() > 0) {
             lookupsList.removeAll(toRemove);
@@ -123,8 +123,8 @@ public class Mapper {
             }
 
         }
-        // ///////////////////////////////////////////////////
-        // //////////move this somewhere else end ////////////////
+        /////////////////////////////////////////////////////////
+        ////////////move this somewhere else end ////////////////
 
         question.getPocs().removeAll(pocsToRemove);
 
@@ -173,7 +173,7 @@ public class Mapper {
                         + (endTime - startTime) + " ms.");
         // remove POCs if OCs exist over the same span
         startTime = System.currentTimeMillis();
-        question = resolvePocsWhichOverlapWithOcsLucene(question);
+        question = resolvePocsWhichOverlapWithOcs(question);
         logger.info("Current pocs:" + question.getPocs());
         endTime = System.currentTimeMillis();
         logger.info("Resolved POC which overlap with OCs for " + (endTime - startTime) + " ms.");
@@ -302,7 +302,7 @@ public class Mapper {
      * @param ocs
      * @return
      */
-    public Question resolvePocsWhichOverlapWithOcsLucene(Question question) {
+    public Question resolvePocsWhichOverlapWithOcs(Question question) {
         logger.debug("Checking whether any POC is overlaped with OC so that we can remove it...");
         List<List<SemanticConcept>> table = question.getSemanticConcepts();
         // check here which pocs overlap with ocs

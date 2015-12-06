@@ -67,6 +67,7 @@ public class FreyaServiceHelper {
 
 	@Autowired
 	private LearningModelHelper learningModelHelper;
+
 	@Qualifier("rdfRepository")
 	@Autowired
 	SesameRepositoryManager repository;
@@ -81,128 +82,116 @@ public class FreyaServiceHelper {
 	String forceDialogThreshold;
 
 	/**
-	 * this method just goes on with the selecting automatically all first
-	 * options
+	 * @param query
+	 * @return
+	 */
+	public List<Question> processQuestion(String query) throws Exception {
+		// false, false?
+		return processQuestion(query, null, null);
+	}
+
+	public List<Question> processQuestion(String query, Boolean forceTheDialog) throws Exception {
+		return processQuestion(query, forceTheDialog, null);
+	}
+
+	/**
+	 * this method simulates the user clicking the first-ranked option in the
+	 * dialogue
 	 * 
 	 * @param query
 	 * 
 	 * @return
 	 */
-	public List<FreyaResponse> processQuestionAutomatically(String input) {
+	public List<FreyaResponse> processQuestionAutomatically(String input) throws Exception {
 		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
 		List<Question> questions = processQuestion(input);
-		for (Question q : questions) {
-			FreyaResponse response = processQuestionAutomatically(q);
+		for (Question sentence : questions) {
+			FreyaResponse response = processQuestionAutomatically(sentence);
 			responses.add(response);
 		}
 		return responses;
 	}
 
-	public FreyaResponse processQuestionAutomatically(Question sentence) {
-		// Map result = new HashMap();
+	/**
+	 * this method simulates the user clicking the first-ranked option in the
+	 * dialogue
+	 * 
+	 * @param sentence
+	 * @return
+	 */
+	public FreyaResponse processQuestionAutomatically(Question sentence) throws Exception {
+
 		FreyaResponse response = new FreyaResponse();
 
 		boolean questionRequiresDialog = true;
 		while (questionRequiresDialog) {
-			long startTime = System.currentTimeMillis();
-			SuggestionPair pair = null;
-			boolean resolvingOc = false;
-			if (dialogManager.requiresOCDialog(sentence, new Boolean(forceDialogue))) {
-				resolvingOc = true;
-				pair = dialogManager.generateDisambiguationDialog(sentence, new Boolean(forceDialogue));
-			} else if (dialogManager.requiresPOCDialog(sentence)) {
-				resolvingOc = false;
-				pair = dialogManager.generateMappingPocToOcDialog(sentence);
-			} else {
-				resolvingOc = false;
-				questionRequiresDialog = false;
-				if (sentence.getSemanticConcepts().size() > 5) {
-					logger.error("More than 5 columns!? Probably something wrong...for question:"
-							+ sentence.getSyntaxTree());
-					return null;
+			try {
+				long startTime = System.currentTimeMillis();
+				SuggestionPair pair = null;
+				// boolean resolvingOc = false;
+				if (dialogManager.requiresOCDialog(sentence, new Boolean(forceDialogue))) {
+					// resolvingOc = true;
+					pair = dialogManager.generateDisambiguationDialog(sentence, new Boolean(forceDialogue));
+				} else if (dialogManager.requiresPOCDialog(sentence)) {
+					// resolvingOc = false;
+					pair = dialogManager.generateMappingPocToOcDialog(sentence);
+				} else {
+					// resolvingOc = false;
+					questionRequiresDialog = false;
+					if (sentence.getSemanticConcepts().size() > 5) {
+						logger.error("More than 5 columns!? Probably something wrong...for question:"
+								+ sentence.getSyntaxTree());
+						return null;
+					}
+					response = returnAnswer(sentence);
+					return response;
 				}
-				response = returnAnswer(sentence);
-				return response;
+				Vote firstVote = pair.getVote().get(0);
+				List<SemanticConcept> cocs = pair.getKey().getNearestNeighbours();
+				String coc = "";
+				for (SemanticConcept sc : cocs) {
+					String genericElement = (String) learningModelHelper.findGenericElement(sc.getOntologyElement());
+					coc = coc + genericElement;
+				}
+				List<SemanticConcept> candidates = new ArrayList<SemanticConcept>();
+				candidates.add(firstVote.getCandidate());
+				sentence = removePocOrOcFromQuestion(pair.getCurrentDialogSubject(), candidates, sentence);
+				long endTime = System.currentTimeMillis();
+				logger.info("Generating answer for " + (endTime - startTime) + " ms.");
+			} catch (Exception e) {
+				throw e;
 			}
-			Vote firstVote = pair.getVote().get(0);
-			List<SemanticConcept> cocs = pair.getKey().getNearestNeighbours();
-			String coc = "";
-			for (SemanticConcept sc : cocs) {
-				String genericElement = (String) learningModelHelper.findGenericElement(sc.getOntologyElement());
-				coc = coc + genericElement;
-			}
-			List<SemanticConcept> candidates = new ArrayList<SemanticConcept>();
-			candidates.add(firstVote.getCandidate());
-			sentence = removePocOrOcFromQuestion(pair.getCurrentDialogSubject(), candidates, sentence);
-			long endTime = System.currentTimeMillis();
-			logger.info("Generating answer for " + (endTime - startTime) + " ms.");
 		}
 		return null;// "Something went wrong!!!!!!!";
 	}
 
 	/**
-	 * @param query
-	 * @return
-	 */
-	public List<Question> processQuestion(String query) {
-		return processQuestion(query, null, null);
-	}
-
-	public List<Question> processQuestion(String query, Boolean forceTheDialog) {
-		return processQuestion(query, forceTheDialog, null);
-	}
-
-	/**
-	 * configure different modes and process question
+	 * Configure different modes and process question.
 	 * 
 	 * @param query
 	 * @param forceTheDialog
 	 * @param thePreferLonger
 	 * @return
 	 */
-	public List<Question> processQuestion(String inputParagraph, Boolean forceTheDialog, Boolean thePreferLonger) {
+	public List<Question> processQuestion(String inputParagraph, Boolean forceTheDialog, Boolean thePreferLonger)
+			throws Exception {
 
 		logger.debug("Sumbitted query:" + inputParagraph);
 		List<Question> sentences = new ArrayList<Question>();
-		// setConfiguration(forceTheDialog, thePreferLonger);
-		List<String> inputParagraphSentences = sentenceSplitter.split(inputParagraph);
+		try {
+			List<String> inputParagraphSentences = sentenceSplitter.split(inputParagraph);
 
-		for (String inputSentence : inputParagraphSentences) {
-			Question sentence = mapper.processQuestionLucene(inputSentence, new Boolean(forceDialogue).booleanValue(),
-					new Long(forceDialogThreshold), new Boolean(preferLonger).booleanValue(),
-					new Boolean(addNoneToOCDialog));
-			sentences.add(sentence);
+			for (String inputSentence : inputParagraphSentences) {
+				Question sentence = mapper.processQuestion(inputSentence,
+						new Boolean(forceDialogue).booleanValue(), new Long(forceDialogThreshold),
+						new Boolean(preferLonger).booleanValue(), new Boolean(addNoneToOCDialog));
+				sentences.add(sentence);
+			}
+		} catch (Exception e) {
+			throw e;
 		}
 		return sentences;
 	}
-
-	/**
-	 * 
-	 * @param forceTheDialog
-	 * @param thePreferLonger
-	 */
-	// void setConfiguration(Boolean forceTheDialog, Boolean thePreferLonger) {
-	// read prop file
-	// InputStream is =
-	// this.getClass().getResourceAsStream("/Service.properties");
-	// Properties ps = new Properties();
-	// try {
-	// ps.load(is);
-	// } catch (IOException e1) {
-	// // TODO Auto-generated catch block
-	// e1.printStackTrace();
-	// }
-	// if (forceTheDialog == null)
-	// forceDialog = new Boolean(ps.getProperty("forceDialog"));
-	// else
-	// forceDialog = forceTheDialog;
-	// if (thePreferLonger == null)
-	// preferLonger = new Boolean(ps.getProperty("preferLonger"));
-	// else
-	// preferLonger = thePreferLonger;
-	// addNoneToOCDialog = new Boolean(ps.getProperty("addNoneToOCDialog"));
-	// forceDialogThreshold = new Long(ps.getProperty("forceDialogThreshold"));
-	// }
 
 	/**
 	 * this method checks whether the dialog needs to be modelled and if not it
@@ -212,7 +201,6 @@ public class FreyaServiceHelper {
 	 * @return
 	 */
 	FreyaResponse dialogOrNot(Question question, String query, HttpSession session) throws Exception {
-		// Map result = new HashMap();
 		FreyaResponse response = new FreyaResponse();
 		Object answer = null;
 		try {
@@ -270,7 +258,7 @@ public class FreyaServiceHelper {
 	 * @return
 	 */
 	FreyaResponse returnAnswer(Question question) {
-		// String answer = null;
+
 		FreyaResponse response = new FreyaResponse();
 		int counter = 1;
 		int steps = 5;
@@ -305,9 +293,8 @@ public class FreyaServiceHelper {
 		List<List<String>> list2DOfResults = (List<List<String>>) map.get(FreyaConstants.TABLE);
 		int numberOfResults = 0;
 		if (list2DOfResults != null && list2DOfResults.size() > 0) {
-			numberOfResults = list2DOfResults.size() - 1;// -1 zato sto je prvi
-															// red
-															// variable
+			// first row is variable names so we can skip
+			numberOfResults = list2DOfResults.size() - 1;
 		}
 		List<List<OntologyElement>> elementsTable = (List<List<OntologyElement>>) map.get(FreyaConstants.ELEMENTS);
 		Map mapWithNumberOfResultsAndTriples = ocAnalyser.getResultGraph(map);
@@ -335,7 +322,6 @@ public class FreyaServiceHelper {
 		if (aGraph != null)
 			try {
 				response = jsonCreator.createJsonNodeFromResultGraph(aGraph, table, response);
-				// map.put(FreyaConstants.ANSWER, answer);
 			} catch (Exception e) {
 				logger.info(e.getMessage());
 			}
@@ -346,9 +332,7 @@ public class FreyaServiceHelper {
 		startTime = endTime;
 		endTime = System.currentTimeMillis();
 		logger.debug("Saved sparql to file for " + (endTime - startTime) + " ms." + counter + "/" + steps);
-		// map.put(FreyaConstants.QUESTION, question);
 		return response;
-		// return map;
 	}
 
 	/**
@@ -386,10 +370,9 @@ public class FreyaServiceHelper {
 	 * @throws Exception
 	 */
 	public FreyaResponse refineQuestion(String query, String[] voteIdString, HttpSession session) throws Exception {
-		long globalStartTime = System.currentTimeMillis();
+
 		FreyaResponse response = null;
-		// Map map = new HashMap();
-		String answer = null;
+
 		List<Question> questions = (List<Question>) session.getAttribute(query);
 		// TODO: ASSUMES IT ALWAYS WORKS WITH ONE QUESTION!!
 		Question question = questions.get(0);
@@ -438,8 +421,7 @@ public class FreyaServiceHelper {
 			} else {
 				Object dialogSubject = pair.getCurrentDialogSubject();
 				// dialogSubject is null when OCs are in the dialog, otherwise
-				// they
-				// hold POC
+				// they hold POC
 				question = removePocOrOcFromQuestion(dialogSubject, candidates, question);
 				startTime = System.currentTimeMillis();
 				question = consolidator.consolidateTheAnswerType(question);
@@ -448,7 +430,6 @@ public class FreyaServiceHelper {
 				List<Question> updatedQuestions = new ArrayList<Question>();
 				updatedQuestions.add(question);
 				session.setAttribute(query, updatedQuestions);
-				// session.setAttribute(query, question);
 			}
 			// call the method dialogOrNot which returns the answer/dialog
 			startTime = System.currentTimeMillis();
@@ -490,7 +471,7 @@ public class FreyaServiceHelper {
 			logger.debug("Removed the sem. concepts for " + (endTime - startTime) + " ms.");
 			/* now resolve any pocs as a result of resolved oc * */
 			startTime = System.currentTimeMillis();
-			question = mapper.resolvePocsWhichOverlapWithOcsLucene(question);
+			question = mapper.resolvePocsWhichOverlapWithOcs(question);
 			endTime = System.currentTimeMillis();
 			logger.debug("Resolved POCs which overlap with OCs for " + (endTime - startTime) + " ms.");
 			logger.debug("question has:" + question.getSemanticConcepts().size() + " columns.");
@@ -511,7 +492,14 @@ public class FreyaServiceHelper {
 		}
 		return question;
 	}
-
+/**
+ * load ontologies
+ * @param repositoryURL
+ * @param repositoryId
+ * @param source
+ * @param preloadInputStream
+ * @throws RepositoryException
+ */
 	public void load(String repositoryURL, String repositoryId, String source, InputStream preloadInputStream)
 			throws RepositoryException {
 		if (repositoryURL != repository.getRepositoryURL()) {
@@ -529,7 +517,11 @@ public class FreyaServiceHelper {
 		}
 		repository.loadByInputStream(source, preloadInputStream);
 	}
-
+/**
+ * 
+ * @param sentences
+ * @return
+ */
 	public List<FreyaResponse> extractAnnotationsFromQuestion(List<Question> sentences) {
 		ArrayList<FreyaResponse> responses = new ArrayList<FreyaResponse>();
 		for (Question sentence : sentences) {

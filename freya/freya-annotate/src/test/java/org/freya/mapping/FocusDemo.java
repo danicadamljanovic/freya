@@ -36,7 +36,7 @@ public class FocusDemo {
     	    String line;
     	    while ((line = br.readLine()) != null) {
     	       // process the line.
-    	    	Question q = mapper.processQuestionLucene(line, false, null, true);
+    	    	Question q = mapper.processQuestion(line, false, null, true);
 
     	    	String focus = null;
     	    	String focusHead = null;
