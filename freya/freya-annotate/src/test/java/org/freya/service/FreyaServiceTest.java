@@ -33,8 +33,7 @@ import com.google.common.collect.Maps;
 @ContextConfiguration(locations = { "classpath*:META-INF/spring/freya-applicationContext.xml" })
 @Configurable
 public class FreyaServiceTest {
-	private static final Logger log = LoggerFactory
-			.getLogger(FreyaServiceTest.class);
+	private static final Logger log = LoggerFactory.getLogger(FreyaServiceTest.class);
 	ObjectMapper objectMapper = new ObjectMapper();
 	private static ApplicationContext applicationContext;
 
@@ -51,10 +50,10 @@ public class FreyaServiceTest {
 		FreyaResponse expected = new FreyaResponse();
 		// expected.setRepositoryId("mooney-native");
 		// expected.setRepositoryUrl("http://localhost:8080/openrdf-sesame");
-		expected.setSparqlQuery("prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> prefix xsd: <http://www.w3.org/2001/XMLSchema#> select distinct ?firstJoker0 where { ?firstJoker0  ?p0 ?d1 .  FILTER ( ?p0=<http://www.mooney.net/geo#cityPopulation>  ) .  FILTER REGEX(str(?d1), \"^California$\",\"i\") .  FILTER (?p0=<http://www.w3.org/2000/01/rdf-schema#label>)} LIMIT 10000");
+		expected.setSparqlQuery(
+				"prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> prefix xsd: <http://www.w3.org/2001/XMLSchema#> select distinct ?firstJoker0 where { ?firstJoker0  ?p0 ?d1 .  FILTER ( ?p0=<http://www.mooney.net/geo#cityPopulation>  ) .  FILTER REGEX(str(?d1), \"^California$\",\"i\") .  FILTER (?p0=<http://www.w3.org/2000/01/rdf-schema#label>)} LIMIT 10000");
 
-		FreyaResponse[] actual = objectMapper.readValue(
-				send(GET, "/getSparql", parameters).getContentAsString(),
+		FreyaResponse[] actual = objectMapper.readValue(send(GET, "/getSparql", parameters).getContentAsString(),
 				FreyaResponse[].class);
 		// assertEquals(expected.getRepositoryId(), actual.getRepositoryId());
 		// assertEquals(expected.getRepositoryUrl(), actual.getRepositoryUrl());
@@ -68,11 +67,11 @@ public class FreyaServiceTest {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("query", "List capitals.");
 
-//		FreyaResponse[] actual = objectMapper.readValue(
-//				send(GET, "/ask", parameters).getContentAsString(),
-//				FreyaResponse[].class);
-//		log.info(actual[0].getTextResponse().toString());
-		
+		// FreyaResponse[] actual = objectMapper.readValue(
+		// send(GET, "/ask", parameters).getContentAsString(),
+		// FreyaResponse[].class);
+		// log.info(actual[0].getTextResponse().toString());
+
 		String response = send(GET, "/ask", parameters).getContentAsString();
 		FreyaResponse[] actual = objectMapper.readValue(response, FreyaResponse[].class);
 		System.out.println(response);
@@ -84,8 +83,7 @@ public class FreyaServiceTest {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("query", "List cities in California.");
 
-		FreyaResponse[] actual = objectMapper.readValue(
-				send(GET, "/ask", parameters).getContentAsString(),
+		FreyaResponse[] actual = objectMapper.readValue(send(GET, "/ask", parameters).getContentAsString(),
 				FreyaResponse[].class);
 		log.info(actual[0].getTextResponse().toString());
 		// assertTrue( actual.getTextResponse());
@@ -95,12 +93,23 @@ public class FreyaServiceTest {
 	public void askNoDialogue() throws Exception {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("query", "rivers in texas");
-		MockHttpServletResponse response = send(POST, "/askNoDialog",
-				parameters);
-		FreyaResponse[] actual = objectMapper.readValue(
-				response.getContentAsString(), FreyaResponse[].class);
+		MockHttpServletResponse response = send(GET, "/askNoDialog", parameters);
+		FreyaResponse[] actual = objectMapper.readValue(response.getContentAsString(), FreyaResponse[].class);
+		String sparql = actual[0].getPreciseSparql();
+		assertTrue(sparql.contains("joker1"));
 
-		// assertTrue(actual[0].getTextResponse().toString().toLowerCase().contains("joker"));
+		String q1 = "?c0  ?typeRelationc0 <http://www.mooney.net/geo#River>";
+		String q2 = "filter (?i1=<http://www.mooney.net/geo#texas>";
+		assertTrue(actual[0].getPreciseSparql().contains(q1));
+		assertTrue(actual[0].getPreciseSparql().contains(q2));
+		/**
+		 * prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> prefix xsd:
+		 * <http://www.w3.org/2001/XMLSchema#> select distinct ?c0 ?joker1 ?i1
+		 * where {{{ ?c0 ?typeRelationc0 <http://www.mooney.net/geo#River> . }}
+		 * {{ ?i1 ?joker1 ?c0 } UNION { ?c0 ?joker1 ?i1 }} ?i1 ?typeRelationi1
+		 * <http://www.mooney.net/geo#State> . filter (?i1=
+		 * <http://www.mooney.net/geo#texas>) . } LIMIT 10000
+		 **/
 	}
 
 	@Test
@@ -110,18 +119,15 @@ public class FreyaServiceTest {
 		MockHttpServletResponse response = send(GET, "/analyse", parameters);
 
 		String stringContent = response.getContentAsString();
-		FreyaResponse[] actual = objectMapper.readValue(stringContent,
-				FreyaResponse[].class);
+		FreyaResponse[] actual = objectMapper.readValue(stringContent, FreyaResponse[].class);
 
 		assertEquals(2, actual[0].getAnnotations().size());
 
 		log.info(actual[0].getAnnotations().toString());
 
 		assertEquals("california", actual[0].getAnnotations().get(0).getText());
-		assertEquals("http://www.mooney.net/geo#california", actual[0]
-				.getAnnotations().get(0).getUri());
-		assertEquals("http://www.mooney.net/geo#State", actual[0]
-				.getAnnotations().get(0).getType());
+		assertEquals("http://www.mooney.net/geo#california", actual[0].getAnnotations().get(0).getUri());
+		assertEquals("http://www.mooney.net/geo#State", actual[0].getAnnotations().get(0).getType());
 	}
 
 	@Test
@@ -131,18 +137,15 @@ public class FreyaServiceTest {
 		MockHttpServletResponse response = send(GET, "/analyse", parameters);
 
 		String stringContent = response.getContentAsString();
-		FreyaResponse[] actual = objectMapper.readValue(stringContent,
-				FreyaResponse[].class);
+		FreyaResponse[] actual = objectMapper.readValue(stringContent, FreyaResponse[].class);
 
 		assertEquals(2, actual[0].getAnnotations().size());
 
 		log.info(actual[0].getAnnotations().toString());
 
 		assertEquals("california", actual[0].getAnnotations().get(0).getText());
-		assertEquals("http://www.mooney.net/geo#california", actual[0]
-				.getAnnotations().get(0).getUri());
-		assertEquals("http://www.mooney.net/geo#State", actual[0]
-				.getAnnotations().get(0).getType());
+		assertEquals("http://www.mooney.net/geo#california", actual[0].getAnnotations().get(0).getUri());
+		assertEquals("http://www.mooney.net/geo#State", actual[0].getAnnotations().get(0).getType());
 	}
 
 	@Test
@@ -152,18 +155,15 @@ public class FreyaServiceTest {
 		MockHttpServletResponse response = send(GET, "/analyse", parameters);
 
 		String stringContent = response.getContentAsString();
-		FreyaResponse[] actual = objectMapper.readValue(stringContent,
-				FreyaResponse[].class);
+		FreyaResponse[] actual = objectMapper.readValue(stringContent, FreyaResponse[].class);
 
 		assertEquals(1, actual[0].getAnnotations().size());
 
 		log.info(actual[0].getAnnotations().toString());
 
 		assertEquals("california", actual[0].getAnnotations().get(0).getText());
-		assertEquals("http://www.mooney.net/geo#california", actual[0]
-				.getAnnotations().get(0).getUri());
-		assertEquals("http://www.mooney.net/geo#State", actual[0]
-				.getAnnotations().get(0).getType());
+		assertEquals("http://www.mooney.net/geo#california", actual[0].getAnnotations().get(0).getUri());
+		assertEquals("http://www.mooney.net/geo#State", actual[0].getAnnotations().get(0).getType());
 	}
 
 	@Test
@@ -173,16 +173,14 @@ public class FreyaServiceTest {
 		MockHttpServletResponse response = send(GET, "/analyse", parameters);
 
 		String stringContent = response.getContentAsString();
-		FreyaResponse[] actual = objectMapper.readValue(stringContent,
-				FreyaResponse[].class);
+		FreyaResponse[] actual = objectMapper.readValue(stringContent, FreyaResponse[].class);
 
 		assertEquals(1, actual[0].getAnnotations().size());
 
 		log.info(actual[0].getAnnotations().toString());
 
 		assertEquals("city", actual[0].getAnnotations().get(0).getText());
-		assertTrue(actual[0].getAnnotations().get(0).getUri().toLowerCase()
-				.contains("city"));
+		assertTrue(actual[0].getAnnotations().get(0).getUri().toLowerCase().contains("city"));
 		assertNotNull(actual[0].getAnnotations().get(0).getUri());
 	}
 
@@ -193,22 +191,19 @@ public class FreyaServiceTest {
 		MockHttpServletResponse response = send(GET, "/analyse", parameters);
 
 		String stringContent = response.getContentAsString();
-		FreyaResponse[] actual = objectMapper.readValue(stringContent,
-				FreyaResponse[].class);
+		FreyaResponse[] actual = objectMapper.readValue(stringContent, FreyaResponse[].class);
 
 		assertEquals(1, actual[0].getAnnotations().size());
 
 		log.info(actual[0].getAnnotations().toString());
 
-		assertEquals("runs through", actual[0].getAnnotations().get(0)
-				.getText());
-		assertEquals("http://www.mooney.net/geo#runsThrough", actual[0]
-				.getAnnotations().get(0).getUri());
+		assertEquals("runs through", actual[0].getAnnotations().get(0).getText());
+		assertEquals("http://www.mooney.net/geo#runsThrough", actual[0].getAnnotations().get(0).getUri());
 		assertEquals("property", actual[0].getAnnotations().get(0).getType());
 	}
 
 	// uncomment this to run the loadBulk service
-	//@Test
+	// @Test
 	public void testLoadBulk() throws Exception {
 		Map<String, String> parameters = Maps.newHashMap();
 		parameters.put("url", "http://localhost:8080/openrdf-sesame");
@@ -224,15 +219,13 @@ public class FreyaServiceTest {
 		log.info("response:" + response);
 	}
 
-	private MockHttpServletResponse send(HttpMethod method, String path)
-			throws Exception {
+	private MockHttpServletResponse send(HttpMethod method, String path) throws Exception {
 		return send(method, path, null);
 	}
 
-	private MockHttpServletResponse send(HttpMethod method, String path,
-			Map<String, String> parameters) throws Exception {
-		MockHttpServletRequest request = new MockHttpServletRequest(
-				method.name(), path);
+	private MockHttpServletResponse send(HttpMethod method, String path, Map<String, String> parameters)
+			throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest(method.name(), path);
 		request.addHeader("Accept", MediaType.APPLICATION_JSON_VALUE);
 		request.addHeader("Content-type", MediaType.APPLICATION_JSON_VALUE);
 		if (parameters != null) {
@@ -240,15 +233,13 @@ public class FreyaServiceTest {
 		}
 		MockHttpServletResponse response = new MockHttpServletResponse();
 
-		DispatcherServlet servlet = applicationContext
-				.getBean(DispatcherServlet.class);
+		DispatcherServlet servlet = applicationContext.getBean(DispatcherServlet.class);
 		servlet.service(request, response);
 
 		return response;
 	}
 
-	private void asserts(MockHttpServletResponse res, String expected)
-			throws Exception {
+	private void asserts(MockHttpServletResponse res, String expected) throws Exception {
 		assertThat(res.getStatus(), is(HttpStatus.OK.value()));
 		assertThat(res.getContentType(), is(MediaType.APPLICATION_JSON_VALUE));
 		String content = res.getContentAsString();
