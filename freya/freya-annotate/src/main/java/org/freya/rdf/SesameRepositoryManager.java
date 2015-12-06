@@ -247,8 +247,8 @@ public class SesameRepositoryManager implements RepositoryManager {
 		if (repositoryURL != null && !repositoryURL.isEmpty()) {
 			if (username != null && password != null) {
 				repository = new HTTPRepository(repositoryURL, repositoryId);
-				((HTTPRepository) repository).setUsernameAndPassword(username,
-						password);
+//				((HTTPRepository) repository).setUsernameAndPassword(username,
+//						password);
 			} else {
 				throw new RuntimeException(
 						"Not valid username & password for the http repository");

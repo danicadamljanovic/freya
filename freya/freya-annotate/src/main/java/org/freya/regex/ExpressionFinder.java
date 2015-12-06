@@ -71,11 +71,12 @@ public class ExpressionFinder {
                 // Since we're still in the loop, fetch match that was found.
                 result = matcher.getMatch();
                 ++matches;
-                // System.out.println("Match " + matches + ": " + result);
+                System.out.println("Input String " + inputString);
+                System.out.println("Match " + matches + ": " + result);
                 String foundMatch = result.toString();
                 String[] chars = foundMatch.split("");
-                String lowerCase = chars[1];
-                String upperCase = chars[2];
+                String lowerCase = chars[0];
+                String upperCase = chars[1];
                 // adding space (substitute string) in between lower and upper
                 // case
                 StringBuffer substitute = new StringBuffer(lowerCase).append(

@@ -57,17 +57,60 @@
 			<artifactId>stanford-corenlp</artifactId>
 			<version>3.3.0</version>
 		</dependency>
+
+
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
 			<version>4.0.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient-cache</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient-osgi</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclientcomponents-core</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore-nio</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpcore-osgi</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpclient</artifactId>
-			<version>4.3.4</version>
+			<version>4.5.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpcore</artifactId>
+			<version>4.4.4</version>
+		</dependency>
+
+
+		<!-- <dependency> -->
+		<!-- <groupId>org.openrdf.sesame</groupId> -->
+		<!-- <artifactId>sesame-http-client</artifactId> -->
+		<!-- <version>4.0.0</version> -->
+		<!-- </dependency> -->
 
 
 		<dependency>
@@ -152,7 +195,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
-			<version>3.2.4.RELEASE</version>
+			<version>${spring.version}</version>
 		</dependency>
 
 		<!-- mockito -->
@@ -210,5 +253,18 @@
 			<artifactId>guava</artifactId>
 			<version>${guava.version}</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.7.0-rc1</version>
+		</dependency>
+
+
 	</dependencies>
 </project>

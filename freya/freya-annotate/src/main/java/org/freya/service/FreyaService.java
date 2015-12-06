@@ -34,7 +34,45 @@ public class FreyaService {
 	FreyaServiceHelper helper;
 
 	/**
-	 * This method is called for loading ontology files to RDF repository.
+	 * This method is called for the query processing at the click of Submit
+	 * button of the client. It will return the response which either contains
+	 * the answer, or the dialogue information.
+	 * 
+	 * @return Test with:
+	 * 
+	 *         <pre>
+	 * curl --data "query=What is a city?" http://localhost:8080/freya/service/ask
+	 *         </pre>
+	 * 
+	 * @param query
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(value = "/ask", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<FreyaResponse> ask(@RequestParam(value = "query") String query, HttpServletRequest request)
+			throws Exception {
+		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
+		try {
+			HttpSession session = request.getSession(true);
+			long startTime = System.currentTimeMillis();
+			List<Question> questions = helper.processQuestion(query);
+			session.setAttribute(query, questions);
+			for (Question question : questions) {
+				FreyaResponse response = helper.dialogOrNot(question, query, session);
+				responses.add(response);
+			}
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), query, runTime, null));
+		} catch (Exception e) {
+			throw e;
+		}
+		return responses;
+	}
+
+	/**
+	 * This method is used for uploading ontology files to RDF repository.
 	 * Client should set ontology source data in request body as InputStream.
 	 * Use this method if you want to upload files from your local dir for
 	 * example.
@@ -50,20 +88,16 @@ public class FreyaService {
 	@ResponseBody
 	@RequestMapping(value = "/load", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String load(@RequestParam(value = "url") String repositoryURL,
-			@RequestParam(value = "id") String repositoryId,
-			@RequestParam(value = "src") String source,
+			@RequestParam(value = "id") String repositoryId, @RequestParam(value = "src") String source,
 			HttpServletRequest request) {
 
-		logger.info(String.format("params: { url => %s, id => %s, src => %s }",
-				repositoryURL, repositoryId, source));
+		logger.info(String.format("params: { url => %s, id => %s, src => %s }", repositoryURL, repositoryId, source));
 
-		if (StringUtils.isEmpty(repositoryURL)
-				|| StringUtils.isEmpty(repositoryId)) {
+		if (StringUtils.isEmpty(repositoryURL) || StringUtils.isEmpty(repositoryId)) {
 			return "query params: url, id and src cannot be empty!";
 		}
 		try {
-			helper.load(repositoryURL, repositoryId, source,
-					request.getInputStream());
+			helper.load(repositoryURL, repositoryId, source, request.getInputStream());
 		} catch (Exception e) {
 			logger.error(e);
 			return "Exception: " + e.getLocalizedMessage();
@@ -74,7 +108,7 @@ public class FreyaService {
 
 	/**
 	 * This method is called for loading ontology files to RDF repository. The
-	 * ontology directory is provided through source parameter.
+	 * ontology directory is provided through src parameter.
 	 * 
 	 * @param repositoryURL
 	 *            Sesame repository server.
@@ -87,31 +121,24 @@ public class FreyaService {
 	@ResponseBody
 	@RequestMapping(value = "/loadBulk", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public String loadBulk(@RequestParam(value = "url") String repositoryURL,
-			@RequestParam(value = "id") String repositoryId,
-			@RequestParam(value = "src") String source,
+			@RequestParam(value = "id") String repositoryId, @RequestParam(value = "src") String source,
 			HttpServletRequest request) {
 
-		logger.info(String.format("params: { url => %s, id => %s, src => %s }",
-				repositoryURL, repositoryId, source));
+		logger.info(String.format("params: { url => %s, id => %s, src => %s }", repositoryURL, repositoryId, source));
 
-		if (StringUtils.isEmpty(repositoryURL)
-				|| StringUtils.isEmpty(repositoryId)) {
+		if (StringUtils.isEmpty(repositoryURL) || StringUtils.isEmpty(repositoryId)) {
 			return "query params: url, id and src cannot be empty!";
 		}
 		try {
 			File initialFolder = new File(source);
 			if (!initialFolder.isDirectory()) {
-				return String.format(
-						"Specified src parameter is not a directory: %s",
-						source);
+				return String.format("Specified src parameter is not a directory: %s", source);
 			}
-			Collection<File> files = FileUtils.listFiles(initialFolder, null,
-					true);
+			Collection<File> files = FileUtils.listFiles(initialFolder, null, true);
 			logger.info("Attempting to load:" + files.size() + " files.");
 			for (File file : files) {
 				InputStream targetStream = new FileInputStream(file);
-				helper.load(repositoryURL, repositoryId, file.toURI()
-						.toString(), targetStream);
+				helper.load(repositoryURL, repositoryId, file.toURI().toString(), targetStream);
 			}
 		} catch (Exception e) {
 			logger.error(e);
@@ -122,7 +149,7 @@ public class FreyaService {
 	}
 
 	/**
-	 * this method is called for the query processing at the click of Submit
+	 * This method returns a SPARQL interpretation of a Natural Language query.
 	 * 
 	 * @param query
 	 * @return
@@ -130,58 +157,25 @@ public class FreyaService {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/getSparql", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> getSparql(
-			@RequestParam(value = "query") String query,
-			HttpServletRequest request
-
-	) throws Exception {
+	public List<FreyaResponse> getSparql(@RequestParam(value = "query") String query, HttpServletRequest request)
+			throws Exception {
+		List<FreyaResponse> responses = null;
 		HttpSession session = request.getSession(true);
 		long startTime = System.currentTimeMillis();
-		List<FreyaResponse> responses = helper
-				.processQuestionAutomatically(query);
-
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-		logger.info(ProfilerUtil.profileString(session.getId(), query, runTime,
-				null));
-		return responses;
-	}
-
-	/**
-	 * this method is called for the query processing at the click of Submit
-	 * 
-	 * @return Test with:
-	 * 
-	 *         <pre>
-	 * curl --data "query=What is a city?" http://localhost:8080/freya/service/ask
-	 * </pre>
-	 * @param query
-	 * @return
-	 * @throws Exception
-	 */
-	@ResponseBody
-	@RequestMapping(value = "/ask", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> ask(@RequestParam(value = "query") String query,
-			HttpServletRequest request) throws Exception {
-		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
-		HttpSession session = request.getSession(true);
-		long startTime = System.currentTimeMillis();
-		List<Question> questions = helper.processQuestion(query);
-		session.setAttribute(query, questions);
-		for (Question question : questions) {
-			FreyaResponse response = helper.dialogOrNot(question, query,
-					session);
-			responses.add(response);
+		try {
+			responses = helper.processQuestionAutomatically(query);
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), query, runTime, null));
+		} catch (Exception e) {
+			throw e;
 		}
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-		logger.info(ProfilerUtil.profileString(session.getId(), query, runTime,
-				null));
 		return responses;
 	}
 
 	/**
-	 * this method is called when the user selects one of the suggestions
+	 * This method is called when the user selects one of the suggestions in the
+	 * dialogue.
 	 * 
 	 * @param query
 	 * @param request
@@ -190,52 +184,57 @@ public class FreyaService {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/refine", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> refine(
-			@RequestParam(value = "query") String query,
-			@RequestParam(value = "voteId") String[] voteIds,
-
-			HttpServletRequest request) throws Exception {
+	public List<FreyaResponse> refine(@RequestParam(value = "query") String query,
+			@RequestParam(value = "voteId") String[] voteIds, HttpServletRequest request) throws Exception {
 		HttpSession session = request.getSession(true);
-		List responses = new ArrayList();
+		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
 		FreyaResponse response;
 		if (voteIds != null) {
-			response = helper.refineQuestion(query, voteIds, session);
-			responses.add(response);
-			if (responses.size() > 1)
-				logger.info("Refining based on several sentences input is not supported yet.");
+			try {
+				response = helper.refineQuestion(query, voteIds, session);
+				responses.add(response);
+				if (responses.size() > 1)
+					logger.info("Refining based on several sentences input is not supported yet.");
+			} catch (Exception e) {
+				throw e;
+			}
 		} else
-			throw new Exception("Vote id is null! This should never happen!");
+			throw new Exception("voteId is null! This should never happen!");
 		return responses;
 	}
 
 	/**
-	 * this method is called for the query processing at the click of Submit
-	 * when freya is in auto mode; it will similate that all the first options
-	 * are being clicked and generate some result based on them
+	 * This method is called for the query processing when FREyA is in auto
+	 * mode. This means that no dialogue will be generated, and if there is a
+	 * need to do so, FREyA will assume that the top ranked suggestion is the
+	 * correct one.
+	 * 
 	 * 
 	 * @param query
 	 * @return
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@RequestMapping(value = "/askNoDialog", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> askNoDialog(
-			@RequestParam(value = "query") String query,
-			HttpServletRequest request) throws Exception {
+	@RequestMapping(value = "/askNoDialog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<FreyaResponse> askNoDialog(@RequestParam(value = "query") String query, HttpServletRequest request)
+			throws Exception {
+		List<FreyaResponse> responses = null;
 		HttpSession session = request.getSession(true);
 		long startTime = System.currentTimeMillis();
-
-		List<FreyaResponse> responses = helper
-				.processQuestionAutomatically(query);
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-		logger.info(ProfilerUtil.profileString(session.getId(), query, runTime,
-				null));
+		try {
+			responses = helper.processQuestionAutomatically(query);
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), query, runTime, null));
+		} catch (Exception e) {
+			throw e;
+		}
 		return responses;
 	}
 
 	/**
-	 * this method sets true for forceDialog
+	 * This method sets true to forceDialog parameter meaning that the dialogue
+	 * will be generated for each query.
 	 * 
 	 * @param query
 	 * @param request
@@ -244,30 +243,33 @@ public class FreyaService {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/askForceDialog", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> askForceDialog(
-			@RequestParam(value = "query") String query,
-			HttpServletRequest request) throws Exception {
+	public List<FreyaResponse> askForceDialog(@RequestParam(value = "query") String query, HttpServletRequest request)
+			throws Exception {
 		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
 		HttpSession session = request.getSession(true);
 		long startTime = System.currentTimeMillis();
-
-		List<Question> questions = helper.processQuestion(query, true);
-		session.setAttribute(query, questions);
-		for (Question question : questions) {
-			FreyaResponse response = helper.dialogOrNot(question, query,
-					session);
-			responses.add(response);
+		try {
+			List<Question> questions = helper.processQuestion(query, true);
+			session.setAttribute(query, questions);
+			for (Question question : questions) {
+				FreyaResponse response = helper.dialogOrNot(question, query, session);
+				responses.add(response);
+			}
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), query, runTime, null));
+		} catch (Exception e) {
+			throw e;
 		}
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-
-		logger.info(ProfilerUtil.profileString(session.getId(), query, runTime,
-				null));
 		return responses;
 	}
 
 	/**
-	 * this method sets preferLonger to false
+	 * This method sets preferLonger to false and forceDialogue to true. If
+	 * there are ambiguous annotations the default behaviour is that FREyA
+	 * chooses the longest one. When preferLonger is set to false, all
+	 * annotations will be considered, therefore the dialogues will be generated
+	 * for the user to choose the correct one.
 	 * 
 	 * @param query
 	 * @param request
@@ -276,29 +278,30 @@ public class FreyaService {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/askNoFilter", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> askNoFilter(
-			@RequestParam(value = "query") String query,
-			HttpServletRequest request) throws Exception {
-		List responses = new ArrayList<String>();
+	public List<FreyaResponse> askNoFilter(@RequestParam(value = "query") String query, HttpServletRequest request)
+			throws Exception {
+		List<FreyaResponse> responses = new ArrayList<FreyaResponse>();
 		HttpSession session = request.getSession(true);
 		long startTime = System.currentTimeMillis();
 		// force dialog and no filter
-		List<Question> questions = helper.processQuestion(query, true, false);
-		session.setAttribute(query, questions);
-		for (Question question : questions) {
-			FreyaResponse response = helper.dialogOrNot(question, query,
-					session);
-			responses.add(response);
+		try {
+			List<Question> questions = helper.processQuestion(query, true, false);
+			session.setAttribute(query, questions);
+			for (Question question : questions) {
+				FreyaResponse response = helper.dialogOrNot(question, query, session);
+				responses.add(response);
+			}
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), query, runTime, null));
+		} catch (Exception e) {
+			throw e;
 		}
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-		logger.info(ProfilerUtil.profileString(session.getId(), query, runTime,
-				null));
 		return responses;
 	}
 
 	/**
-	 * analysis of input with subject predicate object
+	 * Analysis of input with subject predicate object.
 	 * 
 	 * @param input
 	 * @param request
@@ -307,19 +310,20 @@ public class FreyaService {
 	 */
 	@ResponseBody
 	@RequestMapping(value = "/analyse", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public List<FreyaResponse> analyse(
-			@RequestParam(value = "query") String input,
-			HttpServletRequest request) throws Exception {
+	public List<FreyaResponse> analyse(@RequestParam(value = "query") String input, HttpServletRequest request)
+			throws Exception {
 		HttpSession session = request.getSession(true);
 		long startTime = System.currentTimeMillis();
-		// force dialog and no filter
-		List<Question> sentences = helper.processQuestion(input);
-		long stopTime = System.currentTimeMillis();
-		long runTime = stopTime - startTime;
-		logger.info(ProfilerUtil.profileString(session.getId(), input, runTime,
-				null));
-		List<FreyaResponse> freyaResponses = helper
-				.extractAnnotationsFromQuestion(sentences);
+		List<FreyaResponse> freyaResponses = null;
+		try {
+			List<Question> sentences = helper.processQuestion(input);
+			long stopTime = System.currentTimeMillis();
+			long runTime = stopTime - startTime;
+			logger.info(ProfilerUtil.profileString(session.getId(), input, runTime, null));
+			freyaResponses = helper.extractAnnotationsFromQuestion(sentences);
+		} catch (Exception e) {
+			throw e;
+		}
 		return freyaResponses;
 	}
 

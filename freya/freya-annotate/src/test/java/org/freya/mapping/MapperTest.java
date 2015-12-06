@@ -24,7 +24,7 @@ public class MapperTest {
     @Test
     public void testMapper() throws Exception {
 
-        Question q = mapper.processQuestionLucene("List cities in california.", false, null, true);
+        Question q = mapper.processQuestion("List cities in california.", false, null, true);
 
         assertEquals(2, q.getSemanticConcepts().size());
         

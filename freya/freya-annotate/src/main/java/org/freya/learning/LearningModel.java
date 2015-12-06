@@ -10,17 +10,23 @@ import javax.annotation.PostConstruct;
 import org.apache.commons.io.FileUtils;
 // import org.apache.commons.logging.Log;
 // import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+//import org.codehaus.jackson.JsonGenerationException;
+//import org.codehaus.jackson.JsonParseException;
+//import org.codehaus.jackson.map.JsonMappingException;
+//import org.codehaus.jackson.map.ObjectMapper;
+//import org.codehaus.jackson.type.TypeReference;
 import org.freya.model.learning.Vote;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * this class is initialising the learning model from file; on start up it feeds it into the memory and then it saves it

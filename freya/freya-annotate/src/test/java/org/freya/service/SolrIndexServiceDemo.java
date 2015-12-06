@@ -2,8 +2,7 @@ package org.freya.service;
 
 import java.util.Map;
 import static org.springframework.http.HttpMethod.POST;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.freya.model.service.FreyaResponse;
+//import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -20,7 +19,6 @@ import com.google.common.collect.Maps;
 public class SolrIndexServiceDemo {
 	private static final Logger log = LoggerFactory
 			.getLogger(FreyaServiceTest.class);
-	ObjectMapper objectMapper = new ObjectMapper();
 	private static ApplicationContext applicationContext;
 
 	@BeforeClass

@@ -21,6 +21,8 @@ import org.freya.util.StringUtil;
 import org.openrdf.model.Resource;
 import org.openrdf.model.Value;
 import org.openrdf.model.impl.BNodeImpl;
+import org.openrdf.model.impl.SimpleBNode;
+import org.openrdf.model.impl.SimpleIRI;
 import org.openrdf.model.impl.URIImpl;
 import org.openrdf.query.Binding;
 import org.openrdf.query.BindingSet;
@@ -90,6 +92,27 @@ public class TripleIndexer implements DisposableBean {
         });
     }
 
+    public void indexAllNotThreadSafe() {
+        
+                try {
+                    //clear();
+                    indexbaseQueryClassesAndProperties();
+                    indexBaseQueryInstances();
+                    indexSubClasses();
+                    indexPropertyRangeAndDomain();
+                    solrServer.add(docs);
+                    solrServer.commit();
+                } catch (SolrServerException e) {
+                    log.error("Error while communicating with SolrServer", e);
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    log.error("Error while adding document to Solr", e);
+                    throw new RuntimeException(e);
+                } finally {
+                    docs.clear();
+                }
+    }
+    
     public void clear() {
         this.executor.submit(new Runnable() {
             @Override
@@ -108,7 +131,20 @@ public class TripleIndexer implements DisposableBean {
             }
         });
     }
-
+    public void clearNotThreadSafe() {
+       
+                try {
+                    solrServer.deleteByQuery("*:*");
+                    solrServer.commit();
+                    log.info("## Deleted all indexes.");
+                } catch (SolrServerException e) {
+                    log.error("Error while communicating with SolrServer", e);
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    log.error("Error while adding document to Solr", e);
+                    throw new RuntimeException(e);
+                }
+    }
     public void indexbaseQueryClassesAndProperties() {
         log.info("## Reindexing classes and properties ...");
         String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryClassesAndProperties.sparql");
@@ -181,8 +217,11 @@ public class TripleIndexer implements DisposableBean {
 
     private void indexBaseQuery(Collection<String> filterUris, String baseQuery,
                                 String position, boolean camelCase, boolean saveStemmed) {
+    	
         for (String uri : filterUris) {
             String query = addExtraStatement(baseQuery, uri, position);
+           System.out.println("Query\n"+query);
+           System.out.println("Uri\n"+uri);
             TupleQueryResult result = sesame.executeQuery(query, false);
             try {
                 addIndex(result, uri, camelCase, saveStemmed);
@@ -231,11 +270,11 @@ public class TripleIndexer implements DisposableBean {
             BindingSet row = result.next();
             Value e = row.getBinding(FreyaConstants.VARIABLE_E).getValue();
 
-            URIImpl instanceURI;
-            if (e instanceof BNodeImpl) {
+            SimpleIRI instanceURI;
+            if (e instanceof SimpleBNode) {
                 continue;
             } else {
-                instanceURI = (URIImpl) e;
+                instanceURI = (SimpleIRI) e;
             }
 
             Binding bindingP = row.getBinding(FreyaConstants.VARIABLE_P);
@@ -278,6 +317,8 @@ public class TripleIndexer implements DisposableBean {
             doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, instanceURI);
             doc.addField(FreyaConstants.SOLR_FIELD_CLASS, classURI);
             doc.addField(FreyaConstants.SOLR_FIELD_EXACT_CONTENT, variation.trim());
+            String lc= variation.trim().toLowerCase();
+            doc.addField(FreyaConstants.SOLR_FIELD_LOWERCASE_CONTENT, lc);
 
             if (predURI != null) {
                 doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, predURI);
@@ -297,6 +338,7 @@ public class TripleIndexer implements DisposableBean {
         doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, strInstance);
         doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, strProperty);
         doc.addField(FreyaConstants.SOLR_FIELD_CLASS, strClass);
+        
         docs.add(doc);
         log.debug("addDocument: " + strInstance + ", " + strProperty + ", " + strClass);
     }

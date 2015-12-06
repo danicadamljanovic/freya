@@ -1,0 +1,4 @@
+support of multiple sentences e.g. What is the capital of Florida? What is the highest point of Florida?
+
+Analyse method which outputs the analysis of the input text, and does not generate any SPARQL queries, and similar.
+

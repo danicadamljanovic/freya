@@ -12,9 +12,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.codehaus.jackson.node.ArrayNode;
-import org.codehaus.jackson.node.JsonNodeFactory;
-import org.codehaus.jackson.node.ObjectNode;
+//import org.codehaus.jackson.node.ArrayNode;
+//import org.codehaus.jackson.node.JsonNodeFactory;
+//import org.codehaus.jackson.node.ObjectNode;
 import org.freya.annotate.lucene.LuceneAnnotator;
 import org.freya.model.ClassElement;
 import org.freya.model.DatatypePropertyValueElement;
@@ -37,6 +37,10 @@ import org.freya.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 @Component
 public class JsonCreator {
