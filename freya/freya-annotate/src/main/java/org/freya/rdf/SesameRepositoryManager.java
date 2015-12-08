@@ -26,6 +26,7 @@ import org.openrdf.repository.config.RepositoryConfigException;
 import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.repository.manager.LocalRepositoryManager;
 import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.repository.sparql.SPARQLRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFHandler;
 import org.openrdf.rio.RDFHandlerException;
@@ -94,11 +95,9 @@ public class SesameRepositoryManager implements RepositoryManager {
 		return executeQuery(query, true);
 	}
 
-	public TupleQueryResult executeQuery(final String query,
-			boolean includeInferred) {
+	public TupleQueryResult executeQuery(final String query, boolean includeInferred) {
 		try {
-			final TupleQuery tuple = connection.prepareTupleQuery(
-					QueryLanguage.SPARQL, query);
+			final TupleQuery tuple = connection.prepareTupleQuery(QueryLanguage.SPARQL, query);
 			tuple.setIncludeInferred(includeInferred);
 			return tuple.evaluate();
 
@@ -122,8 +121,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 			String ext = uri.substring(uri.lastIndexOf('.') + 1);
 			RDFFormat format = null;
 			boolean skip = false;
-			if ("owl".equalsIgnoreCase(ext) || "rdf".equalsIgnoreCase(ext)
-					|| "rdfs".equalsIgnoreCase(ext)) {
+			if ("owl".equalsIgnoreCase(ext) || "rdf".equalsIgnoreCase(ext) || "rdfs".equalsIgnoreCase(ext)) {
 				format = RDFFormat.RDFXML;
 			} else if ("nt".equalsIgnoreCase(ext)) {
 				format = RDFFormat.NTRIPLES;
@@ -140,15 +138,12 @@ public class SesameRepositoryManager implements RepositoryManager {
 				// log.info("Started loading {} ({}/{})", uri,
 				// currentFileNumber, numberOfFilesToLoad);
 				try {
-					connection.add(resource.getInputStream(),
-							"http://example.org#", format);
+					connection.add(resource.getInputStream(), "http://example.org#", format);
 				} catch (Exception /*
 									 * RDFParseException | RepositoryException |
 									 * IOException
-									 */e) {
-					log.error(
-							"There was a problem with this uri, uri not loaded:{}",
-							uri, e);
+									 */ e) {
+					log.error("There was a problem with this uri, uri not loaded:{}", uri, e);
 					throw new RuntimeException(e);
 				}
 				log.info("{} loaded.", uri);
@@ -165,8 +160,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 
 	public void loadData() throws IOException, QueryEvaluationException {
 		ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-		org.springframework.core.io.Resource[] resources = resolver
-				.getResources(ontologyLoadPattern);
+		org.springframework.core.io.Resource[] resources = resolver.getResources(ontologyLoadPattern);
 		loadResources(resources);
 	}
 
@@ -187,8 +181,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 			//
 			// repositoryManager.initialize();
 
-			repository = new SailRepository(
-					new ForwardChainingRDFSInferencer(new MemoryStore()));
+			repository = new SailRepository(new ForwardChainingRDFSInferencer(new MemoryStore()));
 			repository.initialize();
 
 			log.debug("Local repository initialised, ontologies not yet added");
@@ -239,26 +232,29 @@ public class SesameRepositoryManager implements RepositoryManager {
 	}
 
 	@PostConstruct
-	public void afterPropertiesSet() throws RepositoryConfigException,
-			RepositoryException {
+	public void afterPropertiesSet() throws RepositoryConfigException, RepositoryException {
 		log.info("afterPropertiesSet() - initialising");
 
 		boolean loadLocal = false;
 		if (repositoryURL != null && !repositoryURL.isEmpty()) {
-			if (username != null && password != null) {
-				repository = new HTTPRepository(repositoryURL, repositoryId);
-//				((HTTPRepository) repository).setUsernameAndPassword(username,
-//						password);
-			} else {
-				throw new RuntimeException(
-						"Not valid username & password for the http repository");
+
+			if (repositoryId == null || "".equals(repositoryId))
+				repository = new SPARQLRepository(repositoryURL);
+			else {
+				if (username != null && password != null) {
+					repository = new HTTPRepository(repositoryURL, repositoryId);
+					// ((HTTPRepository)
+					// repository).setUsernameAndPassword(username,
+					// password);
+				} else {
+					throw new RuntimeException("Not valid username & password for the http repository");
+				}
 			}
 		} else {
 			loadLocal = true;
 			initLocalRepository();
 			if (repositoryManager == null) {
-				throw new RuntimeException(
-						"couldn't create local repository manager");
+				throw new RuntimeException("couldn't create local repository manager");
 			}
 			// repository = repositoryManager.getRepository(repositoryId);
 		}
@@ -275,7 +271,8 @@ public class SesameRepositoryManager implements RepositoryManager {
 			if (loadLocal)
 				loadData();
 		} catch (final RepositoryException e) {
-			// log.error("Not able to connect to the Repository - repositoryId:{}, repositoryURL:{}",
+			// log.error("Not able to connect to the Repository -
+			// repositoryId:{}, repositoryURL:{}",
 			// repositoryId, repositoryURL, e);
 			throw new RuntimeException(e);
 		} catch (final QueryEvaluationException e) {
@@ -285,8 +282,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 			log.error("Problem reading ontology files from the file system.");
 			throw new RuntimeException(e);
 		}
-		log.info(
-				"afterPropertiesSet() - Successfully initialised Sesame Repository using impl: {}",
+		log.info("afterPropertiesSet() - Successfully initialised Sesame Repository using impl: {}",
 				repository.getClass().getName());
 	}
 
@@ -298,11 +294,9 @@ public class SesameRepositoryManager implements RepositoryManager {
 	 *            A string of source file URI.
 	 * @throws RepositoryException
 	 */
-	public void loadByInputStream(String sourceUri,
-			InputStream preloadInputStream) throws RepositoryException {
+	public void loadByInputStream(String sourceUri, InputStream preloadInputStream) throws RepositoryException {
 		if (this.repositoryURL == null) {
-			throw new NullPointerException(
-					"Please set repositoryURL where you want to upload.");
+			throw new NullPointerException("Please set repositoryURL where you want to upload.");
 		}
 		if (this.repositoryId == null) {
 			throw new NullPointerException("Please set a repositoryId.");
@@ -315,8 +309,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 		RDFFormat format = null;
 		boolean skip = false;
 		String ext = sourceUri.substring(sourceUri.lastIndexOf('.') + 1);
-		if ("owl".equalsIgnoreCase(ext) || "rdf".equalsIgnoreCase(ext)
-				|| "rdfs".equalsIgnoreCase(ext)) {
+		if ("owl".equalsIgnoreCase(ext) || "rdf".equalsIgnoreCase(ext) || "rdfs".equalsIgnoreCase(ext)) {
 			format = RDFFormat.RDFXML;
 		} else if ("nt".equalsIgnoreCase(ext)) {
 			format = RDFFormat.NTRIPLES;
@@ -338,8 +331,7 @@ public class SesameRepositoryManager implements RepositoryManager {
 			log.info("Loading:" + sourceUri);
 			Resource resource = getFileResourceFromUri(sourceUri);
 			repository.getConnection().clear(resource);
-			repository.getConnection().add(preloadInputStream,
-					"http://example.org#", format, resource);
+			repository.getConnection().add(preloadInputStream, "http://example.org#", format, resource);
 			repository.getConnection().commit();
 			// this.conn.clear(resource);
 			// this.conn.add(preloadInputStream, "http://example.org#", format,

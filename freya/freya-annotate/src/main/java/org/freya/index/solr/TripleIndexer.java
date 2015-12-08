@@ -251,7 +251,7 @@ public class TripleIndexer implements DisposableBean {
             }
         } catch (QueryEvaluationException e) {
             log.error("ERROR", e);
-            throw new RuntimeException(e.getMessage());
+            //throw new RuntimeException(e.getMessage());
         } finally {
             try {
                 subjectResults.close();
@@ -266,6 +266,7 @@ public class TripleIndexer implements DisposableBean {
     private void addIndex(TupleQueryResult result, String filterUri, boolean camelCase,
                           boolean saveStemmed) throws QueryEvaluationException {
         log.info("indexing for filter URI <" + filterUri + ">");
+        try {
         while (result.hasNext()) {
             BindingSet row = result.next();
             Value e = row.getBinding(FreyaConstants.VARIABLE_E).getValue();
@@ -287,6 +288,9 @@ public class TripleIndexer implements DisposableBean {
             Set<String> variations = new HashSet<String>();
             findVariations(variations, label, camelCase);
             addDocument(variations, instanceURI.stringValue(), filterUri, predURI, saveStemmed);
+        }
+        } catch (Exception e) {
+        	e.printStackTrace();
         }
     }
 
