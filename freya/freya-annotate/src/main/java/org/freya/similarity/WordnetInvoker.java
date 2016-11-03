@@ -94,21 +94,50 @@ public class WordnetInvoker {
         return words;
     }
 
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-        // System.setProperty("wordnet.database.dir", wordnetDir);
-        WordNetDatabase database = WordNetDatabase.getFileInstance();
-        // database.getSynsets(wordForm);
-        // retrieve synsets from the database
-        Synset[] nounFlies = database.getSynsets("split", SynsetType.NOUN);
-        Synset[] allFlies = database.getSynsets("split");
-        System.out.println("Synsets for split:");
-        for (Synset s : allFlies) {
-            System.out.println(s.toString());
-        }
-    }
+	/**
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		System.setProperty(
+				"wordnet.database.dir",
+				"/Users/danica/projects/freya/freya/freya-annotate/src/main/resources/WordNet-3.0/dict/");
+		WordNetDatabase database = WordNetDatabase.getFileInstance();
+		// database.getSynsets(wordForm);
+		// retrieve synsets from the database
+		// Synset[] nounFlies = database.getSynsets("split", SynsetType.NOUN);
+		// Synset[] allFlies = database.getSynsets("split");
+		// System.out.println("Synsets for split:");
+		// for (Synset s : allFlies) {
+		// System.out.println(s.toString());
+		//
+		// }
+		String a[] = { "music", "art", "school" };
+
+		int j = 0;
+		while (j < 2) {
+
+			NounSynset nounSynset;
+			NounSynset[] hyponyms;
+
+			Synset[] synsets = database.getSynsets(a[j], SynsetType.NOUN);
+			System.out.println("*********************************************");
+			for (int i = 0; i < synsets.length; i++) {
+				nounSynset = (NounSynset) (synsets[i]);
+				hyponyms = nounSynset.getHyponyms();
+
+				System.err.println(nounSynset.getWordForms()[0] + ": "
+						+ nounSynset.getDefinition() + ") has "
+						+ hyponyms.length + " hyponyms:");
+
+				for (NounSynset hyponym : hyponyms) {
+					System.out.println(hyponym.getWordForms()[0]);
+				}
+			}
+			j++;
+		}
+		System.out.println("*********************************************");
+
+	}
 
     /**
      * @param text
