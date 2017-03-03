@@ -10,9 +10,9 @@ import java.util.Locale;
  */
 public class NumberUtils {
 	  public static double roundTwoDecimals(double d) {
-		DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.getDefault());
-		decimalSymbols.setDecimalSeparator('.');
-		decimalSymbols.setGroupingSeparator(' ');
+	    DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.getDefault());
+	    decimalSymbols.setDecimalSeparator('.');
+	    decimalSymbols.setGroupingSeparator(' ');
 	    DecimalFormat twoDForm = new DecimalFormat("#.##");
 	    twoDForm.setGroupingUsed(false);
 	    twoDForm.setDecimalFormatSymbols(decimalSymbols);
