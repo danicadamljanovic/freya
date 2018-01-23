@@ -2,29 +2,35 @@ package org.freya.model;
 
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * representation of Potential Ontology Concept
  * 
  * @author danica
  * 
  */
+@XmlRootElement
 public class POC {
 
 	Annotation annotation = new Annotation();
-
-	public Annotation getAnnotation() {
-		return annotation;
-	}
-
-	public void setAnnotation(Annotation annotation) {
-		this.annotation = annotation;
-	}
 
 	POC head;
 
 	MainSubject mainSubject;
 	List<String> modifiers;
 
+
+    public Annotation getAnnotation() {
+        return annotation;
+    }
+
+    public void setAnnotation(Annotation annotation) {
+        this.annotation = annotation;
+    }
+	
 	public POC getHead() {
 		return head;
 	}

@@ -36,334 +36,336 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 public class TripleIndexer implements DisposableBean {
 
-    private static final Logger log = LoggerFactory.getLogger(TripleIndexer.class);
+	private static final Logger log = LoggerFactory.getLogger(TripleIndexer.class);
 
-    private final static List<String> FILTER_CLASS_AND_PROPERTY_URIS = Arrays.asList(
-            "http://www.w3.org/2002/07/owl#Class",
-            "http://www.w3.org/2000/01/rdf-schema#Class",
-            "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
-            "http://www.w3.org/2002/07/owl#DatatypeProperty",
-            "http://www.w3.org/2002/07/owl#ObjectProperty"
-    );
+	private final static List<String> FILTER_CLASS_AND_PROPERTY_URIS = Arrays.asList(
+			"http://www.w3.org/2002/07/owl#Class", "http://www.w3.org/2000/01/rdf-schema#Class",
+			"http://www.w3.org/1999/02/22-rdf-syntax-ns#Property", "http://www.w3.org/2002/07/owl#DatatypeProperty",
+			"http://www.w3.org/2002/07/owl#ObjectProperty");
 
-    private final List<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+	private final List<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
 
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    @Autowired
-    @Qualifier("rdfRepository")
-    private SesameRepositoryManager sesame;
+	@Autowired
+	@Qualifier("rdfRepository")
+	private SesameRepositoryManager sesame;
 
-    @Autowired
-    private QueryUtil queryUtil;
+	@Autowired
+	private QueryUtil queryUtil;
 
-    private SolrServer solrServer;
+	private SolrServer solrServer;
 
-    public SolrServer getSolrServer() {
-        return solrServer;
-    }
+	public SolrServer getSolrServer() {
+		return solrServer;
+	}
 
-    public void setSolrServer(SolrServer solrServer) {
-        this.solrServer = solrServer;
-    }
+	public void setSolrServer(SolrServer solrServer) {
+		this.solrServer = solrServer;
+	}
 
-    public void indexAll() {
-        this.executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    //clear();
-                    indexbaseQueryClassesAndProperties();
-                    indexBaseQueryInstances();
-                    indexSubClasses();
-                    indexPropertyRangeAndDomain();
-                    solrServer.add(docs);
-                    solrServer.commit();
-                } catch (SolrServerException e) {
-                    log.error("Error while communicating with SolrServer", e);
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    log.error("Error while adding document to Solr", e);
-                    throw new RuntimeException(e);
-                } finally {
-                    docs.clear();
-                }
-            }
-        });
-    }
+	public void indexAll() {
+		this.executor.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					// clear();
+					indexbaseQueryClassesAndProperties();
+					indexBaseQueryInstances();
+					indexSubClasses();
+					indexPropertyRangeAndDomain();
+					solrServer.add(docs);
+					solrServer.commit();
+				} catch (SolrServerException e) {
+					log.error("Error while communicating with SolrServer", e);
+					throw new RuntimeException(e);
+				} catch (IOException e) {
+					log.error("Error while adding document to Solr", e);
+					throw new RuntimeException(e);
+				} finally {
+					docs.clear();
+				}
+			}
+		});
+	}
 
-    public void indexAllNotThreadSafe() {
-        
-                try {
-                    //clear();
-                    indexbaseQueryClassesAndProperties();
-                    indexBaseQueryInstances();
-                    indexSubClasses();
-                    indexPropertyRangeAndDomain();
-                    solrServer.add(docs);
-                    solrServer.commit();
-                } catch (SolrServerException e) {
-                    log.error("Error while communicating with SolrServer", e);
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    log.error("Error while adding document to Solr", e);
-                    throw new RuntimeException(e);
-                } finally {
-                    docs.clear();
-                }
-    }
-    
-    public void clear() {
-        this.executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    solrServer.deleteByQuery("*:*");
-                    solrServer.commit();
-                    log.info("## Deleted all indexes.");
-                } catch (SolrServerException e) {
-                    log.error("Error while communicating with SolrServer", e);
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    log.error("Error while adding document to Solr", e);
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-    }
-    public void clearNotThreadSafe() {
-       
-                try {
-                    solrServer.deleteByQuery("*:*");
-                    solrServer.commit();
-                    log.info("## Deleted all indexes.");
-                } catch (SolrServerException e) {
-                    log.error("Error while communicating with SolrServer", e);
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    log.error("Error while adding document to Solr", e);
-                    throw new RuntimeException(e);
-                }
-    }
-    public void indexbaseQueryClassesAndProperties() {
-        log.info("## Reindexing classes and properties ...");
-        String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryClassesAndProperties.sparql");
-        indexBaseQuery(FILTER_CLASS_AND_PROPERTY_URIS, baseQuery, "{", true, true);
-    }
+	public void indexAllNotThreadSafe() {
 
-    public void indexBaseQueryInstances() {
-        log.info("## Reindexing instances ...");
-        String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryInstances.sparql");
-        indexBaseQuery(findFilterUris(), baseQuery, "WHERE {", true, false);
-    }
+		try {
+			// clear();
+			indexbaseQueryClassesAndProperties();
+			indexBaseQueryInstances();
+			indexSubClasses();
+			indexPropertyRangeAndDomain();
+			solrServer.add(docs);
+			solrServer.commit();
+		} catch (SolrServerException e) {
+			log.error("Error while communicating with SolrServer", e);
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			log.error("Error while adding document to Solr", e);
+			throw new RuntimeException(e);
+		} finally {
+			docs.clear();
+		}
+	}
 
-    public void indexSubClasses() {
-        log.info("## Reindexing sub classes ...");
-        String querySubClasses = queryUtil.readQueryContent("/queries/getSubClasses.sparql");
-        TupleQueryResult result = sesame.executeQuery(querySubClasses);
-        String uriSubClassOf = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
-        try {
-            while (result.hasNext()) {
-                BindingSet row = result.next();
-                Resource aClass = (Resource) row.getValue("x");
-                Resource aSubClass = (Resource) row.getValue("y");
-                // add to index: aClass - inst aSubClass -class, subClassOf - pred
-                if (!aClass.stringValue().equals(aSubClass.stringValue())) {
-                    addDocument(aSubClass.stringValue(), uriSubClassOf, aClass.stringValue());
-                }
-            }
-        } catch (QueryEvaluationException e) {
-            log.error("Error while indexing sub classes", e);
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            try {
-                result.close();
-            } catch (QueryEvaluationException e) {
-                log.error("Error while closing result", e);
-            }
-        }
-    }
+	public void clear() {
+		this.executor.submit(new Runnable() {
+			@Override
+			public void run() {
+				try {
+					solrServer.deleteByQuery("*:*");
+					solrServer.commit();
+					log.info("## Deleted all indexes.");
+				} catch (SolrServerException e) {
+					log.error("Error while communicating with SolrServer", e);
+					throw new RuntimeException(e);
+				} catch (IOException e) {
+					log.error("Error while adding document to Solr", e);
+					throw new RuntimeException(e);
+				}
+			}
+		});
+	}
 
-    public void indexPropertyRangeAndDomain() {
-        log.info("## Reindexing property range and domain");
-        String queryPropertyDomainAndRange = queryUtil.readQueryContent("/queries/getPropertyDomainAndRange.sparql");
-        TupleQueryResult result = sesame.executeQuery(queryPropertyDomainAndRange);
-        String rangeUri = "http://www.w3.org/2000/01/rdf-schema#range";
-        String domainUri = "http://www.w3.org/2000/01/rdf-schema#domain";
-        try {
-            while (result.hasNext()) {
-                BindingSet row = result.next();
-                Resource property = (Resource) row.getValue("p");
-                Resource range = (Resource) row.getValue("rr");
-                Resource domain = (Resource) row.getValue("dd");
-                if (range != null) {
-                    addDocument(property.stringValue(), rangeUri, range.stringValue());
-                }
-                if (domain != null) {
-                    addDocument(property.stringValue(), domainUri, domain.stringValue());
-                }
-            }
-        } catch (QueryEvaluationException e) {
-            log.error("Error while indexing property range and domain", e);
-            throw new RuntimeException(e.getMessage());
-        } finally {
-            try {
-                result.close();
-            } catch (QueryEvaluationException e) {
-                log.error("Error while closing result", e);
-            }
-        }
-    }
+	public void clearNotThreadSafe() {
 
-    private void indexBaseQuery(Collection<String> filterUris, String baseQuery,
-                                String position, boolean camelCase, boolean saveStemmed) {
-    	
-        for (String uri : filterUris) {
-            String query = addExtraStatement(baseQuery, uri, position);
-           System.out.println("Query\n"+query);
-           System.out.println("Uri\n"+uri);
-            TupleQueryResult result = sesame.executeQuery(query, false);
-            try {
-                addIndex(result, uri, camelCase, saveStemmed);
-            } catch (QueryEvaluationException e) {
-                log.error("Error while indexing result for uri <" + uri + ">", e);
-                throw new RuntimeException(e.getMessage());
-            } finally {
-                try {
-                    result.close();
-                } catch (QueryEvaluationException e) {
-                    log.error("Error while closing result", e);
-                }
-            }
-        }
-    }
+		try {
+			solrServer.deleteByQuery("*:*");
+			solrServer.commit();
+			log.info("## Deleted all indexes.");
+		} catch (SolrServerException e) {
+			log.error("Error while communicating with SolrServer", e);
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			log.error("Error while adding document to Solr", e);
+			throw new RuntimeException(e);
+		}
+	}
 
-    private Set<String> findFilterUris() {
-        TupleQueryResult subjectResults;
-        String filterClassesQuery = queryUtil.readQueryContent("/queries/getAllClasses.sparql");
-        subjectResults = sesame.executeQuery(filterClassesQuery);
-        Set<String> filterUris = new HashSet<String>();
+	public void indexbaseQueryClassesAndProperties() {
+		log.info("## Reindexing classes and properties ...");
+		String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryClassesAndProperties.sparql");
+		indexBaseQuery(FILTER_CLASS_AND_PROPERTY_URIS, baseQuery, "{", true, true);
+	}
 
-        try {
-            while (subjectResults.hasNext()) {
-                Resource subject = (Resource) subjectResults.next().getValue(FreyaConstants.VARIABLE_T);
-                filterUris.add(subject.stringValue());
-            }
-        } catch (QueryEvaluationException e) {
-            log.error("ERROR", e);
-            //throw new RuntimeException(e.getMessage());
-        } finally {
-            try {
-                subjectResults.close();
-            } catch (QueryEvaluationException e) {
-                log.error("ERROR on closing TupleQueryResult", e);
-            }
-        }
+	public void indexBaseQueryInstances() {
+		log.info("## Reindexing instances ...");
+		String baseQuery = queryUtil.readQueryContent("/queries/obg/getBaseQueryInstances.sparql");
+		indexBaseQuery(findFilterUris(), baseQuery, "WHERE {", true, false);
+	}
 
-        return filterUris;
-    }
+	public void indexSubClasses() {
+		log.info("## Reindexing sub classes ...");
+		String querySubClasses = queryUtil.readQueryContent("/queries/getSubClasses.sparql");
+		TupleQueryResult result = sesame.executeQuery(querySubClasses);
+		String uriSubClassOf = "http://www.w3.org/2000/01/rdf-schema#subClassOf";
+		try {
+			while (result.hasNext()) {
+				BindingSet row = result.next();
+				Resource aClass = (Resource) row.getValue("x");
+				Resource aSubClass = (Resource) row.getValue("y");
+				// add to index: aClass - inst aSubClass -class, subClassOf -
+				// pred
+				if (!aClass.stringValue().equals(aSubClass.stringValue())) {
+					addDocument(aSubClass.stringValue(), uriSubClassOf, aClass.stringValue());
+				}
+			}
+		} catch (QueryEvaluationException e) {
+			log.error("Error while indexing sub classes", e);
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			try {
+				result.close();
+			} catch (QueryEvaluationException e) {
+				log.error("Error while closing result", e);
+			}
+		}
+	}
 
-    private void addIndex(TupleQueryResult result, String filterUri, boolean camelCase,
-                          boolean saveStemmed) throws QueryEvaluationException {
-        log.info("indexing for filter URI <" + filterUri + ">");
-        try {
-        while (result.hasNext()) {
-            BindingSet row = result.next();
-            Value e = row.getBinding(FreyaConstants.VARIABLE_E).getValue();
+	public void indexPropertyRangeAndDomain() {
+		log.info("## Reindexing property range and domain");
+		String queryPropertyDomainAndRange = queryUtil.readQueryContent("/queries/getPropertyDomainAndRange.sparql");
+		TupleQueryResult result = sesame.executeQuery(queryPropertyDomainAndRange);
+		String rangeUri = "http://www.w3.org/2000/01/rdf-schema#range";
+		String domainUri = "http://www.w3.org/2000/01/rdf-schema#domain";
+		try {
+			while (result.hasNext()) {
+				BindingSet row = result.next();
+				Resource property = (Resource) row.getValue("p");
+				Resource range = (Resource) row.getValue("rr");
+				Resource domain = (Resource) row.getValue("dd");
+				if (range != null) {
+					addDocument(property.stringValue(), rangeUri, range.stringValue());
+				}
+				if (domain != null) {
+					addDocument(property.stringValue(), domainUri, domain.stringValue());
+				}
+			}
+		} catch (QueryEvaluationException e) {
+			log.error("Error while indexing property range and domain", e);
+			throw new RuntimeException(e.getMessage());
+		} finally {
+			try {
+				result.close();
+			} catch (QueryEvaluationException e) {
+				log.error("Error while closing result", e);
+			}
+		}
+	}
 
-            SimpleIRI instanceURI;
-            if (e instanceof SimpleBNode) {
-                continue;
-            } else {
-                instanceURI = (SimpleIRI) e;
-            }
+	private void indexBaseQuery(Collection<String> filterUris, String baseQuery, String position, boolean camelCase,
+			boolean saveStemmed) {
+		int count = 0;
+		for (String uri : filterUris) {
+			System.out.println("Indexing " + (count + 1) + " out of " + filterUris.size());
+			String query = addExtraStatement(baseQuery, uri, position);
+			System.out.println("Query\n" + query);
+			System.out.println("Uri\n" + uri);
+			TupleQueryResult result = sesame.executeQuery(query, false);
+			try {
+				addIndex(result, uri, camelCase, saveStemmed);
+			} catch (QueryEvaluationException e) {
+				log.error("Error while indexing result for uri <" + uri + ">", e);
+				throw new RuntimeException(e.getMessage());
+			} finally {
+				try {
+					result.close();
+				} catch (QueryEvaluationException e) {
+					log.error("Error while closing result", e);
+				}
+			}
+			count++;
+		}
+	}
 
-            Binding bindingP = row.getBinding(FreyaConstants.VARIABLE_P);
-            String predURI = bindingP == null ? null : bindingP.getValue().stringValue();
+	private Set<String> findFilterUris() {
+		TupleQueryResult subjectResults;
+		String filterClassesQuery = queryUtil.readQueryContent("/queries/getAllClasses.sparql");
+		subjectResults = sesame.executeQuery(filterClassesQuery);
+		Set<String> filterUris = new HashSet<String>();
 
-            Binding bindingL = row.getBinding(FreyaConstants.VARIABLE_L);
-            String label = bindingL == null ? null : bindingL.getValue().stringValue();
-            label = label == null ? instanceURI.getLocalName() : label;
+		try {
+			while (subjectResults.hasNext()) {
+				Resource subject = (Resource) subjectResults.next().getValue(FreyaConstants.VARIABLE_T);
+				filterUris.add(subject.stringValue());
+			}
+		} catch (QueryEvaluationException e) {
+			log.error("ERROR", e);
+			// throw new RuntimeException(e.getMessage());
+		} finally {
+			try {
+				subjectResults.close();
+			} catch (QueryEvaluationException e) {
+				log.error("ERROR on closing TupleQueryResult", e);
+			}
+		}
 
-            Set<String> variations = new HashSet<String>();
-            findVariations(variations, label, camelCase);
-            addDocument(variations, instanceURI.stringValue(), filterUri, predURI, saveStemmed);
-        }
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
-    }
+		return filterUris;
+	}
 
-    private void findVariations(Set<String> variations, String contentWord, boolean camelCase) {
-        Set<String> filteredContentWords = new HashSet<String>();
-        boolean dbpediaCheck = true;
+	private void addIndex(TupleQueryResult result, String filterUri, boolean camelCase, boolean saveStemmed)
+			throws QueryEvaluationException {
+		log.info("indexing for filter URI <" + filterUri + ">");
+		try {
+			while (result.hasNext()) {
+				BindingSet row = result.next();
+				Value e = row.getBinding(FreyaConstants.VARIABLE_E).getValue();
 
-        if (contentWord != null && contentWord.length() > 60) {
-            dbpediaCheck = false;
-        }
-        if (contentWord != null && dbpediaCheck) {
-            if (camelCase) {
-                variations.addAll(StringUtil.findVariations(contentWord, true));
-            }
-            filteredContentWords.add(contentWord);
-        }
+				SimpleIRI instanceURI;
+				if (e instanceof SimpleBNode) {
+					continue;
+				} else {
+					instanceURI = (SimpleIRI) e;
+				}
 
-        // this will add only strings shorter than 40 chars
-        variations.addAll(filteredContentWords);
-    }
+				Binding bindingP = row.getBinding(FreyaConstants.VARIABLE_P);
+				String predURI = bindingP == null ? null : bindingP.getValue().stringValue();
 
-    private void addDocument(Set<String> variations, String instanceURI,
-                             String classURI, String predURI, boolean saveStemmed) {
-        log.debug("addDocument: " + instanceURI + ", " + classURI + ", " + predURI + ", " + variations);
-        for (String variation : variations) {
-            SolrInputDocument doc = new SolrInputDocument();
-            doc.addField(FreyaConstants.SOLR_FIELD_ID, UUID.randomUUID());
-            doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, instanceURI);
-            doc.addField(FreyaConstants.SOLR_FIELD_CLASS, classURI);
-            doc.addField(FreyaConstants.SOLR_FIELD_EXACT_CONTENT, variation.trim());
-            String lc= variation.trim().toLowerCase();
-            doc.addField(FreyaConstants.SOLR_FIELD_LOWERCASE_CONTENT, lc);
+				Binding bindingL = row.getBinding(FreyaConstants.VARIABLE_L);
+				String label = bindingL == null ? null : bindingL.getValue().stringValue();
+				label = label == null ? instanceURI.getLocalName() : label;
 
-            if (predURI != null) {
-                doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, predURI);
-            }
+				Set<String> variations = new HashSet<String>();
+				findVariations(variations, label, camelCase);
+				addDocument(variations, instanceURI.stringValue(), filterUri, predURI, saveStemmed);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-            if (saveStemmed) {
-                doc.addField(FreyaConstants.SOLR_FIELD_STEMMED_CONTENT, variation.trim().toLowerCase());
-            }
+	private void findVariations(Set<String> variations, String contentWord, boolean camelCase) {
+		Set<String> filteredContentWords = new HashSet<String>();
+		boolean dbpediaCheck = true;
 
-            docs.add(doc);
-        }
-    }
+		if (contentWord != null && contentWord.length() > 60) {
+			dbpediaCheck = false;
+		}
+		if (contentWord != null && dbpediaCheck) {
+			if (camelCase) {
+				variations.addAll(StringUtil.findVariations(contentWord, true));
+			}
+			filteredContentWords.add(contentWord);
+		}
 
-    private void addDocument(String strInstance, String strProperty, String strClass) {
-        SolrInputDocument doc = new SolrInputDocument();
-        doc.addField(FreyaConstants.SOLR_FIELD_ID, UUID.randomUUID());
-        doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, strInstance);
-        doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, strProperty);
-        doc.addField(FreyaConstants.SOLR_FIELD_CLASS, strClass);
-        
-        docs.add(doc);
-        log.debug("addDocument: " + strInstance + ", " + strProperty + ", " + strClass);
-    }
+		// this will add only strings shorter than 40 chars
+		variations.addAll(filteredContentWords);
+	}
 
-    private String addExtraStatement(String baseQuery, String filterURI, String where) {
-        String additionalStatement = "  ?E rdf:type <" + filterURI + "> .";
-        int whereStart = baseQuery.indexOf(where);
+	private void addDocument(Set<String> variations, String instanceURI, String classURI, String predURI,
+			boolean saveStemmed) {
+		log.debug("addDocument: " + instanceURI + ", " + classURI + ", " + predURI + ", " + variations);
+		for (String variation : variations) {
+			SolrInputDocument doc = new SolrInputDocument();
+			doc.addField(FreyaConstants.SOLR_FIELD_ID, UUID.randomUUID());
+			doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, instanceURI);
+			doc.addField(FreyaConstants.SOLR_FIELD_CLASS, classURI);
+			doc.addField(FreyaConstants.SOLR_FIELD_EXACT_CONTENT, variation.trim());
+			String lc = variation.trim().toLowerCase();
+			doc.addField(FreyaConstants.SOLR_FIELD_LOWERCASE_CONTENT, lc);
 
-        if (whereStart == -1) {
-            throw new RuntimeException("Character: " + where + " NOT found in SPARQL:\n" + baseQuery);
-        }
+			if (predURI != null) {
+				doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, predURI);
+			}
 
-        String beginPart = baseQuery.substring(0, whereStart).trim();
-        String endPart = baseQuery.substring(whereStart + where.length());
+			if (saveStemmed) {
+				doc.addField(FreyaConstants.SOLR_FIELD_STEMMED_CONTENT, variation.trim().toLowerCase());
+			}
 
-        return beginPart + "\n" + where + "\n" + additionalStatement + endPart;
+			docs.add(doc);
+		}
+	}
 
-    }
+	private void addDocument(String strInstance, String strProperty, String strClass) {
+		SolrInputDocument doc = new SolrInputDocument();
+		doc.addField(FreyaConstants.SOLR_FIELD_ID, UUID.randomUUID());
+		doc.addField(FreyaConstants.SOLR_FIELD_INSTANCE, strInstance);
+		doc.addField(FreyaConstants.SOLR_FIELD_PROPERTY, strProperty);
+		doc.addField(FreyaConstants.SOLR_FIELD_CLASS, strClass);
 
-    @Override
-    public void destroy() throws Exception {
-        this.executor.shutdownNow();
-    }
+		docs.add(doc);
+		log.debug("addDocument: " + strInstance + ", " + strProperty + ", " + strClass);
+	}
+
+	private String addExtraStatement(String baseQuery, String filterURI, String where) {
+		String additionalStatement = "  ?E rdf:type <" + filterURI + "> .";
+		int whereStart = baseQuery.indexOf(where);
+
+		if (whereStart == -1) {
+			throw new RuntimeException("Character: " + where + " NOT found in SPARQL:\n" + baseQuery);
+		}
+
+		String beginPart = baseQuery.substring(0, whereStart).trim();
+		String endPart = baseQuery.substring(whereStart + where.length());
+
+		return beginPart + "\n" + where + "\n" + additionalStatement + endPart;
+
+	}
+
+	@Override
+	public void destroy() throws Exception {
+		this.executor.shutdownNow();
+	}
 }

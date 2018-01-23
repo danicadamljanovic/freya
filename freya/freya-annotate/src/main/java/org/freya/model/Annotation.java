@@ -11,8 +11,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import edu.stanford.nlp.trees.Tree;
 
+@XmlRootElement
 public class Annotation implements Serializable {
 
     String text;
@@ -20,6 +23,9 @@ public class Annotation implements Serializable {
     Long startOffset;
     Long endOffset;
 
+    @JsonIgnore
+    List<Tree> syntaxTree;
+    
     public HashMap getFeatures() {
         return features;
     }
@@ -27,8 +33,6 @@ public class Annotation implements Serializable {
     public void setFeatures(HashMap features) {
         this.features = features;
     }
-
-    List<Tree> syntaxTree;
 
     public List<Tree> getSyntaxTree() {
         return syntaxTree;

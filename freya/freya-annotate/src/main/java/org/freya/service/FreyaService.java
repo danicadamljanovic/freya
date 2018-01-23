@@ -14,6 +14,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.freya.model.POC;
 import org.freya.model.Question;
 import org.freya.model.service.FreyaResponse;
 import org.freya.util.ProfilerUtil;
@@ -326,5 +327,38 @@ public class FreyaService {
 		}
 		return freyaResponses;
 	}
-
+/**
+ * Extract POC text only
+ * @param input
+ * @param request
+ * @return
+ * @throws Exception
+ */
+	   @ResponseBody
+	    @RequestMapping(value = "/extractPOCText", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	    public List<String> extractPOCText(@RequestParam(value = "query") String input, HttpServletRequest request)
+	            throws Exception {
+	        HttpSession session = request.getSession(true);
+	        long startTime = System.currentTimeMillis();
+	        List<FreyaResponse> freyaResponses = null;
+	        List<String> pocStrings = new ArrayList<String>();
+	        try {
+	            List<Question> sentences = helper.processQuestion(input);
+	            long stopTime = System.currentTimeMillis();
+	            long runTime = stopTime - startTime;
+	            logger.info(ProfilerUtil.profileString(session.getId(), input, runTime, null));
+	            freyaResponses = helper.extractAnnotationsFromQuestion(sentences);
+	            
+	            for (FreyaResponse r:freyaResponses) {
+	              List<POC> pocs = r.getPocs();
+	              for (POC poc:pocs) {
+	                pocStrings.add(poc.getAnnotation().getText());
+	              }
+	            }
+	        } catch (Exception e) {
+	            throw e;
+	        }
+	        return pocStrings;
+	    }
+	
 }

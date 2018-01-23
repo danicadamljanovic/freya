@@ -567,6 +567,7 @@ public class FreyaServiceHelper {
 		AnnotationScoreComparator annotationScoreComparator = new AnnotationScoreComparator();
 		Collections.sort(response.getAnnotations(), annotationScoreComparator);
 
+		response.setPocs((ArrayList)question.getPocs());
 		return response;
 	}
 }

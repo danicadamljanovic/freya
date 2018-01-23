@@ -29,6 +29,9 @@ public class TreeUtils {
                     org.apache.commons.logging.LogFactory.getLog(TreeUtils.class);
 
     @Value("${org.freya.parser.preterminal.pocs}") String preterminalPOCs;
+    //TODO WRAP THIS UP IN A PROPERTY LIKE preterminalPOCs!!!!!!!
+    //String toExclude = "DT,PRP,RB";
+    @Value("${org.freya.parser.preterminal.exclude}") String preterminalsToExclude;
 
     public Tree getAnswerType(Tree tree) throws Exception {
         Tree mainSubjectTree = findTheHeadOfTheNounPhrase(tree);
@@ -340,6 +343,18 @@ public class TreeUtils {
         return pocs;
     }
 
+    boolean pocValid(Tree node) {
+      boolean isValid = true;
+      
+      int numberOfChildren = node.getChildrenAsList().size();
+      if (numberOfChildren == 1) {
+        String childLabel = node.getChildrenAsList().get(0).label().value();
+        if (preterminalsToExclude.contains(childLabel)) isValid = false;
+      }
+      
+      return isValid;
+    }
+    
     /**
      * finds pocs: CURRENTLY these are NN* and NP*
      * 
@@ -359,8 +374,10 @@ public class TreeUtils {
                                             || nodeLabel.startsWith(FreyaConstants.NX_TAG_TREEBANK) || (nodeLabel
                                                 .startsWith(FreyaConstants.ADJP_TAG_TREEBANK)))
                             && !(nodeChildLabel.startsWith(FreyaConstants.PRP_TAG_TREEBANK))
-                            && !(nodeChildLabel.startsWith(FreyaConstants.EX_TAG_TREEBANK)))
-                pocs.add(node);
+                            && !(nodeChildLabel.startsWith(FreyaConstants.EX_TAG_TREEBANK))) {
+                if (pocValid(node))
+                  pocs.add(node);// if they are single nodes with DT or PRP then ignore them
+            }
             // //////////////////////////////////////////////////////////////////
             // this is to support how long, //////
             // how //////

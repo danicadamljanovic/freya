@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.freya.model.ui.Annotation;
+import org.freya.model.POC;
 import org.freya.model.SemanticConcept;
 
 @XmlRootElement
@@ -23,6 +24,15 @@ public class FreyaResponse {
     List<List<SemanticConcept>> semanticConcepts;
     ArrayList<Object> graph;
     List<Annotation> annotations = new ArrayList<Annotation>();
+    ArrayList<POC> pocs;
+
+    public List<POC> getPocs() {
+      return pocs;
+    }
+
+    public void setPocs(ArrayList<POC> pocs) {
+      this.pocs = pocs;
+    }
 
     public String getPreciseSparql() {
         return preciseSparql;
